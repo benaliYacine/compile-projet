@@ -81,9 +81,8 @@
      gt = 297,
      po = 298,
      pf = 299,
-     de = 300,
-     verg = 301,
-     err = 302
+     verg = 300,
+     err = 301
    };
 #endif
 
@@ -103,7 +102,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 107 "syntaxique.tab.h"
+#line 106 "syntaxique.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
