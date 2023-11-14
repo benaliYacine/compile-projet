@@ -10,14 +10,9 @@
 
 %token idf cst aff mc_prgrm mc_rtin int real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul div mc_and mc_endif lt gt po pf verg err 
 %%
-FCT mc_prgrm 
-s: function_list main_program { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; }
-;
-function_list: function_list FCT
+s: FCT mc_prgrm idf DEC INST mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; }
 ;
 FCT: TYPE mc_rtin idf po ENSIDF pf DEC INST idf aff idf pvg mc_endr FCT | TYPE mc_rtin idf po ENSIDF pf DEC INST idf aff idf pvg mc_endr
-;
-main_program: mc_prgrm idf DEC INST mc_end
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
