@@ -18,7 +18,7 @@ TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
 DEC: TYPE idf mc_dim po TAILLE pf pvg DEC | TYPE idf mul inti pvg DEC | TYPE ENSIDF pvg DEC | TYPE ENSIDF pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg
 ;
-TAILLE: TAILLE inti verg | inti
+TAILLE: TAILLE verg inti | inti
 ;
 EXPRE: EXPRE add EXPRET | EXPRET  
 ;
@@ -30,7 +30,7 @@ EXPREI: idf | inti | real | LOGI | idf po TAILLE pf | mc_call idf po ENSIDF pf |
 ;
 LOGI: mc_true | mc_false
 ;
-ENSIDF: ENSIDF idf verg | idf
+ENSIDF: ENSIDF verg idf | idf
 ;
 INST: if_statement | assignment | read_statement | write_statement | dowhile_statement 
 ;
