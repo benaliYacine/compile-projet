@@ -68,7 +68,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
               rechercher(yytext,"Cst entiere","INTEGER",atof(yytext),0); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
-			  return int;}
+			  return inti;}
 {real} {yylval.entier=atoi(yytext);
 			  int intPart = (int)atof(yytext);
 			  float fractionalPart = atof(yytext) - intPart;
@@ -93,7 +93,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return real;}
 
-"/" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return div;}
+"/" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return divi;}
 "*" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return mul;}
 "-" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return sub;}
 "+" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return add;}

@@ -865,7 +865,7 @@ YY_RULE_SETUP
               rechercher(yytext,"Cst entiere","INTEGER",atof(yytext),0); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
-			  return int;}
+			  return inti;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
@@ -897,7 +897,7 @@ YY_RULE_SETUP
 case 34:
 YY_RULE_SETUP
 #line 96 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return div;}
+{rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return divi;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP

@@ -2,7 +2,7 @@
 /***Step 1: Definition des structures de données ***/
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 typedef struct
 {
    int state;
