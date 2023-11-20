@@ -60,8 +60,6 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
               printf (" L entite lexicale reconnue est %s \n", yytext); 
 			  return idf;}
 
-
-
 {int} {yylval.entier=atoi(yytext);
 			  if (atof(yytext)<-32768 || atof(yytext)>32767){
 				printf ("ereur: Entité entiere trop long a ligne %d a la colonne %d \n", nb_ligne, Col);return err;}
@@ -93,15 +91,15 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return real;}
 
-"/" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return divi;}
-"*" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return mul;}
-"-" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return sub;}
-"+" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return add;}
-"=" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return aff;}
-";" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return pvg;}
-"(" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return po;}
-")" {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return pf;}
-"," {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return verg;}
+"/" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return divi;}
+"*" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return mul;}
+"-" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return sub;}
+"+" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return add;}
+"=" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return aff;}
+";" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return pvg;}
+"(" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return po;}
+")" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return pf;}
+"," {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return verg;}
 
 {str} {yylval.str=strdup(yytext);
 			  rechercher(yytext,"IDF"," ",0,0);  

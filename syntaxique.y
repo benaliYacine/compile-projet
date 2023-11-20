@@ -20,11 +20,11 @@ DEC: TYPE idf mc_dim po TAILLE pf pvg DEC | TYPE idf mul inti pvg DEC | TYPE ENS
 ;
 TAILLE: TAILLE verg inti | inti
 ;
-EXPRE: EXPRE add EXPRET | EXPRET  
+EXPRE: EXPRE add EXPRET | EXPRE sub EXPRET | EXPRET  
 ;
-EXPRET: EXPRET mul EXPREF | EXPREF
+EXPRET: EXPRET mul EXPREF | EXPRET divi EXPREF | EXPREF
 ;
-EXPREF: po EXPREF pf | EXPREI
+EXPREF: po EXPRE pf | EXPREI
 ;
 EXPREI: idf | inti | real | LOGI | idf po TAILLE pf | mc_call idf po ENSIDF pf | str
 ;
@@ -34,7 +34,9 @@ ENSIDF: ENSIDF verg idf | idf
 ;
 INST: if_statement | assignment | read_statement | write_statement | dowhile_statement 
 ;
-if_statement: mc_if po CONDI pf mc_then INST mc_endif 
+if_statement: mc_if po CONDI pf mc_then INST else_clause mc_endif 
+;
+else_clause: mc_else INST |
 ;
 assignment: idf aff EXPRE pvg 
 ;
@@ -44,9 +46,9 @@ write_statement: mc_write po str verg ENSIDF pf pvg | mc_write po str pf pvg
 ;
 dowhile_statement: mc_dowhile po CONDI pf INST mc_enddo 
 ;
-CONDI: CONDI mc_or CONDIT | CONDIT
+CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT
 ;
-CONDIT: po CONDIT pf | EXPLOGI
+CONDIT: po CONDI pf | EXPLOGI
 ;
 EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE aff aff EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
 ;
