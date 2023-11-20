@@ -10,13 +10,13 @@
 
 %token idf cst aff mc_prgrm mc_rtin inti real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
 %%
-s: FCT mc_prgrm idf DEC INST mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; }
+s: FCT mc_prgrm idf DEC INST mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; } | FCT mc_prgrm idf DEC mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; } | FCT mc_prgrm idf INST mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; } | mc_prgrm idf DEC INST mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; } | mc_prgrm idf DEC mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; } | mc_prgrm idf INST mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; } | mc_prgrm idf mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; } | FCT mc_prgrm idf mc_end { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; }
 ;
 FCT: FCT TYPE mc_rtin idf po ENSIDF pf DEC INST idf aff idf pvg mc_endr | TYPE mc_rtin idf po ENSIDF pf DEC INST idf aff idf pvg mc_endr
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
-DEC: TYPE idf mc_dim po TAILLE pf pvg DEC | TYPE idf mul inti pvg DEC | TYPE ENSIDF pvg DEC | TYPE ENSIDF pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg
+DEC: TYPE idf mc_dim po TAILLE pf pvg DEC | TYPE idf mul inti pvg DEC | TYPE ENSIDF pvg DEC | TYPE ENSIDF pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg 
 ;
 TAILLE: TAILLE verg inti | inti
 ;
@@ -32,7 +32,7 @@ LOGI: mc_true | mc_false
 ;
 ENSIDF: ENSIDF verg idf | idf
 ;
-INST: if_statement | assignment | read_statement | write_statement | dowhile_statement 
+INST: if_statement | assignment | read_statement | write_statement | dowhile_statement | if_statement INST | assignment INST | read_statement INST | write_statement INST | dowhile_statement INST
 ;
 if_statement: mc_if po CONDI pf mc_then INST else_clause mc_endif 
 ;
