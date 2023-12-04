@@ -1,5 +1,9 @@
 %{
+    #include <stdio.h>
     int nb_ligne=1, Col=1;
+    char* file_name;
+    #include <stdlib.h>
+    extern FILE *yyin;
 %}
 
 %union {
@@ -23,7 +27,7 @@ VIDE:
 ;
 ENSFCT: ENSFCT FCT | FCT
 ;
-FCT: TYPE mc_rtin idf po ENSIDF pf DEC ENSINST idf aff idf pvg mc_endr
+FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST assignment mc_endr
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
@@ -57,9 +61,12 @@ OPERAND
     |inti
     | real
     | idf po TAILLE pf
-    | mc_call idf po ENSIDF pf
+    | mc_call idf po ENSpara pf
     ;
-
+ENSpara: ENSpara verg PARA | PARA
+;
+PARA : inti | real | str | idf 
+;
 LOGI: mc_true | mc_false
 ;
 ENSIDF: ENSIDF verg idf | idf
@@ -70,38 +77,58 @@ ENSINST: ENSINST INST | INST
 ;
 INST: if_statement | read_statement | write_statement | dowhile_statement | assignment
 ;
-if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif pvg
+if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif 
 ;
 else_clause: mc_else ENSINST |
 ;
-assignment: idf aff assi pvg
+assignment: OGassi aff assi pvg //OGassi operande gauche d'afectation 
+;
+OGassi: idf | idf po TAILLE pf
 ;
 assi: LOGI | str | EXPRE
 ;
 read_statement: mc_read po idf pf pvg 
 ;
-write_statement: mc_write po str verg ENSIDF pf pvg | mc_write po str pf pvg 
+write_statement: mc_write po ENS_PARA_WRITE pf pvg 
 ;
-dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo pvg
+ENS_PARA_WRITE: ENS_PARA_WRITE verg str  | ENS_PARA_WRITE verg idf | str | idf
+;
+dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo 
 ;
 CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT
 ;
 CONDIT: po CONDI pf | EXPLOGI
 ;
-EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE aff aff EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
+EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
 ;
 %%
 
-int main ()
+int main(int argc, char** argv)
 {
-   initialisation();
-   yyparse();
-   afficher();
+    if (argc > 1) {
+        file_name = argv[1];
+        FILE* file = fopen(argv[1], "r");
+        if (!file) {
+            // Handle error
+            perror("Cannot open input_file.txt");
+             return EXIT_FAILURE;
+        }
+        yyin = file;
+    }
+    
+    yyparse();
+    yylex();
+    afficher();
+    
+    if (yyin != stdin) {
+        fclose(yyin);
+    }
+    
    return 0;
  }
  yywrap ()
  {}
  int yyerror ( char*  msg )
  {
-    printf ("Erreur Syntaxique a ligne %d a colonne %d \n",nb_ligne,Col);
+    printf("File \"%s\", line %d, character %d: syntaxique error\n",file_name, nb_ligne, Col);
   }

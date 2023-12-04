@@ -1,170 +1,178 @@
-/****************CREATION DE LA TABLE DES SYMBOLES ******************/
-/***Step 1: Definition des structures de données ***/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-typedef struct
+typedef struct element *Lelement;
+typedef struct element
 {
    int state;
    char name[20];
    char code[20];
    char type[20];
    float val;
+   Lelement svt;
  } element;
 
-typedef struct
+typedef struct elt *Lelt;
+typedef struct elt
 { 
-   int state; 
    char name[20];
    char type[20];
+   Lelt svt;
 } elt;
-
-element tab[1000];
-elt tabs[40],tabm[40];
-extern char sav[20];
-
-/***Step 2: initialisation de l'état des cases des tables des symbloles***/
-/*0: la case est libre    1: la case est occupée*/
-
-void initialisation()
+    Lelement tab=NULL,tete=NULL,prd=NULL;
+    Lelt tabm=NULL,tabs=NULL,tetem=NULL,tetes=NULL,prdm=NULL,prds=NULL;
+void inserer (char entite[], char code[],char type[],float val, int y)
 {
-  int i;
-  for (i=0;i<1000;i++)
-  tab[i].state=0;
-  
-  
-
-  for (i=0;i<40;i++)
-    {tabs[i].state=0;
-    tabm[i].state=0;}
-
-}
-
-
-/***Step 3: insertion des entititées lexicales dans les tables des symboles ***/
-
-void inserer (char entite[], char code[],char type[],float val,int i, int y)
-{
+    
   switch (y)
  { 
+    
    case 0:/*insertion dans la table des IDF et CONST*/
-       tab[i].state=1;
-       strcpy(tab[i].name,entite);
-       strcpy(tab[i].code,code);
-	   strcpy(tab[i].type,type);
-	   tab[i].val=val;
+      tab=malloc(sizeof(element));
+       
+       strcpy(tab->name,entite);
+       strcpy(tab->code,code);
+	   strcpy(tab->type,type);
+	   tab->val=val;
+       tab->svt=NULL;
+       if(tete==NULL){
+            tete=tab;
+            prd=tete;
+       }
+            else {
+                prd->svt=tab;
+                prd=prd->svt;
+            }
 	   break;
 
-   case 1:/*insertion dans la table des mots clés*/
-       tabm[i].state=1;
-       strcpy(tabm[i].name,entite);
-       strcpy(tabm[i].type,code);
+   case 1:/*insertion dans la table des mots clÃ©s*/
+   tabm=malloc(sizeof(elt));
+       
+       strcpy(tabm->name,entite);
+       strcpy(tabm->type,code);
+       tabm->svt=NULL;
+       if(tetem==NULL){
+            tetem=tabm;
+            prdm=tetem;
+       }
+            else {
+                prdm->svt=tabm;
+                prdm=prdm->svt;
+            }
        break; 
     
-   case 2:/*insertion dans la table des séparateurs*/
-      tabs[i].state=1;
-      strcpy(tabs[i].name,entite);
-      strcpy(tabs[i].type,code);
+   case 2:/*insertion dans la table des separateurs*/
+    tabs=malloc(sizeof(elt));
+      
+      strcpy(tabs->name,entite);
+      strcpy(tabs->type,code);
+      tabs->svt=NULL;
+       if(tetes==NULL){
+            tetes=tabs;
+            prds=tetes;
+       }
+            else {
+                prds->svt=tabs;
+                prds=prds->svt;
+            }
       break;
  }
 
 }
 
-/***Step 4: La fonction Rechercher permet de verifier  si l'entité existe dèja dans la table des symboles */
 void rechercher (char entite[], char code[],char type[],float val,int y)	
 {
 
 int j,i;
-
+tab=tete;
+tabm=tetem;
+tabs=tetes;
 switch(y) 
   {
    case 0:/*verifier si la case dans la tables des IDF et CONST est libre*/
-        for (i=0;((i<1000)&&(tab[i].state==1))&&(strcmp(entite,tab[i].name)!=0);i++); 
-        if(i<1000)
+        //for (i=0;((i<1000)&&(tab->state==1))&&(strcmp(entite,tab->name)!=0);i++); 
+        while(tab!=NULL&&strcmp(entite,tab->name)!=0){
+            tab=tab->svt;
+        }
+        if(tab==NULL)
         { 
 	        
-			inserer(entite,code,type,val,i,0); 
+			inserer(entite,code,type,val,0); 
 	      
          }
         else
-          printf("entité existe déjà\n");
+          printf("entite existe deja\n");
         break;
 
-   case 1:/*verifier si la case dans la tables des mots clés est libre*/
+   case 1:/*verifier si la case dans la tables des mots clÃ©s est libre*/
        
-       for (i=0;((i<40)&&(tabm[i].state==1))&&(strcmp(entite,tab[i].name)!=0);i++); 
-        if(i<40)
-          inserer(entite,code,type,val,i,1);
+       while(tabm!=NULL&&strcmp(entite,tabm->name)!=0){
+            tabm=tabm->svt;
+        }
+        if(tabm==NULL)
+          inserer(entite,code,type,val,1);
         else
-          printf("entité existe déjà\n");
+          printf("entite existe deja\n");
         break; 
     
-   case 2:/*verifier si la case dans la tables des séparateurs est libre*/
-         for (i=0;((i<40)&&(tabs[i].state==1))&&(strcmp(entite,tab[i].name)!=0);i++); 
-        if(i<40)
-         inserer(entite,code,type,val,i,2);
+   case 2:/*verifier si la case dans la tables des sÃ©parateurs est libre*/
+          while(tabs!=NULL&&strcmp(entite,tabs->name)!=0){
+            tabs=tabs->svt;
+        }
+        if(tabs==NULL)
+         inserer(entite,code,type,val,2);
         else
-   	       printf("entité existe déjà\n");
+   	       printf("entite existe deja\n");
         break;
 
-    case 3:/*verifier si la case dans la tables des IDF et CONST est libre*/
-        for (i=0;((i<1000)&&(tab[i].state==1))&&(strcmp(entite,tab[i].name)!=0);i++); 
-                  
-        if (i<1000)
-        { inserer(entite,code,type,val,i,0); }
-        else
-          printf("entité existe déjà\n");
-        break;
   }
 
 }
 
-
-/***Step 5 L'affichage du contenue de la table des symboles ***/
-
 void afficher()
-{int i;
+{
+tab=tete;
+tabm=tetem;
+tabs=tetes;
 
 printf("/***************Table des symboles IDF*************/\n");
 printf("____________________________________________________________________\n");
 printf("\t| Nom_Entite |  Code_Entite | Type_Entite | Val_Entite\n");
 printf("____________________________________________________________________\n");
   
-for(i=0;i<50;i++)
+while(tab!=NULL)
 {	
-	
-    if(tab[i].state==1)
-      { 
-        printf("\t|%10s |%15s | %12s | %12f\n",tab[i].name,tab[i].code,tab[i].type,tab[i].val);
+        printf("\t|%10s |%15s | %12s | %12f\n",tab->name,tab->code,tab->type,tab->val);
          
-      }
+      
+    tab=tab->svt;
 }
 
  
-printf("\n/***************Table des symboles mots clés*************/\n");
+printf("\n/***************Table des symboles mots clÃ©s*************/\n");
 
 printf("_____________________________________\n");
 printf("\t| NomEntite |  CodeEntite | \n");
 printf("_____________________________________\n");
   
-for(i=0;i<40;i++)
-    if(tabm[i].state==1)
-      { 
-        printf("\t|%10s |%12s | \n",tabm[i].name, tabm[i].type);
+while(tabm!=NULL){
+        printf("\t|%10s |%12s | \n",tabm->name, tabm->type);
                
-      }
+      
+      tabm=tabm->svt;
+}
 
-printf("\n/***************Table des symboles séparateurs*************/\n");
+printf("\n/***************Table des symboles sÃ©parateurs*************/\n");
 
 printf("_____________________________________\n");
 printf("\t| NomEntite |  CodeEntite | \n");
 printf("_____________________________________\n");
   
-for(i=0;i<40;i++)
-    if(tabs[i].state==1)
-      { 
-        printf("\t|%10s |%12s | \n",tabs[i].name,tabs[i].type );
+while(tabs!=NULL){
+        printf("\t|%10s |%12s | \n",tabs->name,tabs->type );
         
-      }
+      
+      tabs=tabs->svt;
+}
 
 }

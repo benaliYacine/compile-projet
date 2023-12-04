@@ -3,14 +3,19 @@ extern nb_ligne;
 extern Col;
 #include "Syntaxique.tab.h"
  #include "ts.h"
+ #include <stdlib.h>
+ #include <limits.h>
+ #include <string.h>
  extern YYSTYPE yylval;
+ extern file_name;
+ char *pointPtr; //point pointer
 %}
 
 lettre [a-zA-Z]
 commentaire %({lettre}|{chiffre})*\n
 chiffre [0-9]
 idf {lettre}({lettre}|{chiffre})*
-str \".*\"
+str \"[^"]*\"
 int -{chiffre}+|{chiffre}+
 real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 
@@ -44,12 +49,12 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 "OR" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_or;}
 "AND" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_and;}
 
-".LT." {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return lt;}
-".GT." {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return gt;}
-".LE." {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return le;}
-".NE." {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return ne;}
-".EQ." {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return eq;}
-".GE." {rechercher(yytext,"Mot cle",0,0,2); Col= Col + strlen(yytext);return ge;}
+".LT." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return lt;}
+".GT." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return gt;}
+".LE." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return le;}
+".NE." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ne;}
+".EQ." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return eq;}
+".GE." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ge;}
 
 
 
@@ -67,48 +72,47 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return inti;}
-{real} {yylval.entier=atoi(yytext);
-			  int intPart = (int)atof(yytext);
-			  float fractionalPart = atof(yytext) - intPart;
-			  // Handling negative numbers
-				if (fractionalPart < 0) {
-					fractionalPart = -fractionalPart;
-				}
+{real} {
+			  double var=(double)atof(yytext);
+			  if (var > (double)INT_MAX || var < (double)INT_MIN){// bach 9bel ma dir (int) tvirifi ida numero sghir 3la int max w kbir 3la int min pareceque koun la rah yesra mouchkil fi (int) tedkhol f boucle infini w (double) 9ader ma tzidhach parceque l compilateur wahdou ki yel9ak m compari int m3a double yhawal l int l double mais koun tzidha nta khir (good practice)
+			  		printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);
+ 			  } else {
 
-				// Remove the fractional part by multiplying by 10 until it's gone
-				int fractionalPartAsInt = 0;
-				while (fractionalPart > 0) {
-					fractionalPart *= 10;
-					int digit = (int)fractionalPart;
-					fractionalPartAsInt = fractionalPartAsInt * 10 + digit;
-					fractionalPart -= digit;
-				}
-			  if (intPart<-32768 || intPart>32767 || fractionalPartAsInt>32768){
-				printf ("ereur: Entité real trop long a ligne %d a la colonne %d \n", nb_ligne, Col);return err;}
+					/*--------------int part-----------------*/
+					int intPart = (int)var;
+
+					/*--------------fractional part-----------------*/
+					pointPtr = strchr(yytext, '.');// strchr tchouf fel str yytext win jay l pointer ta3 el '.' w t7oto f pointPtr
+					double fractionalPart = atof(pointPtr + 1); // atof Convert fractional part to double (double-precision floating-point(floating-point maydirch mouchkil hna houwa yrod l vergule be ta9rib hna khlas ne7tajou ghi l int part)),kout dayer atoi (Convert fractional part to int) mais atof khir bach ida kan chifre li mor l vergule maye9derch yji f int afoi dirlek problem mais atof y7awlou l double 3adi tani atoi mafihach erreur handeling( It doesn't handle floating-point numbers-There's no error handling for overflows or underflows.)  
+					printf("------>fract part:%lf\n",fractionalPart);
+					if (intPart<-32768 || intPart>32767 || (int)fractionalPart>32767){
+						printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);}
+			  }
               
               rechercher(yytext,"Cst real","FLOAT",atof(yytext),0); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return real;}
-
-"/" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return divi;}
-"*" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return mul;}
-"-" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return sub;}
-"+" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return add;}
-"=" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return aff;}
-";" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return pvg;}
-"(" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return po;}
-")" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return pf;}
-"," {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext);return verg;}
-
 {str} {yylval.str=strdup(yytext);
-			  rechercher(yytext,"IDF"," ",0,0);  
+			  rechercher(yytext,"str"," ",0,0);  
               Col= Col + strlen(yytext);
               printf (" L entite lexicale reconnue est %s \n", yytext); 
 			  return str;}
 
+"/" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return divi;}
+"*" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mul;}
+"-" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return sub;}
+"+" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return add;}
+"=" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return aff;}
+";" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
+"(" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return po;}
+")" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pf;}
+"," {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return verg;}
+
+
+
 [ \t] Col= Col + strlen(yytext);
 \n {Col= 1; nb_ligne++;}
 
-. {printf("Entité lexicale non reconnue a ligne %d a la colonne %d \n", nb_ligne, Col);return err;}
+. { printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);return err;}
 %%
