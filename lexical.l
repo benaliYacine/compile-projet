@@ -12,7 +12,7 @@ extern Col;
 %}
 
 lettre [a-zA-Z]
-commentaire %({lettre}|{chiffre})*\n
+commentaire %.*;
 chiffre [0-9]
 idf {lettre}({lettre}|{chiffre})*
 str \"[^"]*\"
@@ -76,6 +76,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 			  double var=(double)atof(yytext);
 			  if (var > (double)INT_MAX || var < (double)INT_MIN){// bach 9bel ma dir (int) tvirifi ida numero sghir 3la int max w kbir 3la int min pareceque koun la rah yesra mouchkil fi (int) tedkhol f boucle infini w (double) 9ader ma tzidhach parceque l compilateur wahdou ki yel9ak m compari int m3a double yhawal l int l double mais koun tzidha nta khir (good practice)
 			  		printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);
+					return err;
  			  } else {
 
 					/*--------------int part-----------------*/
@@ -86,7 +87,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 					double fractionalPart = atof(pointPtr + 1); // atof Convert fractional part to double (double-precision floating-point(floating-point maydirch mouchkil hna houwa yrod l vergule be ta9rib hna khlas ne7tajou ghi l int part)),kout dayer atoi (Convert fractional part to int) mais atof khir bach ida kan chifre li mor l vergule maye9derch yji f int afoi dirlek problem mais atof y7awlou l double 3adi tani atoi mafihach erreur handeling( It doesn't handle floating-point numbers-There's no error handling for overflows or underflows.)  
 					printf("------>fract part:%lf\n",fractionalPart);
 					if (intPart<-32768 || intPart>32767 || (int)fractionalPart>32767){
-						printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);}
+						printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);return err;}
 			  }
               
               rechercher(yytext,"Cst real","FLOAT",atof(yytext),0); 

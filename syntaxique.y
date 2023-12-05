@@ -27,7 +27,7 @@ VIDE:
 ;
 ENSFCT: ENSFCT FCT | FCT
 ;
-FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST assignment mc_endr
+FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST assignment mc_endr | TYPE mc_rtin idf po ENSIDF pf DECS assignment mc_endr
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
@@ -63,9 +63,7 @@ OPERAND
     | idf po TAILLE pf
     | mc_call idf po ENSpara pf
     ;
-ENSpara: ENSpara verg PARA | PARA
-;
-PARA : inti | real | str | idf 
+ENSpara: ENSpara verg valeur | valeur
 ;
 LOGI: mc_true | mc_false
 ;
@@ -81,11 +79,11 @@ if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif
 ;
 else_clause: mc_else ENSINST |
 ;
-assignment: OGassi aff assi pvg //OGassi operande gauche d'afectation 
+assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation 
 ;
 OGassi: idf | idf po TAILLE pf
 ;
-assi: LOGI | str | EXPRE
+valeur: LOGI | str | EXPRE //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
 ;
 read_statement: mc_read po idf pf pvg 
 ;

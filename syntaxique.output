@@ -21,154 +21,150 @@ Grammar
     7       | FCT
 
     8 FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST assignment mc_endr
+    9    | TYPE mc_rtin idf po ENSIDF pf DECS assignment mc_endr
 
-    9 TYPE: mc_int
-   10     | mc_real
-   11     | mc_char
-   12     | mc_logi
+   10 TYPE: mc_int
+   11     | mc_real
+   12     | mc_char
+   13     | mc_logi
 
-   13 DECS: VIDE
-   14     | ENSDEC
+   14 DECS: VIDE
+   15     | ENSDEC
 
-   15 ENSDEC: ENSDEC DEC
-   16       | DEC
+   16 ENSDEC: ENSDEC DEC
+   17       | DEC
 
-   17 DEC: TYPE ENSIDF pvg
-   18    | TYPE idf mul inti pvg
-   19    | TYPE idf mc_dim po TAILLE pf pvg
+   18 DEC: TYPE ENSIDF pvg
+   19    | TYPE idf mul inti pvg
+   20    | TYPE idf mc_dim po TAILLE pf pvg
 
-   20 TAILLE: TAILLE verg inti
-   21       | inti
+   21 TAILLE: TAILLE verg inti
+   22       | inti
 
-   22 EXPRE: EXPRE add TERM
-   23      | EXPRE sub TERM
-   24      | TERM
+   23 EXPRE: EXPRE add TERM
+   24      | EXPRE sub TERM
+   25      | TERM
 
-   25 TERM: TERM mul FACTOR
-   26     | TERM divi FACTOR
-   27     | FACTOR
+   26 TERM: TERM mul FACTOR
+   27     | TERM divi FACTOR
+   28     | FACTOR
 
-   28 FACTOR: po EXPRE pf
-   29       | OPERAND
+   29 FACTOR: po EXPRE pf
+   30       | OPERAND
 
-   30 OPERAND: idf
-   31        | inti
-   32        | real
-   33        | idf po TAILLE pf
-   34        | mc_call idf po ENSpara pf
+   31 OPERAND: idf
+   32        | inti
+   33        | real
+   34        | idf po TAILLE pf
+   35        | mc_call idf po ENSpara pf
 
-   35 ENSpara: ENSpara verg PARA
-   36        | PARA
+   36 ENSpara: ENSpara verg valeur
+   37        | valeur
 
-   37 PARA: inti
-   38     | real
-   39     | str
-   40     | idf
+   38 LOGI: mc_true
+   39     | mc_false
 
-   41 LOGI: mc_true
-   42     | mc_false
+   40 ENSIDF: ENSIDF verg idf
+   41       | idf
 
-   43 ENSIDF: ENSIDF verg idf
-   44       | idf
+   42 INSTS: VIDE
+   43      | ENSINST
 
-   45 INSTS: VIDE
-   46      | ENSINST
+   44 ENSINST: ENSINST INST
+   45        | INST
 
-   47 ENSINST: ENSINST INST
-   48        | INST
+   46 INST: if_statement
+   47     | read_statement
+   48     | write_statement
+   49     | dowhile_statement
+   50     | assignment
 
-   49 INST: if_statement
-   50     | read_statement
-   51     | write_statement
-   52     | dowhile_statement
-   53     | assignment
+   51 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif
 
-   54 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif
+   52 else_clause: mc_else ENSINST
+   53            | /* empty */
 
-   55 else_clause: mc_else ENSINST
-   56            | /* empty */
+   54 assignment: OGassi aff valeur pvg
 
-   57 assignment: OGassi aff assi pvg
+   55 OGassi: idf
+   56       | idf po TAILLE pf
 
-   58 OGassi: idf
-   59       | idf po TAILLE pf
+   57 valeur: LOGI
+   58       | str
+   59       | EXPRE
 
-   60 assi: LOGI
-   61     | str
-   62     | EXPRE
+   60 read_statement: mc_read po idf pf pvg
 
-   63 read_statement: mc_read po idf pf pvg
+   61 write_statement: mc_write po ENS_PARA_WRITE pf pvg
 
-   64 write_statement: mc_write po ENS_PARA_WRITE pf pvg
+   62 ENS_PARA_WRITE: ENS_PARA_WRITE verg str
+   63               | ENS_PARA_WRITE verg idf
+   64               | str
+   65               | idf
 
-   65 ENS_PARA_WRITE: ENS_PARA_WRITE verg str
-   66               | ENS_PARA_WRITE verg idf
-   67               | str
-   68               | idf
+   66 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo
 
-   69 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo
+   67 CONDI: CONDI mc_or CONDIT
+   68      | CONDI mc_and CONDIT
+   69      | CONDIT
 
-   70 CONDI: CONDI mc_or CONDIT
-   71      | CONDI mc_and CONDIT
-   72      | CONDIT
+   70 CONDIT: po CONDI pf
+   71       | EXPLOGI
 
-   73 CONDIT: po CONDI pf
-   74       | EXPLOGI
-
-   75 EXPLOGI: EXPRE lt EXPRE
-   76        | EXPRE gt EXPRE
-   77        | EXPRE ge EXPRE
-   78        | EXPRE eq EXPRE
-   79        | EXPRE ne EXPRE
-   80        | EXPRE le EXPRE
+   72 EXPLOGI: EXPRE lt EXPRE
+   73        | EXPRE gt EXPRE
+   74        | EXPRE ge EXPRE
+   75        | EXPRE eq EXPRE
+   76        | EXPRE ne EXPRE
+   77        | EXPRE le EXPRE
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-idf (258) 2 8 18 19 30 33 34 40 43 44 58 59 63 66 68
-aff (259) 57
+idf (258) 2 8 9 19 20 31 34 35 40 41 55 56 60 63 65
+aff (259) 54
 mc_prgrm (260) 2
-mc_rtin (261) 8
-inti (262) 18 20 21 31 37
-real (263) 32 38
-mc_endr (264) 8
-mc_call (265) 34
-mc_dim (266) 19
-mc_logi (267) 12
-mc_char (268) 11
-mc_true (269) 41
-mc_false (270) 42
-mc_read (271) 63
-mc_write (272) 64
-pvg (273) 17 18 19 57 63 64
-str (274) 39 61 65 67
-mc_int (275) 9
-mc_real (276) 10
+mc_rtin (261) 8 9
+inti (262) 19 21 22 32
+real (263) 33
+mc_endr (264) 8 9
+mc_call (265) 35
+mc_dim (266) 20
+mc_logi (267) 13
+mc_char (268) 12
+mc_true (269) 38
+mc_false (270) 39
+mc_read (271) 60
+mc_write (272) 61
+pvg (273) 18 19 20 54 60 61
+str (274) 58 62 64
+mc_int (275) 10
+mc_real (276) 11
 mc_end (277) 2
-mc_if (278) 54
-mc_then (279) 54
-mc_else (280) 55
-mc_dowhile (281) 69
-mc_enddo (282) 69
+mc_if (278) 51
+mc_then (279) 51
+mc_else (280) 52
+mc_dowhile (281) 66
+mc_enddo (282) 66
 mc_equival (283)
-mc_or (284) 70
-ge (285) 77
-eq (286) 78
-ne (287) 79
-le (288) 80
-add (289) 22
-sub (290) 23
-mul (291) 18 25
-divi (292) 26
-mc_and (293) 71
-mc_endif (294) 54
-lt (295) 75
-gt (296) 76
-po (297) 8 19 28 33 34 54 59 63 64 69 73
-pf (298) 8 19 28 33 34 54 59 63 64 69 73
-verg (299) 20 35 43 65 66
+mc_or (284) 67
+ge (285) 74
+eq (286) 75
+ne (287) 76
+le (288) 77
+add (289) 23
+sub (290) 24
+mul (291) 19 26
+divi (292) 27
+mc_and (293) 68
+mc_endif (294) 51
+lt (295) 72
+gt (296) 73
+po (297) 8 9 20 29 34 35 51 56 60 61 66 70
+pf (298) 8 9 20 29 34 35 51 56 60 61 66 70
+verg (299) 21 36 40 62 63
 err (300)
 
 
@@ -183,67 +179,65 @@ PRGM_PRIN (48)
 FCTS (49)
     on left: 3 4, on right: 1
 VIDE (50)
-    on left: 5, on right: 3 13 45
+    on left: 5, on right: 3 14 42
 ENSFCT (51)
     on left: 6 7, on right: 4 6
 FCT (52)
-    on left: 8, on right: 6 7
+    on left: 8 9, on right: 6 7
 TYPE (53)
-    on left: 9 10 11 12, on right: 8 17 18 19
+    on left: 10 11 12 13, on right: 8 9 18 19 20
 DECS (54)
-    on left: 13 14, on right: 2 8
+    on left: 14 15, on right: 2 8 9
 ENSDEC (55)
-    on left: 15 16, on right: 14 15
+    on left: 16 17, on right: 15 16
 DEC (56)
-    on left: 17 18 19, on right: 15 16
+    on left: 18 19 20, on right: 16 17
 TAILLE (57)
-    on left: 20 21, on right: 19 20 33 59
+    on left: 21 22, on right: 20 21 34 56
 EXPRE (58)
-    on left: 22 23 24, on right: 22 23 28 62 75 76 77 78 79 80
+    on left: 23 24 25, on right: 23 24 29 59 72 73 74 75 76 77
 TERM (59)
-    on left: 25 26 27, on right: 22 23 24 25 26
+    on left: 26 27 28, on right: 23 24 25 26 27
 FACTOR (60)
-    on left: 28 29, on right: 25 26 27
+    on left: 29 30, on right: 26 27 28
 OPERAND (61)
-    on left: 30 31 32 33 34, on right: 29
+    on left: 31 32 33 34 35, on right: 30
 ENSpara (62)
-    on left: 35 36, on right: 34 35
-PARA (63)
-    on left: 37 38 39 40, on right: 35 36
-LOGI (64)
-    on left: 41 42, on right: 60
-ENSIDF (65)
-    on left: 43 44, on right: 8 17 43
-INSTS (66)
-    on left: 45 46, on right: 2
-ENSINST (67)
-    on left: 47 48, on right: 8 46 47 54 55 69
-INST (68)
-    on left: 49 50 51 52 53, on right: 47 48
-if_statement (69)
-    on left: 54, on right: 49
-else_clause (70)
+    on left: 36 37, on right: 35 36
+LOGI (63)
+    on left: 38 39, on right: 57
+ENSIDF (64)
+    on left: 40 41, on right: 8 9 18 40
+INSTS (65)
+    on left: 42 43, on right: 2
+ENSINST (66)
+    on left: 44 45, on right: 8 43 44 51 52 66
+INST (67)
+    on left: 46 47 48 49 50, on right: 44 45
+if_statement (68)
+    on left: 51, on right: 46
+else_clause (69)
+    on left: 52 53, on right: 51
+assignment (70)
+    on left: 54, on right: 8 9 50
+OGassi (71)
     on left: 55 56, on right: 54
-assignment (71)
-    on left: 57, on right: 8 53
-OGassi (72)
-    on left: 58 59, on right: 57
-assi (73)
-    on left: 60 61 62, on right: 57
-read_statement (74)
-    on left: 63, on right: 50
-write_statement (75)
-    on left: 64, on right: 51
-ENS_PARA_WRITE (76)
-    on left: 65 66 67 68, on right: 64 65 66
-dowhile_statement (77)
-    on left: 69, on right: 52
-CONDI (78)
-    on left: 70 71 72, on right: 54 69 70 71 73
-CONDIT (79)
-    on left: 73 74, on right: 70 71 72
-EXPLOGI (80)
-    on left: 75 76 77 78 79 80, on right: 74
+valeur (72)
+    on left: 57 58 59, on right: 36 37 54
+read_statement (73)
+    on left: 60, on right: 47
+write_statement (74)
+    on left: 61, on right: 48
+ENS_PARA_WRITE (75)
+    on left: 62 63 64 65, on right: 61 62 63
+dowhile_statement (76)
+    on left: 66, on right: 49
+CONDI (77)
+    on left: 67 68 69, on right: 51 66 67 68 70
+CONDIT (78)
+    on left: 70 71, on right: 67 68 69
+EXPLOGI (79)
+    on left: 72 73 74 75 76 77, on right: 71
 
 
 state 0
@@ -267,30 +261,30 @@ state 0
 
 state 1
 
-   12 TYPE: mc_logi .
+   13 TYPE: mc_logi .
 
-    $default  reduce using rule 12 (TYPE)
+    $default  reduce using rule 13 (TYPE)
 
 
 state 2
 
-   11 TYPE: mc_char .
+   12 TYPE: mc_char .
 
-    $default  reduce using rule 11 (TYPE)
+    $default  reduce using rule 12 (TYPE)
 
 
 state 3
 
-    9 TYPE: mc_int .
+   10 TYPE: mc_int .
 
-    $default  reduce using rule 9 (TYPE)
+    $default  reduce using rule 10 (TYPE)
 
 
 state 4
 
-   10 TYPE: mc_real .
+   11 TYPE: mc_real .
 
-    $default  reduce using rule 10 (TYPE)
+    $default  reduce using rule 11 (TYPE)
 
 
 state 5
@@ -342,6 +336,7 @@ state 9
 state 10
 
     8 FCT: TYPE . mc_rtin idf po ENSIDF pf DECS ENSINST assignment mc_endr
+    9    | TYPE . mc_rtin idf po ENSIDF pf DECS assignment mc_endr
 
     mc_rtin  shift, and go to state 15
 
@@ -377,6 +372,7 @@ state 14
 state 15
 
     8 FCT: TYPE mc_rtin . idf po ENSIDF pf DECS ENSINST assignment mc_endr
+    9    | TYPE mc_rtin . idf po ENSIDF pf DECS assignment mc_endr
 
     idf  shift, and go to state 17
 
@@ -402,22 +398,23 @@ state 16
 state 17
 
     8 FCT: TYPE mc_rtin idf . po ENSIDF pf DECS ENSINST assignment mc_endr
+    9    | TYPE mc_rtin idf . po ENSIDF pf DECS assignment mc_endr
 
     po  shift, and go to state 23
 
 
 state 18
 
-   13 DECS: VIDE .
+   14 DECS: VIDE .
 
-    $default  reduce using rule 13 (DECS)
+    $default  reduce using rule 14 (DECS)
 
 
 state 19
 
-   17 DEC: TYPE . ENSIDF pvg
-   18    | TYPE . idf mul inti pvg
-   19    | TYPE . idf mc_dim po TAILLE pf pvg
+   18 DEC: TYPE . ENSIDF pvg
+   19    | TYPE . idf mul inti pvg
+   20    | TYPE . idf mc_dim po TAILLE pf pvg
 
     idf  shift, and go to state 24
 
@@ -450,15 +447,15 @@ state 20
 
 state 21
 
-   14 DECS: ENSDEC .
-   15 ENSDEC: ENSDEC . DEC
+   15 DECS: ENSDEC .
+   16 ENSDEC: ENSDEC . DEC
 
     mc_logi  shift, and go to state 1
     mc_char  shift, and go to state 2
     mc_int   shift, and go to state 3
     mc_real  shift, and go to state 4
 
-    $default  reduce using rule 14 (DECS)
+    $default  reduce using rule 15 (DECS)
 
     TYPE  go to state 19
     DEC   go to state 41
@@ -466,14 +463,15 @@ state 21
 
 state 22
 
-   16 ENSDEC: DEC .
+   17 ENSDEC: DEC .
 
-    $default  reduce using rule 16 (ENSDEC)
+    $default  reduce using rule 17 (ENSDEC)
 
 
 state 23
 
     8 FCT: TYPE mc_rtin idf po . ENSIDF pf DECS ENSINST assignment mc_endr
+    9    | TYPE mc_rtin idf po . ENSIDF pf DECS assignment mc_endr
 
     idf  shift, and go to state 42
 
@@ -482,20 +480,20 @@ state 23
 
 state 24
 
-   18 DEC: TYPE idf . mul inti pvg
-   19    | TYPE idf . mc_dim po TAILLE pf pvg
-   44 ENSIDF: idf .
+   19 DEC: TYPE idf . mul inti pvg
+   20    | TYPE idf . mc_dim po TAILLE pf pvg
+   41 ENSIDF: idf .
 
     mc_dim  shift, and go to state 44
     mul     shift, and go to state 45
 
-    $default  reduce using rule 44 (ENSIDF)
+    $default  reduce using rule 41 (ENSIDF)
 
 
 state 25
 
-   17 DEC: TYPE ENSIDF . pvg
-   43 ENSIDF: ENSIDF . verg idf
+   18 DEC: TYPE ENSIDF . pvg
+   40 ENSIDF: ENSIDF . verg idf
 
     pvg   shift, and go to state 46
     verg  shift, and go to state 47
@@ -503,47 +501,47 @@ state 25
 
 state 26
 
-   58 OGassi: idf .
-   59       | idf . po TAILLE pf
+   55 OGassi: idf .
+   56       | idf . po TAILLE pf
 
     po  shift, and go to state 48
 
-    $default  reduce using rule 58 (OGassi)
+    $default  reduce using rule 55 (OGassi)
 
 
 state 27
 
-   63 read_statement: mc_read . po idf pf pvg
+   60 read_statement: mc_read . po idf pf pvg
 
     po  shift, and go to state 49
 
 
 state 28
 
-   64 write_statement: mc_write . po ENS_PARA_WRITE pf pvg
+   61 write_statement: mc_write . po ENS_PARA_WRITE pf pvg
 
     po  shift, and go to state 50
 
 
 state 29
 
-   54 if_statement: mc_if . po CONDI pf mc_then ENSINST else_clause mc_endif
+   51 if_statement: mc_if . po CONDI pf mc_then ENSINST else_clause mc_endif
 
     po  shift, and go to state 51
 
 
 state 30
 
-   69 dowhile_statement: mc_dowhile . po CONDI pf ENSINST mc_enddo
+   66 dowhile_statement: mc_dowhile . po CONDI pf ENSINST mc_enddo
 
     po  shift, and go to state 52
 
 
 state 31
 
-   45 INSTS: VIDE .
+   42 INSTS: VIDE .
 
-    $default  reduce using rule 45 (INSTS)
+    $default  reduce using rule 42 (INSTS)
 
 
 state 32
@@ -555,8 +553,8 @@ state 32
 
 state 33
 
-   46 INSTS: ENSINST .
-   47 ENSINST: ENSINST . INST
+   43 INSTS: ENSINST .
+   44 ENSINST: ENSINST . INST
 
     idf         shift, and go to state 26
     mc_read     shift, and go to state 27
@@ -564,7 +562,7 @@ state 33
     mc_if       shift, and go to state 29
     mc_dowhile  shift, and go to state 30
 
-    $default  reduce using rule 46 (INSTS)
+    $default  reduce using rule 43 (INSTS)
 
     INST               go to state 54
     if_statement       go to state 35
@@ -577,71 +575,72 @@ state 33
 
 state 34
 
-   48 ENSINST: INST .
+   45 ENSINST: INST .
 
-    $default  reduce using rule 48 (ENSINST)
+    $default  reduce using rule 45 (ENSINST)
 
 
 state 35
 
-   49 INST: if_statement .
+   46 INST: if_statement .
 
-    $default  reduce using rule 49 (INST)
+    $default  reduce using rule 46 (INST)
 
 
 state 36
 
-   53 INST: assignment .
+   50 INST: assignment .
 
-    $default  reduce using rule 53 (INST)
+    $default  reduce using rule 50 (INST)
 
 
 state 37
 
-   57 assignment: OGassi . aff assi pvg
+   54 assignment: OGassi . aff valeur pvg
 
     aff  shift, and go to state 55
 
 
 state 38
 
-   50 INST: read_statement .
+   47 INST: read_statement .
 
-    $default  reduce using rule 50 (INST)
+    $default  reduce using rule 47 (INST)
 
 
 state 39
 
-   51 INST: write_statement .
+   48 INST: write_statement .
 
-    $default  reduce using rule 51 (INST)
+    $default  reduce using rule 48 (INST)
 
 
 state 40
 
-   52 INST: dowhile_statement .
+   49 INST: dowhile_statement .
 
-    $default  reduce using rule 52 (INST)
+    $default  reduce using rule 49 (INST)
 
 
 state 41
 
-   15 ENSDEC: ENSDEC DEC .
+   16 ENSDEC: ENSDEC DEC .
 
-    $default  reduce using rule 15 (ENSDEC)
+    $default  reduce using rule 16 (ENSDEC)
 
 
 state 42
 
-   44 ENSIDF: idf .
+   41 ENSIDF: idf .
 
-    $default  reduce using rule 44 (ENSIDF)
+    $default  reduce using rule 41 (ENSIDF)
 
 
 state 43
 
     8 FCT: TYPE mc_rtin idf po ENSIDF . pf DECS ENSINST assignment mc_endr
-   43 ENSIDF: ENSIDF . verg idf
+    9    | TYPE mc_rtin idf po ENSIDF . pf DECS assignment mc_endr
+   40 ENSIDF: ENSIDF . verg idf
 
     pf    shift, and go to state 56
     verg  shift, and go to state 47
@@ -649,35 +648,35 @@ state 43
 
 state 44
 
-   19 DEC: TYPE idf mc_dim . po TAILLE pf pvg
+   20 DEC: TYPE idf mc_dim . po TAILLE pf pvg
 
     po  shift, and go to state 57
 
 
 state 45
 
-   18 DEC: TYPE idf mul . inti pvg
+   19 DEC: TYPE idf mul . inti pvg
 
     inti  shift, and go to state 58
 
 
 state 46
 
-   17 DEC: TYPE ENSIDF pvg .
+   18 DEC: TYPE ENSIDF pvg .
 
-    $default  reduce using rule 17 (DEC)
+    $default  reduce using rule 18 (DEC)
 
 
 state 47
 
-   43 ENSIDF: ENSIDF verg . idf
+   40 ENSIDF: ENSIDF verg . idf
 
     idf  shift, and go to state 59
 
 
 state 48
 
-   59 OGassi: idf po . TAILLE pf
+   56 OGassi: idf po . TAILLE pf
 
     inti  shift, and go to state 60
 
@@ -686,14 +685,14 @@ state 48
 
 state 49
 
-   63 read_statement: mc_read po . idf pf pvg
+   60 read_statement: mc_read po . idf pf pvg
 
     idf  shift, and go to state 62
 
 
 state 50
 
-   64 write_statement: mc_write po . ENS_PARA_WRITE pf pvg
+   61 write_statement: mc_write po . ENS_PARA_WRITE pf pvg
 
     idf  shift, and go to state 63
     str  shift, and go to state 64
@@ -703,7 +702,7 @@ state 50
 
 state 51
 
-   54 if_statement: mc_if po . CONDI pf mc_then ENSINST else_clause mc_endif
+   51 if_statement: mc_if po . CONDI pf mc_then ENSINST else_clause mc_endif
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -722,7 +721,7 @@ state 51
 
 state 52
 
-   69 dowhile_statement: mc_dowhile po . CONDI pf ENSINST mc_enddo
+   66 dowhile_statement: mc_dowhile po . CONDI pf ENSINST mc_enddo
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -748,14 +747,14 @@ state 53
 
 state 54
 
-   47 ENSINST: ENSINST INST .
+   44 ENSINST: ENSINST INST .
 
-    $default  reduce using rule 47 (ENSINST)
+    $default  reduce using rule 44 (ENSINST)
 
 
 state 55
 
-   57 assignment: OGassi aff . assi pvg
+   54 assignment: OGassi aff . valeur pvg
 
     idf       shift, and go to state 66
     inti      shift, and go to state 67
@@ -771,12 +770,13 @@ state 55
     FACTOR   go to state 73
     OPERAND  go to state 74
     LOGI     go to state 84
-    assi     go to state 85
+    valeur   go to state 85
 
 
 state 56
 
     8 FCT: TYPE mc_rtin idf po ENSIDF pf . DECS ENSINST assignment mc_endr
+    9    | TYPE mc_rtin idf po ENSIDF pf . DECS assignment mc_endr
 
     mc_logi  shift, and go to state 1
     mc_char  shift, and go to state 2
@@ -794,7 +794,7 @@ state 56
 
 state 57
 
-   19 DEC: TYPE idf mc_dim po . TAILLE pf pvg
+   20 DEC: TYPE idf mc_dim po . TAILLE pf pvg
 
     inti  shift, and go to state 60
 
@@ -803,29 +803,29 @@ state 57
 
 state 58
 
-   18 DEC: TYPE idf mul inti . pvg
+   19 DEC: TYPE idf mul inti . pvg
 
     pvg  shift, and go to state 88
 
 
 state 59
 
-   43 ENSIDF: ENSIDF verg idf .
+   40 ENSIDF: ENSIDF verg idf .
 
-    $default  reduce using rule 43 (ENSIDF)
+    $default  reduce using rule 40 (ENSIDF)
 
 
 state 60
 
-   21 TAILLE: inti .
+   22 TAILLE: inti .
 
-    $default  reduce using rule 21 (TAILLE)
+    $default  reduce using rule 22 (TAILLE)
 
 
 state 61
 
-   20 TAILLE: TAILLE . verg inti
-   59 OGassi: idf po TAILLE . pf
+   21 TAILLE: TAILLE . verg inti
+   56 OGassi: idf po TAILLE . pf
 
     pf    shift, and go to state 89
     verg  shift, and go to state 90
@@ -833,30 +833,30 @@ state 61
 
 state 62
 
-   63 read_statement: mc_read po idf . pf pvg
+   60 read_statement: mc_read po idf . pf pvg
 
     pf  shift, and go to state 91
 
 
 state 63
 
-   68 ENS_PARA_WRITE: idf .
+   65 ENS_PARA_WRITE: idf .
 
-    $default  reduce using rule 68 (ENS_PARA_WRITE)
+    $default  reduce using rule 65 (ENS_PARA_WRITE)
 
 
 state 64
 
-   67 ENS_PARA_WRITE: str .
+   64 ENS_PARA_WRITE: str .
 
-    $default  reduce using rule 67 (ENS_PARA_WRITE)
+    $default  reduce using rule 64 (ENS_PARA_WRITE)
 
 
 state 65
 
-   64 write_statement: mc_write po ENS_PARA_WRITE . pf pvg
-   65 ENS_PARA_WRITE: ENS_PARA_WRITE . verg str
-   66               | ENS_PARA_WRITE . verg idf
+   61 write_statement: mc_write po ENS_PARA_WRITE . pf pvg
+   62 ENS_PARA_WRITE: ENS_PARA_WRITE . verg str
+   63               | ENS_PARA_WRITE . verg idf
 
     pf    shift, and go to state 92
     verg  shift, and go to state 93
@@ -864,39 +864,39 @@ state 65
 
 state 66
 
-   30 OPERAND: idf .
-   33        | idf . po TAILLE pf
+   31 OPERAND: idf .
+   34        | idf . po TAILLE pf
 
     po  shift, and go to state 94
-
-    $default  reduce using rule 30 (OPERAND)
-
-
-state 67
-
-   31 OPERAND: inti .
 
     $default  reduce using rule 31 (OPERAND)
 
 
-state 68
+state 67
 
-   32 OPERAND: real .
+   32 OPERAND: inti .
 
     $default  reduce using rule 32 (OPERAND)
 
 
+state 68
+
+   33 OPERAND: real .
+
+    $default  reduce using rule 33 (OPERAND)
+
+
 state 69
 
-   34 OPERAND: mc_call . idf po ENSpara pf
+   35 OPERAND: mc_call . idf po ENSpara pf
 
     idf  shift, and go to state 95
 
 
 state 70
 
-   28 FACTOR: po . EXPRE pf
-   73 CONDIT: po . CONDI pf
+   29 FACTOR: po . EXPRE pf
+   70 CONDIT: po . CONDI pf
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -915,14 +915,14 @@ state 70
 
 state 71
 
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   75 EXPLOGI: EXPRE . lt EXPRE
-   76        | EXPRE . gt EXPRE
-   77        | EXPRE . ge EXPRE
-   78        | EXPRE . eq EXPRE
-   79        | EXPRE . ne EXPRE
-   80        | EXPRE . le EXPRE
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   72 EXPLOGI: EXPRE . lt EXPRE
+   73        | EXPRE . gt EXPRE
+   74        | EXPRE . ge EXPRE
+   75        | EXPRE . eq EXPRE
+   76        | EXPRE . ne EXPRE
+   77        | EXPRE . le EXPRE
 
     ge   shift, and go to state 98
     eq   shift, and go to state 99
@@ -936,35 +936,35 @@ state 71
 
 state 72
 
-   24 EXPRE: TERM .
-   25 TERM: TERM . mul FACTOR
-   26     | TERM . divi FACTOR
+   25 EXPRE: TERM .
+   26 TERM: TERM . mul FACTOR
+   27     | TERM . divi FACTOR
 
     mul   shift, and go to state 106
     divi  shift, and go to state 107
 
-    $default  reduce using rule 24 (EXPRE)
+    $default  reduce using rule 25 (EXPRE)
 
 
 state 73
 
-   27 TERM: FACTOR .
+   28 TERM: FACTOR .
 
-    $default  reduce using rule 27 (TERM)
+    $default  reduce using rule 28 (TERM)
 
 
 state 74
 
-   29 FACTOR: OPERAND .
+   30 FACTOR: OPERAND .
 
-    $default  reduce using rule 29 (FACTOR)
+    $default  reduce using rule 30 (FACTOR)
 
 
 state 75
 
-   54 if_statement: mc_if po CONDI . pf mc_then ENSINST else_clause mc_endif
-   70 CONDI: CONDI . mc_or CONDIT
-   71      | CONDI . mc_and CONDIT
+   51 if_statement: mc_if po CONDI . pf mc_then ENSINST else_clause mc_endif
+   67 CONDI: CONDI . mc_or CONDIT
+   68      | CONDI . mc_and CONDIT
 
     mc_or   shift, and go to state 108
     mc_and  shift, and go to state 109
@@ -973,23 +973,23 @@ state 75
 
 state 76
 
-   72 CONDI: CONDIT .
+   69 CONDI: CONDIT .
 
-    $default  reduce using rule 72 (CONDI)
+    $default  reduce using rule 69 (CONDI)
 
 
 state 77
 
-   74 CONDIT: EXPLOGI .
+   71 CONDIT: EXPLOGI .
 
-    $default  reduce using rule 74 (CONDIT)
+    $default  reduce using rule 71 (CONDIT)
 
 
 state 78
 
-   69 dowhile_statement: mc_dowhile po CONDI . pf ENSINST mc_enddo
-   70 CONDI: CONDI . mc_or CONDIT
-   71      | CONDI . mc_and CONDIT
+   66 dowhile_statement: mc_dowhile po CONDI . pf ENSINST mc_enddo
+   67 CONDI: CONDI . mc_or CONDIT
+   68      | CONDI . mc_and CONDIT
 
     mc_or   shift, and go to state 108
     mc_and  shift, and go to state 109
@@ -998,28 +998,28 @@ state 78
 
 state 79
 
-   41 LOGI: mc_true .
+   38 LOGI: mc_true .
 
-    $default  reduce using rule 41 (LOGI)
+    $default  reduce using rule 38 (LOGI)
 
 
 state 80
 
-   42 LOGI: mc_false .
+   39 LOGI: mc_false .
 
-    $default  reduce using rule 42 (LOGI)
+    $default  reduce using rule 39 (LOGI)
 
 
 state 81
 
-   61 assi: str .
+   58 valeur: str .
 
-    $default  reduce using rule 61 (assi)
+    $default  reduce using rule 58 (valeur)
 
 
 state 82
 
-   28 FACTOR: po . EXPRE pf
+   29 FACTOR: po . EXPRE pf
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1035,26 +1035,26 @@ state 82
 
 state 83
 
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   62 assi: EXPRE .
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   59 valeur: EXPRE .
 
     add  shift, and go to state 102
     sub  shift, and go to state 103
 
-    $default  reduce using rule 62 (assi)
+    $default  reduce using rule 59 (valeur)
 
 
 state 84
 
-   60 assi: LOGI .
+   57 valeur: LOGI .
 
-    $default  reduce using rule 60 (assi)
+    $default  reduce using rule 57 (valeur)
 
 
 state 85
 
-   57 assignment: OGassi aff assi . pvg
+   54 assignment: OGassi aff valeur . pvg
 
     pvg  shift, and go to state 113
 
@@ -1062,6 +1062,7 @@ state 85
 state 86
 
     8 FCT: TYPE mc_rtin idf po ENSIDF pf DECS . ENSINST assignment mc_endr
+    9    | TYPE mc_rtin idf po ENSIDF pf DECS . assignment mc_endr
 
     idf         shift, and go to state 26
     mc_read     shift, and go to state 27
@@ -1072,7 +1073,7 @@ state 86
     ENSINST            go to state 114
     INST               go to state 34
     if_statement       go to state 35
-    assignment         go to state 36
+    assignment         go to state 115
     OGassi             go to state 37
     read_statement     go to state 38
     write_statement    go to state 39
@@ -1081,84 +1082,84 @@ state 86
 
 state 87
 
-   19 DEC: TYPE idf mc_dim po TAILLE . pf pvg
-   20 TAILLE: TAILLE . verg inti
+   20 DEC: TYPE idf mc_dim po TAILLE . pf pvg
+   21 TAILLE: TAILLE . verg inti
 
-    pf    shift, and go to state 115
+    pf    shift, and go to state 116
     verg  shift, and go to state 90
 
 
 state 88
 
-   18 DEC: TYPE idf mul inti pvg .
+   19 DEC: TYPE idf mul inti pvg .
 
-    $default  reduce using rule 18 (DEC)
+    $default  reduce using rule 19 (DEC)
 
 
 state 89
 
-   59 OGassi: idf po TAILLE pf .
+   56 OGassi: idf po TAILLE pf .
 
-    $default  reduce using rule 59 (OGassi)
+    $default  reduce using rule 56 (OGassi)
 
 
 state 90
 
-   20 TAILLE: TAILLE verg . inti
+   21 TAILLE: TAILLE verg . inti
 
-    inti  shift, and go to state 116
+    inti  shift, and go to state 117
 
 
 state 91
 
-   63 read_statement: mc_read po idf pf . pvg
-
-    pvg  shift, and go to state 117
-
-
-state 92
-
-   64 write_statement: mc_write po ENS_PARA_WRITE pf . pvg
+   60 read_statement: mc_read po idf pf . pvg
 
     pvg  shift, and go to state 118
 
 
+state 92
+
+   61 write_statement: mc_write po ENS_PARA_WRITE pf . pvg
+
+    pvg  shift, and go to state 119
+
+
 state 93
 
-   65 ENS_PARA_WRITE: ENS_PARA_WRITE verg . str
-   66               | ENS_PARA_WRITE verg . idf
+   62 ENS_PARA_WRITE: ENS_PARA_WRITE verg . str
+   63               | ENS_PARA_WRITE verg . idf
 
-    idf  shift, and go to state 119
-    str  shift, and go to state 120
+    idf  shift, and go to state 120
+    str  shift, and go to state 121
 
 
 state 94
 
-   33 OPERAND: idf po . TAILLE pf
+   34 OPERAND: idf po . TAILLE pf
 
     inti  shift, and go to state 60
 
-    TAILLE  go to state 121
+    TAILLE  go to state 122
 
 
 state 95
 
-   34 OPERAND: mc_call idf . po ENSpara pf
+   35 OPERAND: mc_call idf . po ENSpara pf
 
-    po  shift, and go to state 122
+    po  shift, and go to state 123
 
 
 state 96
 
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   28 FACTOR: po EXPRE . pf
-   75 EXPLOGI: EXPRE . lt EXPRE
-   76        | EXPRE . gt EXPRE
-   77        | EXPRE . ge EXPRE
-   78        | EXPRE . eq EXPRE
-   79        | EXPRE . ne EXPRE
-   80        | EXPRE . le EXPRE
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   29 FACTOR: po EXPRE . pf
+   72 EXPLOGI: EXPRE . lt EXPRE
+   73        | EXPRE . gt EXPRE
+   74        | EXPRE . ge EXPRE
+   75        | EXPRE . eq EXPRE
+   76        | EXPRE . ne EXPRE
+   77        | EXPRE . le EXPRE
 
     ge   shift, and go to state 98
     eq   shift, and go to state 99
@@ -1168,39 +1169,23 @@ state 96
     sub  shift, and go to state 103
     lt   shift, and go to state 104
     gt   shift, and go to state 105
-    pf   shift, and go to state 123
+    pf   shift, and go to state 124
 
 
 state 97
 
-   70 CONDI: CONDI . mc_or CONDIT
-   71      | CONDI . mc_and CONDIT
-   73 CONDIT: po CONDI . pf
+   67 CONDI: CONDI . mc_or CONDIT
+   68      | CONDI . mc_and CONDIT
+   70 CONDIT: po CONDI . pf
 
     mc_or   shift, and go to state 108
     mc_and  shift, and go to state 109
-    pf      shift, and go to state 124
+    pf      shift, and go to state 125
 
 
 state 98
 
-   77 EXPLOGI: EXPRE ge . EXPRE
-
-    idf      shift, and go to state 66
-    inti     shift, and go to state 67
-    real     shift, and go to state 68
-    mc_call  shift, and go to state 69
-    po       shift, and go to state 82
-
-    EXPRE    go to state 125
-    TERM     go to state 72
-    FACTOR   go to state 73
-    OPERAND  go to state 74
-
-
-state 99
-
-   78 EXPLOGI: EXPRE eq . EXPRE
+   74 EXPLOGI: EXPRE ge . EXPRE
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1214,9 +1199,9 @@ state 99
     OPERAND  go to state 74
 
 
-state 100
+state 99
 
-   79 EXPLOGI: EXPRE ne . EXPRE
+   75 EXPLOGI: EXPRE eq . EXPRE
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1230,9 +1215,9 @@ state 100
     OPERAND  go to state 74
 
 
-state 101
+state 100
 
-   80 EXPLOGI: EXPRE le . EXPRE
+   76 EXPLOGI: EXPRE ne . EXPRE
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1246,9 +1231,9 @@ state 101
     OPERAND  go to state 74
 
 
-state 102
+state 101
 
-   22 EXPRE: EXPRE add . TERM
+   77 EXPLOGI: EXPRE le . EXPRE
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1256,14 +1241,15 @@ state 102
     mc_call  shift, and go to state 69
     po       shift, and go to state 82
 
-    TERM     go to state 129
+    EXPRE    go to state 129
+    TERM     go to state 72
     FACTOR   go to state 73
     OPERAND  go to state 74
 
 
-state 103
+state 102
 
-   23 EXPRE: EXPRE sub . TERM
+   23 EXPRE: EXPRE add . TERM
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1276,9 +1262,9 @@ state 103
     OPERAND  go to state 74
 
 
-state 104
+state 103
 
-   75 EXPLOGI: EXPRE lt . EXPRE
+   24 EXPRE: EXPRE sub . TERM
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1286,15 +1272,14 @@ state 104
     mc_call  shift, and go to state 69
     po       shift, and go to state 82
 
-    EXPRE    go to state 131
-    TERM     go to state 72
+    TERM     go to state 131
     FACTOR   go to state 73
     OPERAND  go to state 74
 
 
-state 105
+state 104
 
-   76 EXPLOGI: EXPRE gt . EXPRE
+   72 EXPLOGI: EXPRE lt . EXPRE
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1308,9 +1293,9 @@ state 105
     OPERAND  go to state 74
 
 
-state 106
+state 105
 
-   25 TERM: TERM mul . FACTOR
+   73 EXPLOGI: EXPRE gt . EXPRE
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1318,13 +1303,15 @@ state 106
     mc_call  shift, and go to state 69
     po       shift, and go to state 82
 
-    FACTOR   go to state 133
+    EXPRE    go to state 133
+    TERM     go to state 72
+    FACTOR   go to state 73
     OPERAND  go to state 74
 
 
-state 107
+state 106
 
-   26 TERM: TERM divi . FACTOR
+   26 TERM: TERM mul . FACTOR
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1336,27 +1323,23 @@ state 107
     OPERAND  go to state 74
 
 
-state 108
+state 107
 
-   70 CONDI: CONDI mc_or . CONDIT
+   27 TERM: TERM divi . FACTOR
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
     real     shift, and go to state 68
     mc_call  shift, and go to state 69
-    po       shift, and go to state 70
+    po       shift, and go to state 82
 
-    EXPRE    go to state 71
-    TERM     go to state 72
-    FACTOR   go to state 73
+    FACTOR   go to state 135
     OPERAND  go to state 74
-    CONDIT   go to state 135
-    EXPLOGI  go to state 77
 
 
-state 109
+state 108
 
-   71 CONDI: CONDI mc_and . CONDIT
+   67 CONDI: CONDI mc_or . CONDIT
 
     idf      shift, and go to state 66
     inti     shift, and go to state 67
@@ -1372,16 +1355,34 @@ state 109
     EXPLOGI  go to state 77
 
 
+state 109
+
+   68 CONDI: CONDI mc_and . CONDIT
+
+    idf      shift, and go to state 66
+    inti     shift, and go to state 67
+    real     shift, and go to state 68
+    mc_call  shift, and go to state 69
+    po       shift, and go to state 70
+
+    EXPRE    go to state 71
+    TERM     go to state 72
+    FACTOR   go to state 73
+    OPERAND  go to state 74
+    CONDIT   go to state 137
+    EXPLOGI  go to state 77
+
+
 state 110
 
-   54 if_statement: mc_if po CONDI pf . mc_then ENSINST else_clause mc_endif
+   51 if_statement: mc_if po CONDI pf . mc_then ENSINST else_clause mc_endif
 
-    mc_then  shift, and go to state 137
+    mc_then  shift, and go to state 138
 
 
 state 111
 
-   69 dowhile_statement: mc_dowhile po CONDI pf . ENSINST mc_enddo
+   66 dowhile_statement: mc_dowhile po CONDI pf . ENSINST mc_enddo
 
     idf         shift, and go to state 26
     mc_read     shift, and go to state 27
@@ -1389,7 +1390,7 @@ state 111
     mc_if       shift, and go to state 29
     mc_dowhile  shift, and go to state 30
 
-    ENSINST            go to state 138
+    ENSINST            go to state 139
     INST               go to state 34
     if_statement       go to state 35
     assignment         go to state 36
@@ -1401,26 +1402,26 @@ state 111
 
 state 112
 
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   28 FACTOR: po EXPRE . pf
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   29 FACTOR: po EXPRE . pf
 
     add  shift, and go to state 102
     sub  shift, and go to state 103
-    pf   shift, and go to state 123
+    pf   shift, and go to state 124
 
 
 state 113
 
-   57 assignment: OGassi aff assi pvg .
+   54 assignment: OGassi aff valeur pvg .
 
-    $default  reduce using rule 57 (assignment)
+    $default  reduce using rule 54 (assignment)
 
 
 state 114
 
     8 FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST . assignment mc_endr
-   47 ENSINST: ENSINST . INST
+   44 ENSINST: ENSINST . INST
 
     idf         shift, and go to state 26
     mc_read     shift, and go to state 27
@@ -1430,7 +1431,7 @@ state 114
 
     INST               go to state 54
     if_statement       go to state 35
-    assignment         go to state 139
+    assignment         go to state 140
     OGassi             go to state 37
     read_statement     go to state 38
     write_statement    go to state 39
@@ -1439,87 +1440,142 @@ state 114
 
 state 115
 
-   19 DEC: TYPE idf mc_dim po TAILLE pf . pvg
+    9 FCT: TYPE mc_rtin idf po ENSIDF pf DECS assignment . mc_endr
+   50 INST: assignment .
 
-    pvg  shift, and go to state 140
+    mc_endr  shift, and go to state 141
+
+    $default  reduce using rule 50 (INST)
 
 
 state 116
 
-   20 TAILLE: TAILLE verg inti .
+   20 DEC: TYPE idf mc_dim po TAILLE pf . pvg
 
-    $default  reduce using rule 20 (TAILLE)
+    pvg  shift, and go to state 142
 
 
 state 117
 
-   63 read_statement: mc_read po idf pf pvg .
+   21 TAILLE: TAILLE verg inti .
 
-    $default  reduce using rule 63 (read_statement)
+    $default  reduce using rule 21 (TAILLE)
 
 
 state 118
 
-   64 write_statement: mc_write po ENS_PARA_WRITE pf pvg .
+   60 read_statement: mc_read po idf pf pvg .
 
-    $default  reduce using rule 64 (write_statement)
+    $default  reduce using rule 60 (read_statement)
 
 
 state 119
 
-   66 ENS_PARA_WRITE: ENS_PARA_WRITE verg idf .
+   61 write_statement: mc_write po ENS_PARA_WRITE pf pvg .
 
-    $default  reduce using rule 66 (ENS_PARA_WRITE)
+    $default  reduce using rule 61 (write_statement)
 
 
 state 120
 
-   65 ENS_PARA_WRITE: ENS_PARA_WRITE verg str .
+   63 ENS_PARA_WRITE: ENS_PARA_WRITE verg idf .
 
-    $default  reduce using rule 65 (ENS_PARA_WRITE)
+    $default  reduce using rule 63 (ENS_PARA_WRITE)
 
 
 state 121
 
-   20 TAILLE: TAILLE . verg inti
-   33 OPERAND: idf po TAILLE . pf
+   62 ENS_PARA_WRITE: ENS_PARA_WRITE verg str .
 
-    pf    shift, and go to state 141
-    verg  shift, and go to state 90
+    $default  reduce using rule 62 (ENS_PARA_WRITE)
 
 
 state 122
 
-   34 OPERAND: mc_call idf po . ENSpara pf
+   21 TAILLE: TAILLE . verg inti
+   34 OPERAND: idf po TAILLE . pf
 
-    idf   shift, and go to state 142
-    inti  shift, and go to state 143
-    real  shift, and go to state 144
-    str   shift, and go to state 145
-
-    ENSpara  go to state 146
-    PARA     go to state 147
+    pf    shift, and go to state 143
+    verg  shift, and go to state 90
 
 
 state 123
 
-   28 FACTOR: po EXPRE pf .
+   35 OPERAND: mc_call idf po . ENSpara pf
 
-    $default  reduce using rule 28 (FACTOR)
+    idf       shift, and go to state 66
+    inti      shift, and go to state 67
+    real      shift, and go to state 68
+    mc_call   shift, and go to state 69
+    mc_true   shift, and go to state 79
+    mc_false  shift, and go to state 80
+    str       shift, and go to state 81
+    po        shift, and go to state 82
+
+    EXPRE    go to state 83
+    TERM     go to state 72
+    FACTOR   go to state 73
+    OPERAND  go to state 74
+    ENSpara  go to state 144
+    LOGI     go to state 84
+    valeur   go to state 145
 
 
 state 124
 
-   73 CONDIT: po CONDI pf .
+   29 FACTOR: po EXPRE pf .
 
-    $default  reduce using rule 73 (CONDIT)
+    $default  reduce using rule 29 (FACTOR)
 
 
 state 125
 
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   77 EXPLOGI: EXPRE ge EXPRE .
+   70 CONDIT: po CONDI pf .
+
+    $default  reduce using rule 70 (CONDIT)
+
+
+state 126
+
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   74 EXPLOGI: EXPRE ge EXPRE .
+
+    add  shift, and go to state 102
+    sub  shift, and go to state 103
+
+    $default  reduce using rule 74 (EXPLOGI)
+
+
+state 127
+
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   75 EXPLOGI: EXPRE eq EXPRE .
+
+    add  shift, and go to state 102
+    sub  shift, and go to state 103
+
+    $default  reduce using rule 75 (EXPLOGI)
+
+
+state 128
+
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   76 EXPLOGI: EXPRE ne EXPRE .
+
+    add  shift, and go to state 102
+    sub  shift, and go to state 103
+
+    $default  reduce using rule 76 (EXPLOGI)
+
+
+state 129
+
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   77 EXPLOGI: EXPRE le EXPRE .
 
     add  shift, and go to state 102
     sub  shift, and go to state 103
@@ -1527,59 +1583,11 @@ state 125
     $default  reduce using rule 77 (EXPLOGI)
 
 
-state 126
-
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   78 EXPLOGI: EXPRE eq EXPRE .
-
-    add  shift, and go to state 102
-    sub  shift, and go to state 103
-
-    $default  reduce using rule 78 (EXPLOGI)
-
-
-state 127
-
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   79 EXPLOGI: EXPRE ne EXPRE .
-
-    add  shift, and go to state 102
-    sub  shift, and go to state 103
-
-    $default  reduce using rule 79 (EXPLOGI)
-
-
-state 128
-
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   80 EXPLOGI: EXPRE le EXPRE .
-
-    add  shift, and go to state 102
-    sub  shift, and go to state 103
-
-    $default  reduce using rule 80 (EXPLOGI)
-
-
-state 129
-
-   22 EXPRE: EXPRE add TERM .
-   25 TERM: TERM . mul FACTOR
-   26     | TERM . divi FACTOR
-
-    mul   shift, and go to state 106
-    divi  shift, and go to state 107
-
-    $default  reduce using rule 22 (EXPRE)
-
-
 state 130
 
-   23 EXPRE: EXPRE sub TERM .
-   25 TERM: TERM . mul FACTOR
-   26     | TERM . divi FACTOR
+   23 EXPRE: EXPRE add TERM .
+   26 TERM: TERM . mul FACTOR
+   27     | TERM . divi FACTOR
 
     mul   shift, and go to state 106
     divi  shift, and go to state 107
@@ -1589,89 +1597,80 @@ state 130
 
 state 131
 
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   75 EXPLOGI: EXPRE lt EXPRE .
+   24 EXPRE: EXPRE sub TERM .
+   26 TERM: TERM . mul FACTOR
+   27     | TERM . divi FACTOR
 
-    add  shift, and go to state 102
-    sub  shift, and go to state 103
+    mul   shift, and go to state 106
+    divi  shift, and go to state 107
 
-    $default  reduce using rule 75 (EXPLOGI)
+    $default  reduce using rule 24 (EXPRE)
 
 
 state 132
 
-   22 EXPRE: EXPRE . add TERM
-   23      | EXPRE . sub TERM
-   76 EXPLOGI: EXPRE gt EXPRE .
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   72 EXPLOGI: EXPRE lt EXPRE .
 
     add  shift, and go to state 102
     sub  shift, and go to state 103
 
-    $default  reduce using rule 76 (EXPLOGI)
+    $default  reduce using rule 72 (EXPLOGI)
 
 
 state 133
 
-   25 TERM: TERM mul FACTOR .
+   23 EXPRE: EXPRE . add TERM
+   24      | EXPRE . sub TERM
+   73 EXPLOGI: EXPRE gt EXPRE .
 
-    $default  reduce using rule 25 (TERM)
+    add  shift, and go to state 102
+    sub  shift, and go to state 103
+
+    $default  reduce using rule 73 (EXPLOGI)
 
 
 state 134
 
-   26 TERM: TERM divi FACTOR .
+   26 TERM: TERM mul FACTOR .
 
     $default  reduce using rule 26 (TERM)
 
 
 state 135
 
-   70 CONDI: CONDI mc_or CONDIT .
+   27 TERM: TERM divi FACTOR .
 
-    $default  reduce using rule 70 (CONDI)
+    $default  reduce using rule 27 (TERM)
 
 
 state 136
 
-   71 CONDI: CONDI mc_and CONDIT .
+   67 CONDI: CONDI mc_or CONDIT .
 
-    $default  reduce using rule 71 (CONDI)
+    $default  reduce using rule 67 (CONDI)
 
 
 state 137
 
-   54 if_statement: mc_if po CONDI pf mc_then . ENSINST else_clause mc_endif
+   68 CONDI: CONDI mc_and CONDIT .
 
-    idf         shift, and go to state 26
-    mc_read     shift, and go to state 27
-    mc_write    shift, and go to state 28
-    mc_if       shift, and go to state 29
-    mc_dowhile  shift, and go to state 30
-
-    ENSINST            go to state 148
-    INST               go to state 34
-    if_statement       go to state 35
-    assignment         go to state 36
-    OGassi             go to state 37
-    read_statement     go to state 38
-    write_statement    go to state 39
-    dowhile_statement  go to state 40
+    $default  reduce using rule 68 (CONDI)
 
 
 state 138
 
-   47 ENSINST: ENSINST . INST
-   69 dowhile_statement: mc_dowhile po CONDI pf ENSINST . mc_enddo
+   51 if_statement: mc_if po CONDI pf mc_then . ENSINST else_clause mc_endif
 
     idf         shift, and go to state 26
     mc_read     shift, and go to state 27
     mc_write    shift, and go to state 28
     mc_if       shift, and go to state 29
     mc_dowhile  shift, and go to state 30
-    mc_enddo    shift, and go to state 149
 
-    INST               go to state 54
+    ENSINST            go to state 146
+    INST               go to state 34
     if_statement       go to state 35
     assignment         go to state 36
     OGassi             go to state 37
@@ -1682,89 +1681,18 @@ state 138
 
 state 139
 
-    8 FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST assignment . mc_endr
-   53 INST: assignment .
-
-    mc_endr  shift, and go to state 150
-
-    $default  reduce using rule 53 (INST)
-
-
-state 140
-
-   19 DEC: TYPE idf mc_dim po TAILLE pf pvg .
-
-    $default  reduce using rule 19 (DEC)
-
-
-state 141
-
-   33 OPERAND: idf po TAILLE pf .
-
-    $default  reduce using rule 33 (OPERAND)
-
-
-state 142
-
-   40 PARA: idf .
-
-    $default  reduce using rule 40 (PARA)
-
-
-state 143
-
-   37 PARA: inti .
-
-    $default  reduce using rule 37 (PARA)
-
-
-state 144
-
-   38 PARA: real .
-
-    $default  reduce using rule 38 (PARA)
-
-
-state 145
-
-   39 PARA: str .
-
-    $default  reduce using rule 39 (PARA)
-
-
-state 146
-
-   34 OPERAND: mc_call idf po ENSpara . pf
-   35 ENSpara: ENSpara . verg PARA
-
-    pf    shift, and go to state 151
-    verg  shift, and go to state 152
-
-
-state 147
-
-   36 ENSpara: PARA .
-
-    $default  reduce using rule 36 (ENSpara)
-
-
-state 148
-
-   47 ENSINST: ENSINST . INST
-   54 if_statement: mc_if po CONDI pf mc_then ENSINST . else_clause mc_endif
+   44 ENSINST: ENSINST . INST
+   66 dowhile_statement: mc_dowhile po CONDI pf ENSINST . mc_enddo
 
     idf         shift, and go to state 26
     mc_read     shift, and go to state 27
     mc_write    shift, and go to state 28
     mc_if       shift, and go to state 29
-    mc_else     shift, and go to state 153
     mc_dowhile  shift, and go to state 30
-
-    $default  reduce using rule 56 (else_clause)
+    mc_enddo    shift, and go to state 147
 
     INST               go to state 54
     if_statement       go to state 35
-    else_clause        go to state 154
     assignment         go to state 36
     OGassi             go to state 37
     read_statement     go to state 38
@@ -1772,42 +1700,122 @@ state 148
     dowhile_statement  go to state 40
 
 
-state 149
+state 140
 
-   69 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo .
+    8 FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST assignment . mc_endr
+   50 INST: assignment .
 
-    $default  reduce using rule 69 (dowhile_statement)
+    mc_endr  shift, and go to state 148
+
+    $default  reduce using rule 50 (INST)
 
 
-state 150
+state 141
+
+    9 FCT: TYPE mc_rtin idf po ENSIDF pf DECS assignment mc_endr .
+
+    $default  reduce using rule 9 (FCT)
+
+
+state 142
+
+   20 DEC: TYPE idf mc_dim po TAILLE pf pvg .
+
+    $default  reduce using rule 20 (DEC)
+
+
+state 143
+
+   34 OPERAND: idf po TAILLE pf .
+
+    $default  reduce using rule 34 (OPERAND)
+
+
+state 144
+
+   35 OPERAND: mc_call idf po ENSpara . pf
+   36 ENSpara: ENSpara . verg valeur
+
+    pf    shift, and go to state 149
+    verg  shift, and go to state 150
+
+
+state 145
+
+   37 ENSpara: valeur .
+
+    $default  reduce using rule 37 (ENSpara)
+
+
+state 146
+
+   44 ENSINST: ENSINST . INST
+   51 if_statement: mc_if po CONDI pf mc_then ENSINST . else_clause mc_endif
+
+    idf         shift, and go to state 26
+    mc_read     shift, and go to state 27
+    mc_write    shift, and go to state 28
+    mc_if       shift, and go to state 29
+    mc_else     shift, and go to state 151
+    mc_dowhile  shift, and go to state 30
+
+    $default  reduce using rule 53 (else_clause)
+
+    INST               go to state 54
+    if_statement       go to state 35
+    else_clause        go to state 152
+    assignment         go to state 36
+    OGassi             go to state 37
+    read_statement     go to state 38
+    write_statement    go to state 39
+    dowhile_statement  go to state 40
+
+
+state 147
+
+   66 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo .
+
+    $default  reduce using rule 66 (dowhile_statement)
+
+
+state 148
 
     8 FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST assignment mc_endr .
 
     $default  reduce using rule 8 (FCT)
 
 
+state 149
+
+   35 OPERAND: mc_call idf po ENSpara pf .
+
+    $default  reduce using rule 35 (OPERAND)
+
+
+state 150
+
+   36 ENSpara: ENSpara verg . valeur
+
+    idf       shift, and go to state 66
+    inti      shift, and go to state 67
+    real      shift, and go to state 68
+    mc_call   shift, and go to state 69
+    mc_true   shift, and go to state 79
+    mc_false  shift, and go to state 80
+    str       shift, and go to state 81
+    po        shift, and go to state 82
+
+    EXPRE    go to state 83
+    TERM     go to state 72
+    FACTOR   go to state 73
+    OPERAND  go to state 74
+    LOGI     go to state 84
+    valeur   go to state 153
+
+
 state 151
 
-   34 OPERAND: mc_call idf po ENSpara pf .
-
-    $default  reduce using rule 34 (OPERAND)
-
-
-state 152
-
-   35 ENSpara: ENSpara verg . PARA
-
-    idf   shift, and go to state 142
-    inti  shift, and go to state 143
-    real  shift, and go to state 144
-    str   shift, and go to state 145
-
-    PARA  go to state 155
-
-
-state 153
-
-   55 else_clause: mc_else . ENSINST
+   52 else_clause: mc_else . ENSINST
 
     idf         shift, and go to state 26
     mc_read     shift, and go to state 27
@@ -1815,7 +1823,7 @@ state 153
     mc_if       shift, and go to state 29
     mc_dowhile  shift, and go to state 30
 
-    ENSINST            go to state 156
+    ENSINST            go to state 154
     INST               go to state 34
     if_statement       go to state 35
     assignment         go to state 36
@@ -1825,24 +1833,24 @@ state 153
     dowhile_statement  go to state 40
 
 
+state 152
+
+   51 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause . mc_endif
+
+    mc_endif  shift, and go to state 155
+
+
+state 153
+
+   36 ENSpara: ENSpara verg valeur .
+
+    $default  reduce using rule 36 (ENSpara)
+
+
 state 154
 
-   54 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause . mc_endif
-
-    mc_endif  shift, and go to state 157
-
-
-state 155
-
-   35 ENSpara: ENSpara verg PARA .
-
-    $default  reduce using rule 35 (ENSpara)
-
-
-state 156
-
-   47 ENSINST: ENSINST . INST
-   55 else_clause: mc_else ENSINST .
+   44 ENSINST: ENSINST . INST
+   52 else_clause: mc_else ENSINST .
 
     idf         shift, and go to state 26
     mc_read     shift, and go to state 27
@@ -1850,7 +1858,7 @@ state 156
     mc_if       shift, and go to state 29
     mc_dowhile  shift, and go to state 30
 
-    $default  reduce using rule 55 (else_clause)
+    $default  reduce using rule 52 (else_clause)
 
     INST               go to state 54
     if_statement       go to state 35
@@ -1861,8 +1869,8 @@ state 156
     dowhile_statement  go to state 40
 
 
-state 157
+state 155
 
-   54 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif .
+   51 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif .
 
-    $default  reduce using rule 54 (if_statement)
+    $default  reduce using rule 51 (if_statement)

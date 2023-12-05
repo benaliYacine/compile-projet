@@ -4,7 +4,6 @@
 typedef struct element *Lelement;
 typedef struct element
 {
-   int state;
    char name[20];
    char code[20];
    char type[20];
@@ -90,7 +89,6 @@ tabs=tetes;
 switch(y) 
   {
    case 0:/*verifier si la case dans la tables des IDF et CONST est libre*/
-        //for (i=0;((i<1000)&&(tab->state==1))&&(strcmp(entite,tab->name)!=0);i++); 
         while(tab!=NULL&&strcmp(entite,tab->name)!=0){
             tab=tab->svt;
         }
