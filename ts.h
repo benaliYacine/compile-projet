@@ -28,7 +28,9 @@ void inserer (char entite[], char code[],char type[],float val, int y)
     
    case 0:/*insertion dans la table des IDF et CONST*/
       tab=malloc(sizeof(element));
-       
+      if(tab==NULL)
+      printf("memoire plein\n");
+      else{ 
        strcpy(tab->name,entite);
        strcpy(tab->code,code);
 	   strcpy(tab->type,type);
@@ -42,11 +44,14 @@ void inserer (char entite[], char code[],char type[],float val, int y)
                 prd->svt=tab;
                 prd=prd->svt;
             }
+      }
 	   break;
 
    case 1:/*insertion dans la table des mots clÃ©s*/
    tabm=malloc(sizeof(elt));
-       
+   if(tabm==NULL)
+      printf("memoire plein\n");
+      else{
        strcpy(tabm->name,entite);
        strcpy(tabm->type,code);
        tabm->svt=NULL;
@@ -58,11 +63,14 @@ void inserer (char entite[], char code[],char type[],float val, int y)
                 prdm->svt=tabm;
                 prdm=prdm->svt;
             }
+      }
        break; 
     
    case 2:/*insertion dans la table des separateurs*/
     tabs=malloc(sizeof(elt));
-      
+    if(tabs==NULL)
+      printf("memoire plein\n");
+      else{
       strcpy(tabs->name,entite);
       strcpy(tabs->type,code);
       tabs->svt=NULL;
@@ -75,6 +83,7 @@ void inserer (char entite[], char code[],char type[],float val, int y)
                 prds=prds->svt;
             }
       break;
+      }
  }
 
 }

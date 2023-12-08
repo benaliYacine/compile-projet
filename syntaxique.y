@@ -67,7 +67,7 @@ ENSpara: ENSpara verg valeur | valeur
 ;
 LOGI: mc_true | mc_false
 ;
-ENSIDF: ENSIDF verg idf | idf
+ENSIDF: ENSIDF verg idf | idf | VIDE
 ;
 INSTS: VIDE | ENSINST
 ;
