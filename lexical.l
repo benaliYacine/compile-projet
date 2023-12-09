@@ -63,7 +63,8 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
               Col= Col + strlen(yytext);
 			  if (yyleng>10) printf ("warning: IDF trop long a la ligne %d a la colonne %d \n ",nb_ligne, Col);
               printf (" L entite lexicale reconnue est %s \n", yytext); 
-			  return idf;}
+			  return idf;
+			  }
 
 {int} {yylval.entier=atoi(yytext);
 			  if (atof(yytext)<-32768 || atof(yytext)>32767){

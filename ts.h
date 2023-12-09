@@ -107,8 +107,11 @@ switch(y)
 			inserer(entite,code,type,val,0); 
 	      
          }
-        else
+        else{
+          if(strcmp(tab->type,type)!=0)//hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+            strcpy(tab->type,type);
           printf("entite existe deja\n");
+        }
         break;
 
    case 1:/*verifier si la case dans la tables des mots clÃ©s est libre*/

@@ -3,6 +3,7 @@ hamid=5;
 ENDR
 PROGRAM ecrire
    INTEGER a,b,c,d;
+   INTEGER  DIMENSION (20);
    REAL h;
    LOGICAL z;
    a=b;
@@ -10,9 +11,9 @@ PROGRAM ecrire
    z=TRUE;
    z=FALSE;
    IF (a.LT.b) THEN 
-                 a=c;b=d;
+                 a=d;b=d;
                ELSE 
-                 b=a; c=d; 
+                 b=a; c=b; 
    ENDIF
    IF (a.GT.b AND b.LT.c) THEN 
                              a=c;b=d;
@@ -31,4 +32,4 @@ PROGRAM ecrire
    WRITE("anything here","no read that");
    WRITE("anything here",a,b);
 
-END
+END.
