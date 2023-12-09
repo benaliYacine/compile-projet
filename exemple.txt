@@ -3,7 +3,7 @@ hamid=5;
 ENDR
 PROGRAM ecrire
    INTEGER a,b,c,d;
-   INTEGER  DIMENSION (20);
+   INTEGER v DIMENSION (20);
    REAL h;
    LOGICAL z;
    a=b;
