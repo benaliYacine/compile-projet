@@ -3,8 +3,8 @@ extern nb_ligne;
 extern Col;
 #include "Syntaxique.tab.h"
  #include "ts.h"
- #include <stdlib.h>
- #include <limits.h>
+ #include <stdlib.h> // For atoi and atof
+ #include <limits.h> // For INT_MAX and INT_MIN
  #include <string.h>
  extern YYSTYPE yylval;
  extern file_name;
@@ -21,8 +21,8 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 
 %%
 
-{commentaire} {Col= 1; nb_ligne++;}
-
+{commentaire} 
+/*comentaire commence par % et termine par;*/
 
 "PROGRAM" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_prgrm;}
 "ROUTINE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_rtin;}
@@ -68,7 +68,10 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 
 {int} {yylval.entier=atoi(yytext);
 			  if (atof(yytext)<-32768 || atof(yytext)>32767){
-				printf ("ereur: Entité entiere trop long a ligne %d a la colonne %d \n", nb_ligne, Col);return err;}
+				printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);}
+				//puisqu'on a consiere la detection des entiers trop long comme erreur: si on veut arrêter l'analyseur lexical lorsqu'il trouve une erreur on peut ajouter  yyterminate()
+				//si on consiere la detection des entiers trop long comme warning: printf("warning: Entité entiere trop long a ligne %d a la colonne %d \n ",nb_ligne, Col);
+			  printf (" L entite lexicale reconnue est %s \n", yytext);
               rechercher(yytext,"Cst entiere","INTEGER",atof(yytext),0); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
@@ -118,3 +121,33 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 
 . { printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);return err;}
 %%
+
+
+/* 
+int main(int argc, char** argv){
+ 	if (argc > 1) {
+        file_name = argv[1];
+        FILE* file = fopen(argv[1], "r");
+        if (!file) {
+            // Handle error
+            return 1;
+        }
+        yyin = file;
+    }
+    yylex();
+
+    if (yyin != stdin) {
+        fclose(yyin);
+    }
+
+    return 0;
+} */
+
+
+
+/*9bel mandir yyin
+int main(){
+yylex();
+return 0;
+}
+*/
