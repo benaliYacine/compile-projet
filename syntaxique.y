@@ -27,7 +27,7 @@ VIDE:
 ;
 ENSFCT: ENSFCT FCT | FCT
 ;
-FCT: TYPE mc_rtin idf po ENSIDF pf DECS ENSINST assignment mc_endr | TYPE mc_rtin idf po ENSIDF pf DECS assignment mc_endr
+FCT: TYPE mc_rtin idf po IDFS pf DECS ENSINST assignment mc_endr | TYPE mc_rtin idf po IDFS pf DECS assignment mc_endr
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
@@ -67,7 +67,9 @@ ENSpara: ENSpara verg valeur | valeur
 ;
 LOGI: mc_true | mc_false
 ;
-ENSIDF: ENSIDF verg idf | idf | VIDE
+IDFS: ENSIDF | VIDE
+;
+ENSIDF: ENSIDF verg idf | idf 
 ;
 INSTS: VIDE | ENSINST
 ;
