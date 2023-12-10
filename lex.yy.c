@@ -458,8 +458,8 @@ extern nb_ligne;
 extern Col;
 #include "Syntaxique.tab.h"
  #include "ts.h"
- #include <stdlib.h>
- #include <limits.h>
+ #include <stdlib.h> // For atoi and atof
+ #include <limits.h> // For INT_MAX and INT_MIN
  #include <string.h>
  extern YYSTYPE yylval;
  extern file_name;
@@ -704,7 +704,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 24 "lexical.l"
-{Col= 1; nb_ligne++;}
+
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
@@ -867,7 +867,10 @@ YY_RULE_SETUP
 #line 69 "lexical.l"
 {yylval.entier=atoi(yytext);
 			  if (atof(yytext)<-32768 || atof(yytext)>32767){
-				printf ("ereur: Entité entiere trop long a ligne %d a la colonne %d \n", nb_ligne, Col);return err;}
+				printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);}
+				//puisqu'on a consiere la detection des entiers trop long comme erreur: si on veut arrêter l'analyseur lexical lorsqu'il trouve une erreur on peut ajouter  yyterminate()
+				//si on consiere la detection des entiers trop long comme warning: printf("warning: Entité entiere trop long a ligne %d a la colonne %d \n ",nb_ligne, Col);
+			  printf (" L entite lexicale reconnue est %s \n", yytext);
               rechercher(yytext,"Cst entiere","INTEGER",atof(yytext),0); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
@@ -875,7 +878,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 76 "lexical.l"
+#line 79 "lexical.l"
 {
 			  double var=(double)atof(yytext);
 			  if (var > (double)INT_MAX || var < (double)INT_MIN){// bach 9bel ma dir (int) tvirifi ida numero sghir 3la int max w kbir 3la int min pareceque koun la rah yesra mouchkil fi (int) tedkhol f boucle infini w (double) 9ader ma tzidhach parceque l compilateur wahdou ki yel9ak m compari int m3a double yhawal l int l double mais koun tzidha nta khir (good practice)
@@ -901,7 +904,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 98 "lexical.l"
+#line 101 "lexical.l"
 {yylval.str=strdup(yytext);
 			  rechercher(yytext,"str"," ",0,0);  
               Col= Col + strlen(yytext);
@@ -910,70 +913,70 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 104 "lexical.l"
+#line 107 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return divi;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 105 "lexical.l"
+#line 108 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mul;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 106 "lexical.l"
+#line 109 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return sub;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 107 "lexical.l"
+#line 110 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return add;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 108 "lexical.l"
+#line 111 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return aff;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 109 "lexical.l"
+#line 112 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 110 "lexical.l"
+#line 113 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return po;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 111 "lexical.l"
+#line 114 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pf;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 112 "lexical.l"
+#line 115 "lexical.l"
 {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return verg;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 116 "lexical.l"
+#line 119 "lexical.l"
 Col= Col + strlen(yytext);
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 117 "lexical.l"
+#line 120 "lexical.l"
 {Col= 1; nb_ligne++;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 119 "lexical.l"
+#line 122 "lexical.l"
 { printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);return err;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 120 "lexical.l"
+#line 123 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 977 "lex.yy.c"
+#line 980 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1859,5 +1862,35 @@ int main()
 	return 0;
 	}
 #endif
-#line 120 "lexical.l"
+#line 123 "lexical.l"
 
+
+
+/* 
+int main(int argc, char** argv){
+ 	if (argc > 1) {
+        file_name = argv[1];
+        FILE* file = fopen(argv[1], "r");
+        if (!file) {
+            // Handle error
+            return 1;
+        }
+        yyin = file;
+    }
+    yylex();
+
+    if (yyin != stdin) {
+        fclose(yyin);
+    }
+
+    return 0;
+} */
+
+
+
+/*9bel mandir yyin
+int main(){
+yylex();
+return 0;
+}
+*/

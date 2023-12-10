@@ -22,7 +22,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 %%
 
 {commentaire} 
-/*comentaire commence par % et termine par;*/
+
 
 "PROGRAM" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_prgrm;}
 "ROUTINE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_rtin;}

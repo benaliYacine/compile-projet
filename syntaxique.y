@@ -35,10 +35,10 @@ DECS: VIDE | ENSDEC
 ;
 ENSDEC: ENSDEC DEC | DEC
 ;
-DEC: TYPE ENSIDF pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg 
+DEC: TYPE ENSIDF pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po ENSpara pf pvg  // <==*   9ader n remplasiw taille b enspara chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
-TAILLE: TAILLE verg inti | inti
-;
+// TAILLE: TAILLE verg inti | inti //kouna nekhedmou biha hna <==* fi blaset ENSpara 
+// ;
 EXPRE
     : EXPRE add TERM
     | EXPRE sub TERM
@@ -58,10 +58,10 @@ FACTOR
 
 OPERAND
     : idf
-    |inti
+    | inti
     | real
-    | idf po TAILLE pf
-    | mc_call idf po ENSpara pf
+    | idf po ENSpara pf  //9ader n remplasiw taille b enspara chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    | mc_call idf po ENSpara pf // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
 ENSpara: ENSpara verg valeur | valeur
 ;
@@ -75,7 +75,17 @@ INSTS: VIDE | ENSINST
 ;
 ENSINST: ENSINST INST | INST
 ;
-INST: if_statement | read_statement | write_statement | dowhile_statement | assignment
+INST: if_statement | read_statement | write_statement | dowhile_statement | assignment | eqival_statement
+;
+eqival_statement : mc_equival ens_list_vars pvg
+;
+ens_list_vars: ens_list_var | VIDE
+;
+ens_list_var: ens_list_var verg po list_var pf | po list_var pf 
+;
+list_var: list_var verg var | var 
+;
+var: idf | idf po ENSpara pf
 ;
 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif 
 ;
