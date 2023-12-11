@@ -21,6 +21,7 @@
 %left mul divi
 %left mc_or mc_and
 %type <str> TAILLE
+%type <entier> partie_gauch_affectation valeur
 %%
 s: FCTS PRGM_PRIN { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; }
 ;
@@ -42,9 +43,12 @@ ENSDEC: ENSDEC DEC | DEC
 ;
 DEC: TYPE ENSIDF_dec pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg {rechercher($2,"IDF","TABLEAU",0,0,$5);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
-partie_gauch_affectation: aff valeur | VIDE
+partie_gauch_affectation: aff valeur {$$=$2} | VIDE 
 ;
-ENSIDF_dec:ENSIDF_dec verg idf partie_gauch_affectation | idf partie_gauch_affectation
+ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
+    rechercher($3,"IDF"," ",$4,0," ");
+}
+| idf partie_gauch_affectation
 ; 
 TAILLE: TAILLE verg inti {
                                 char* str_inti;
