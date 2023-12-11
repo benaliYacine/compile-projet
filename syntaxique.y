@@ -95,6 +95,7 @@ FACTOR
 
 OPERAND
     : idf
+    | LOGI
     | inti
     | real
     | idf po TAILLE pf  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
@@ -132,7 +133,7 @@ assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation
 ;
 OGassi: idf | idf po ENSpara pf
 ;
-valeur: LOGI | str | EXPRE //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
+valeur: str | EXPRE //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
 ;
 read_statement: mc_read po var pf pvg // kanet idf fi blaset var dertha ha ka parceque 9ader ydir read(t(5)); nafs echi f write var mechi idf
 ;
@@ -142,11 +143,11 @@ ENS_PARA_WRITE: ENS_PARA_WRITE verg str  | ENS_PARA_WRITE verg var | str | var
 ;
 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo 
 ;
-CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT
+CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT 
 ;
-CONDIT: po CONDI pf | EXPLOGI
+CONDIT: po CONDI pf | EXPLOGI 
 ;
-EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE | LOGI
+EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
 ;
 %%
 

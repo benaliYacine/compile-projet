@@ -1,46 +1,6 @@
-INTEGER ROUTINE Comp (X,Y,Z)
-% Déclarations;
-
-INTEGER A,B; 
-REAL Z=10.0, T= 55.87; 
-CHARACTER C*20; 
-INTEGER var4 DIMENSION (20,50); 
-
-REAL var3 DIMENSION (440);
-LOGICAL D;
-REAL MAT2 DIMENSION (20);
-
-% Instructions;
-A = MAT2(5,4) + (B * 5);
-B = 30;
-C = "L3";
-D = TRUE;
-
-WRITE ("Donner la valeur de A :"); 
-READ (A);
-WRITE ("La Valeur de A est ", A, ".");
-
-WRITE ("Donner la valeur de T:"); 
-READ (T);
-WRITE ("La Valeur de T est ", T, ".");
-
-A = 0;
-DOWHILE (A.LT.10) A = A - 1;
-ENDDO
-
-Comp = A;
-ENDR
-PROGRAM HelloAcad
-% Déclarations;
-INTEGER A,B,C ; 
-REAL Y ;
-INTEGER TAB DIMENSION (10) ; 
-
-% Instructions;
-A = TAB(11) + (B * 7);
-B = 30;
-C = 22+10*B;
-A = CALL nomroutine (A,B,C);
-EQUIVALENCE (A, B, C), (Y, TAB(3));
-
+PROGRAM fdsak
+INTEGER x=5,y=6;
+IF((x.LT.(x+1)).OR.(x.EQ.TRUE)) THEN
+    x=y;
+ENDIF
 END
