@@ -17,11 +17,15 @@
 }
 
 %token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
+
 %left add sub
 %left mul divi
 %left mc_or mc_and
+
 %type <str> TAILLE
-%type <entier> partie_gauch_affectation valeur
+%type <entier> partie_gauch_affectation valeur EXPRE TERM FACTOR
+
+
 %%
 s: FCTS PRGM_PRIN { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; }
 ;
@@ -77,32 +81,33 @@ TAILLE: TAILLE verg inti {
 //ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
 //;
 EXPRE
-    : EXPRE add TERM
-    | EXPRE sub TERM
-    | TERM
+    : EXPRE add TERM {$$=$1+$2} 
+    | EXPRE sub TERM {$$=$1-$2}
+    | TERM {$$=$1}
     ;
 
 TERM
-    : TERM mul FACTOR
-    | TERM divi FACTOR
-    | FACTOR
+    : TERM mul FACTOR {$$=$1*$2}
+    | TERM divi FACTOR {$$=$1/$2}
+    | FACTOR {$$=$1}
     ;
 
 FACTOR
-    : po EXPRE pf
-    | OPERAND
+    : po EXPRE pf {$$=$2}
+    | OPERAND {$$=$1}
     ;
 
 OPERAND
-    : idf
-    | inti
-    | real
+    : idf {$$=$1}
+    | inti {$$=$1}
+    | real {$$=$1}
     | idf po TAILLE pf  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
     | mc_call idf po ENSpara pf // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
 ENSpara: ENSpara verg valeur | valeur
 ;
-LOGI: mc_true | mc_false
+LOGI: mc_true {$$=$1}
+| mc_false {$$=$1}
 ;
 IDFS: ENSIDF | VIDE
 ;
@@ -132,7 +137,9 @@ assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation
 ;
 OGassi: idf | idf po ENSpara pf
 ;
-valeur: LOGI | str | EXPRE //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
+valeur: LOGI {$$=$1}
+        | str {$$=$1}
+        | EXPRE {$$=$1} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
 ;
 read_statement: mc_read po var pf pvg // kanet idf fi blaset var dertha ha ka parceque 9ader ydir read(t(5)); nafs echi f write var mechi idf
 ;
