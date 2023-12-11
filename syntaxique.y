@@ -35,10 +35,12 @@ DECS: VIDE | ENSDEC
 ;
 ENSDEC: ENSDEC DEC | DEC
 ;
-DEC: TYPE ENSIDF pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po ENSpara pf pvg  // <==*   9ader n remplasiw taille b enspara chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+DEC: TYPE ENSIDF pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po ENSpara_arith pf pvg  // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
 // TAILLE: TAILLE verg inti | inti //kouna nekhedmou biha hna <==* fi blaset ENSpara 
 // ;
+ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
+;
 EXPRE
     : EXPRE add TERM
     | EXPRE sub TERM
@@ -60,7 +62,7 @@ OPERAND
     : idf
     | inti
     | real
-    | idf po ENSpara pf  //9ader n remplasiw taille b enspara chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    | idf po ENSpara_arith pf  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
     | mc_call idf po ENSpara pf // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
 ENSpara: ENSpara verg valeur | valeur
@@ -93,15 +95,15 @@ else_clause: mc_else ENSINST |
 ;
 assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation 
 ;
-OGassi: idf | idf po TAILLE pf
+OGassi: idf | idf po ENSpara pf
 ;
 valeur: LOGI | str | EXPRE //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
 ;
-read_statement: mc_read po idf pf pvg 
+read_statement: mc_read po var pf pvg // kanet idf fi blaset var dertha ha ka parceque 9ader ydir read(t(5)); nafs echi f write var mechi idf
 ;
 write_statement: mc_write po ENS_PARA_WRITE pf pvg 
 ;
-ENS_PARA_WRITE: ENS_PARA_WRITE verg str  | ENS_PARA_WRITE verg idf | str | idf
+ENS_PARA_WRITE: ENS_PARA_WRITE verg str  | ENS_PARA_WRITE verg var | str | var
 ;
 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo 
 ;
