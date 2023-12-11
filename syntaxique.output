@@ -35,7 +35,7 @@ Grammar
 
    18 DEC: TYPE ENSIDF_dec pvg
    19    | TYPE idf mul inti pvg
-   20    | TYPE idf mc_dim po ENSpara_arith pf pvg
+   20    | TYPE idf mc_dim po TAILLE pf pvg
 
    21 partie_gauch_affectation: aff valeur
    22                         | VIDE
@@ -43,8 +43,8 @@ Grammar
    23 ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation
    24           | idf partie_gauch_affectation
 
-   25 ENSpara_arith: ENSpara_arith verg EXPRE
-   26              | EXPRE
+   25 TAILLE: TAILLE verg inti
+   26       | inti
 
    27 EXPRE: EXPRE add TERM
    28      | EXPRE sub TERM
@@ -60,7 +60,7 @@ Grammar
    35 OPERAND: idf
    36        | inti
    37        | real
-   38        | idf po ENSpara_arith pf
+   38        | idf po TAILLE pf
    39        | mc_call idf po ENSpara pf
 
    40 ENSpara: ENSpara verg valeur
@@ -151,7 +151,7 @@ idf (258) 2 8 9 19 20 23 24 35 38 39 46 47 65 66 71 72
 aff (259) 21 70
 mc_prgrm (260) 2
 mc_rtin (261) 8 9
-inti (262) 19 36
+inti (262) 19 25 26 36
 real (263) 37
 mc_endr (264) 8 9
 mc_call (265) 39
@@ -220,10 +220,10 @@ partie_gauch_affectation (57)
     on left: 21 22, on right: 23 24
 ENSIDF_dec (58)
     on left: 23 24, on right: 18 23
-ENSpara_arith (59)
+TAILLE (59)
     on left: 25 26, on right: 20 25 38
 EXPRE (60)
-    on left: 27 28 29, on right: 25 26 27 28 33 75 88 89 90 91 92 93
+    on left: 27 28 29, on right: 27 28 33 75 88 89 90 91 92 93
 TERM (61)
     on left: 30 31 32, on right: 27 28 29 30 31
 FACTOR (62)
@@ -454,7 +454,7 @@ state 19
 
    18 DEC: TYPE . ENSIDF_dec pvg
    19    | TYPE . idf mul inti pvg
-   20    | TYPE . idf mc_dim po ENSpara_arith pf pvg
+   20    | TYPE . idf mc_dim po TAILLE pf pvg
 
     idf  shift, and go to state 24
 
@@ -527,7 +527,7 @@ state 23
 state 24
 
    19 DEC: TYPE idf . mul inti pvg
-   20    | TYPE idf . mc_dim po ENSpara_arith pf pvg
+   20    | TYPE idf . mc_dim po TAILLE pf pvg
    24 ENSIDF_dec: idf . partie_gauch_affectation
 
     aff     shift, and go to state 48
@@ -756,7 +756,7 @@ state 48
 
 state 49
 
-   20 DEC: TYPE idf mc_dim . po ENSpara_arith pf pvg
+   20 DEC: TYPE idf mc_dim . po TAILLE pf pvg
 
     po  shift, and go to state 83
 
@@ -980,7 +980,7 @@ state 68
 state 69
 
    35 OPERAND: idf .
-   38        | idf . po ENSpara_arith pf
+   38        | idf . po TAILLE pf
 
     po  shift, and go to state 107
 
@@ -1099,19 +1099,11 @@ state 82
 
 state 83
 
-   20 DEC: TYPE idf mc_dim po . ENSpara_arith pf pvg
+   20 DEC: TYPE idf mc_dim po . TAILLE pf pvg
 
-    idf      shift, and go to state 69
-    inti     shift, and go to state 70
-    real     shift, and go to state 71
-    mc_call  shift, and go to state 72
-    po       shift, and go to state 76
+    inti  shift, and go to state 114
 
-    ENSpara_arith  go to state 114
-    EXPRE          go to state 115
-    TERM           go to state 78
-    FACTOR         go to state 79
-    OPERAND        go to state 80
+    TAILLE  go to state 115
 
 
 state 84
@@ -1346,19 +1338,11 @@ state 106
 
 state 107
 
-   38 OPERAND: idf po . ENSpara_arith pf
+   38 OPERAND: idf po . TAILLE pf
 
-    idf      shift, and go to state 69
-    inti     shift, and go to state 70
-    real     shift, and go to state 71
-    mc_call  shift, and go to state 72
-    po       shift, and go to state 76
+    inti  shift, and go to state 114
 
-    ENSpara_arith  go to state 142
-    EXPRE          go to state 115
-    TERM           go to state 78
-    FACTOR         go to state 79
-    OPERAND        go to state 80
+    TAILLE  go to state 142
 
 
 state 108
@@ -1439,23 +1423,18 @@ state 113
 
 state 114
 
-   20 DEC: TYPE idf mc_dim po ENSpara_arith . pf pvg
-   25 ENSpara_arith: ENSpara_arith . verg EXPRE
+   26 TAILLE: inti .
 
-    pf    shift, and go to state 149
-    verg  shift, and go to state 150
+    $default  reduce using rule 26 (TAILLE)
 
 
 state 115
 
-   26 ENSpara_arith: EXPRE .
-   27 EXPRE: EXPRE . add TERM
-   28      | EXPRE . sub TERM
+   20 DEC: TYPE idf mc_dim po TAILLE . pf pvg
+   25 TAILLE: TAILLE . verg inti
 
-    add  shift, and go to state 110
-    sub  shift, and go to state 111
-
-    $default  reduce using rule 26 (ENSpara_arith)
+    pf    shift, and go to state 149
+    verg  shift, and go to state 150
 
 
 state 116
@@ -1815,8 +1794,8 @@ state 141
 
 state 142
 
-   25 ENSpara_arith: ENSpara_arith . verg EXPRE
-   38 OPERAND: idf po ENSpara_arith . pf
+   25 TAILLE: TAILLE . verg inti
+   38 OPERAND: idf po TAILLE . pf
 
     pf    shift, and go to state 172
     verg  shift, and go to state 150
@@ -1891,25 +1870,16 @@ state 148
 
 state 149
 
-   20 DEC: TYPE idf mc_dim po ENSpara_arith pf . pvg
+   20 DEC: TYPE idf mc_dim po TAILLE pf . pvg
 
     pvg  shift, and go to state 174
 
 
 state 150
 
-   25 ENSpara_arith: ENSpara_arith verg . EXPRE
+   25 TAILLE: TAILLE verg . inti
 
-    idf      shift, and go to state 69
-    inti     shift, and go to state 70
-    real     shift, and go to state 71
-    mc_call  shift, and go to state 72
-    po       shift, and go to state 76
-
-    EXPRE    go to state 175
-    TERM     go to state 78
-    FACTOR   go to state 79
-    OPERAND  go to state 80
+    inti  shift, and go to state 175
 
 
 state 151
@@ -2129,7 +2099,7 @@ state 171
 
 state 172
 
-   38 OPERAND: idf po ENSpara_arith pf .
+   38 OPERAND: idf po TAILLE pf .
 
     $default  reduce using rule 38 (OPERAND)
 
@@ -2145,21 +2115,16 @@ state 173
 
 state 174
 
-   20 DEC: TYPE idf mc_dim po ENSpara_arith pf pvg .
+   20 DEC: TYPE idf mc_dim po TAILLE pf pvg .
 
     $default  reduce using rule 20 (DEC)
 
 
 state 175
 
-   25 ENSpara_arith: ENSpara_arith verg EXPRE .
-   27 EXPRE: EXPRE . add TERM
-   28      | EXPRE . sub TERM
+   25 TAILLE: TAILLE verg inti .
 
-    add  shift, and go to state 110
-    sub  shift, and go to state 111
-
-    $default  reduce using rule 25 (ENSpara_arith)
+    $default  reduce using rule 25 (TAILLE)
 
 
 state 176

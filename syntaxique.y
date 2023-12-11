@@ -3,7 +3,12 @@
     int nb_ligne=1, Col=1;
     char* file_name;
     #include <stdlib.h>
+    #include <string.h>
     extern FILE *yyin;
+    char* tmp;
+    char* str_inti;
+    int k;
+    
 %}
 
 %union {
@@ -16,6 +21,7 @@
 %left add sub
 %left mul divi
 %left mc_or mc_and
+%type <str> TAILLE
 %%
 s: FCTS PRGM_PRIN { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; }
 ;
@@ -35,16 +41,16 @@ DECS: VIDE | ENSDEC
 ;
 ENSDEC: ENSDEC DEC | DEC
 ;
-DEC: TYPE ENSIDF_dec pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po ENSpara_arith pf pvg {rechercher($2,"IDF","TABLEAU",0,0," ");}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+DEC: TYPE ENSIDF_dec pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg {rechercher($2,"IDF","TABLEAU",0,0,"dfsa");}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
 partie_gauch_affectation: aff valeur | VIDE
 ;
 ENSIDF_dec:ENSIDF_dec verg idf partie_gauch_affectation | idf partie_gauch_affectation
 ; 
-// TAILLE: TAILLE verg inti | inti //kouna nekhedmou biha hna <==* fi blaset ENSpara 
-// ;
-ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
+TAILLE: TAILLE verg inti | inti {k=$1;printf("----------------%d\n",k);snprintf(str_inti,sizeof(str),"%d",k);printf("----------------%s\n",str_inti)}      //kouna nekhedmou biha hna <==* fi blaset ENSpara w raja3naha w manb3d na7oha
 ;
+//ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
+//;
 EXPRE
     : EXPRE add TERM
     | EXPRE sub TERM
@@ -66,7 +72,7 @@ OPERAND
     : idf
     | inti
     | real
-    | idf po ENSpara_arith pf  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    | idf po TAILLE pf  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
     | mc_call idf po ENSpara pf // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
 ENSpara: ENSpara verg valeur | valeur
@@ -131,7 +137,6 @@ int main(int argc, char** argv)
         }
         yyin = file;
     }
-    
     yyparse();
     yylex();
     afficher();
