@@ -99,6 +99,7 @@ FACTOR
 
 OPERAND
     : idf {$$=$1}
+    | LOGI
     | inti {$$=$1}
     | real {$$=$1}
     | idf po TAILLE pf  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
@@ -149,11 +150,11 @@ ENS_PARA_WRITE: ENS_PARA_WRITE verg str  | ENS_PARA_WRITE verg var | str | var
 ;
 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo 
 ;
-CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT
+CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT 
 ;
-CONDIT: po CONDI pf | EXPLOGI
+CONDIT: po CONDI pf | EXPLOGI 
 ;
-EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE | LOGI
+EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
 ;
 %%
 
