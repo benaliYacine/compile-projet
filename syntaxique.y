@@ -35,8 +35,12 @@ DECS: VIDE | ENSDEC
 ;
 ENSDEC: ENSDEC DEC | DEC
 ;
-DEC: TYPE ENSIDF pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po ENSpara_arith pf pvg  // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+DEC: TYPE ENSIDF_dec pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po ENSpara_arith pf pvg {rechercher($2,"IDF","TABLEAU",0,0," ");}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
+partie_gauch_affectation: aff valeur | VIDE
+;
+ENSIDF_dec:ENSIDF_dec verg idf partie_gauch_affectation | idf partie_gauch_affectation
+; 
 // TAILLE: TAILLE verg inti | inti //kouna nekhedmou biha hna <==* fi blaset ENSpara 
 // ;
 ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
@@ -111,7 +115,7 @@ CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT
 ;
 CONDIT: po CONDI pf | EXPLOGI
 ;
-EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
+EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE | LOGI
 ;
 %%
 

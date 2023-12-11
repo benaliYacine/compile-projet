@@ -24,42 +24,43 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 {commentaire} 
 
 
-"PROGRAM" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_prgrm;}
-"ROUTINE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_rtin;}
-"ENDR" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endr;}
-"CALL" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_call;}
-"DIMENSION" {rechercher(yylval.str,"IDF","TABLEAU",0, 0);rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dim;}
-"LOGICAL" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_logi;}
-"CHARACTER" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_char;}
-"TRUE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_true;}
-"FALSE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_false;}
-"READ" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_read;}
-"WRITE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_write;}
+"PROGRAM" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_prgrm;}
+"ROUTINE" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_rtin;}
+"ENDR" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endr;}
+"CALL" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_call;}
+"DIMENSION" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dim;}
+"LOGICAL" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_logi;}
+"CHARACTER" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_char;}
+"TRUE" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_true;}
+"FALSE" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_false;}
+"READ" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_read;}
+"WRITE" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_write;}
 
-"INTEGER" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_int;}
-"REAL" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_real;}
-"END" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_end;}
-"IF" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_if;}
-"THEN" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_then;}
-"ELSE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_else;}
-"ENDIF" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endif;}
-"DOWHILE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dowhile;}
-"ENDDO" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_enddo;}
-"EQUIVALENCE" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_equival;}
-"OR" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_or;}
-"AND" {rechercher(yytext,"Mot cle",0,0, 1); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_and;}
+"INTEGER" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_int;}
+"REAL" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_real;}
+"END" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_end;}
+"IF" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_if;}
+"THEN" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_then;}
+"ELSE" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_else;}
+"ENDIF" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endif;}
+"DOWHILE" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dowhile;}
+"ENDDO" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_enddo;}
+"EQUIVALENCE" {rechercher(yytext,"Mot cle",0,0, 1," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_equival;}
 
-".LT." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return lt;}
-".GT." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return gt;}
-".LE." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return le;}
-".NE." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ne;}
-".EQ." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return eq;}
-".GE." {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ge;}
+
+".OR." {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_or;}
+".AND." {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_and;}
+".LT." {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return lt;}
+".GT." {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return gt;}
+".LE." {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return le;}
+".NE." {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ne;}
+".EQ." {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return eq;}
+".GE." {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ge;}
 
 
 
 {idf} {yylval.str=strdup(yytext);
-			  rechercher(yytext,"IDF"," ",0,0);  
+			  rechercher(yytext,"IDF"," ",0,0," ");  
               Col= Col + strlen(yytext);
 			  if (yyleng>10) printf ("warning: IDF trop long a la ligne %d a la colonne %d \n ",nb_ligne, Col);
               printf (" L entite lexicale reconnue est %s \n", yytext); 
@@ -72,7 +73,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 				//puisqu'on a consiere la detection des entiers trop long comme erreur: si on veut arrêter l'analyseur lexical lorsqu'il trouve une erreur on peut ajouter  yyterminate()
 				//si on consiere la detection des entiers trop long comme warning: printf("warning: Entité entiere trop long a ligne %d a la colonne %d \n ",nb_ligne, Col);
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
-              rechercher(yytext,"Cst entiere","INTEGER",atof(yytext),0); 
+              rechercher(yytext,"Cst","INTEGER",atof(yytext),0," "); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return inti;}
@@ -89,30 +90,29 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 					/*--------------fractional part-----------------*/
 					pointPtr = strchr(yytext, '.');// strchr tchouf fel str yytext win jay l pointer ta3 el '.' w t7oto f pointPtr
 					double fractionalPart = atof(pointPtr + 1); // atof Convert fractional part to double (double-precision floating-point(floating-point maydirch mouchkil hna houwa yrod l vergule be ta9rib hna khlas ne7tajou ghi l int part)),kout dayer atoi (Convert fractional part to int) mais atof khir bach ida kan chifre li mor l vergule maye9derch yji f int afoi dirlek problem mais atof y7awlou l double 3adi tani atoi mafihach erreur handeling( It doesn't handle floating-point numbers-There's no error handling for overflows or underflows.)  
-					printf("------>fract part:%lf\n",fractionalPart);
 					if (intPart<-32768 || intPart>32767 || (int)fractionalPart>32767){
 						printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);return err;}
 			  }
               
-              rechercher(yytext,"Cst real","FLOAT",atof(yytext),0); 
+              rechercher(yytext,"Cst","FLOAT",atof(yytext),0," "); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return real;}
 {str} {yylval.str=strdup(yytext);
-			  rechercher(yytext,"str"," ",0,0);  
+			  rechercher(yytext,"str"," ",0,0," ");  
               Col= Col + strlen(yytext);
               printf (" L entite lexicale reconnue est %s \n", yytext); 
 			  return str;}
 
-"/" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return divi;}
-"*" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mul;}
-"-" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return sub;}
-"+" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return add;}
-"=" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return aff;}
-";" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
-"(" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return po;}
-")" {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pf;}
-"," {rechercher(yytext,"separateur",0,0,2); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return verg;}
+"/" {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return divi;}
+"*" {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mul;}
+"-" {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return sub;}
+"+" {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return add;}
+"=" {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return aff;}
+";" {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
+"(" {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return po;}
+")" {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pf;}
+"," {rechercher(yytext,"separateur",0,0, 2," "); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return verg;}
 
 
 

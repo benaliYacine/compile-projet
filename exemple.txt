@@ -1,35 +1,46 @@
-INTEGER ROUTINE hamid()
-hamid=5;
-ENDR
-PROGRAM ecrire
-   INTEGER a,b,c,d;
-   INTEGER v DIMENSION (20);
-   REAL h;
-   LOGICAL z;
-   a=b;
-   b=a;
-   z=TRUE;
-   z=FALSE;
-   IF (a.LT.b) THEN 
-                 a=d;b=d;
-               ELSE 
-                 b=a; c=b; 
-   ENDIF
-   IF (a.GT.b AND b.LT.c) THEN 
-                             a=c;b=d;
-                          ELSE 
-                             b=a; c=d; 
-   ENDIF
-   IF (a.GT.b AND b.LT.c) THEN 
-                             a=c;b=d;
-   ENDIF
-   DOWHILE(a.NE.b) 
-                   a=c;b=d; 
-   ENDDO
-   READ(b);
-   WRITE("anything here",a,"no read that",b);
-   WRITE(a,b);
-   WRITE("anything here","no read that");
-   WRITE("anything here",a,b);
+INTEGER ROUTINE Comp (X,Y,Z)
+% Déclarations;
 
-END.
+INTEGER A,B; 
+REAL Z=10.0, T= 55.87; 
+CHARACTER C*20; 
+INTEGER var4 DIMENSION (20); 
+
+REAL var3 DIMENSION (440);
+LOGICAL D;
+REAL MAT2 DIMENSION (20);
+
+% Instructions;
+A = MAT2(5,4) + (B * 5);
+B = 30;
+C = "L3";
+D = TRUE;
+
+WRITE ("Donner la valeur de A :"); 
+READ (A);
+WRITE ("La Valeur de A est ", A, ".");
+
+WRITE ("Donner la valeur de T:"); 
+READ (T);
+WRITE ("La Valeur de T est ", T, ".");
+
+A = 0;
+DOWHILE (A.LT.10) A = A - 1;
+ENDDO
+
+Comp = A;
+ENDR
+PROGRAM HelloAcad
+% Déclarations;
+INTEGER A,B,C ; 
+REAL Y ;
+INTEGER TAB DIMENSION (10) ; 
+
+% Instructions;
+A = TAB(11) + (B * 7);
+B = 30;
+C = 22+10*B;
+A = CALL nomroutine (A,B,C);
+EQUIVALENCE (A, B, C), (Y, TAB(3));
+
+END
