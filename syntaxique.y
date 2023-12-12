@@ -2,7 +2,7 @@
     #include <stdio.h>
     int nb_ligne=1, Col=1;
     char* file_name;
-    #include "ts.h"
+    #include "ts_HASH_TABLE.h"
     #include <stdlib.h>
     #include <string.h>
     extern FILE *yyin;
