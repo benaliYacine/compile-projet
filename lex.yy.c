@@ -458,7 +458,7 @@ char *yytext;
 extern nb_ligne;
 extern Col;
 #include "Syntaxique.tab.h"
- #include "ts.h"
+
  #include <stdlib.h> // For atoi and atof
  #include <limits.h> // For INT_MAX and INT_MIN
  #include <string.h>
@@ -886,7 +886,7 @@ YY_RULE_SETUP
 			  		printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);
 					return err;
  			  } else {
-
+					yylval.reel=atof(yytext);
 					/*--------------int part-----------------*/
 					int intPart = (int)var;
 

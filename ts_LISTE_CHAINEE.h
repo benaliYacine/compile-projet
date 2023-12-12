@@ -132,11 +132,20 @@ void rechercher(char entite[], char code[], char type[], float val, int y,char t
     }
     else
     {
-      if (strcmp(type, " ") != 0){ // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+      if (strcmp(type, " ") != 0)
+      { // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
         strcpy(tab->type, type);
+
+      } // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+      if (strcmp(taille, " ") != 0)
+      { // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
         strcpy(tab->taille, taille);
-        }// hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
-        
+      } // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+      if (tab->val == 0.0)
+      {
+        // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+        tab->val = val;
+      }
       printf("entite existe deja\n");
     }
     break;

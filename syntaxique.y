@@ -2,6 +2,7 @@
     #include <stdio.h>
     int nb_ligne=1, Col=1;
     char* file_name;
+    #include "ts.h"
     #include <stdlib.h>
     #include <string.h>
     extern FILE *yyin;
@@ -23,7 +24,12 @@
 %left mc_or mc_and
 
 %type <str> TAILLE
-%type <entier> partie_gauch_affectation valeur EXPRE TERM FACTOR
+%type <reel> partie_gauch_affectation
+%type <reel> valeur
+%type <reel> EXPRE
+%type <reel> TERM
+%type <reel> OPERAND
+%type <reel> FACTOR
 
 
 %%
@@ -47,12 +53,16 @@ ENSDEC: ENSDEC DEC | DEC
 ;
 DEC: TYPE ENSIDF_dec pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg {rechercher($2,"IDF","TABLEAU",0,0,$5);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
-partie_gauch_affectation: aff valeur {$$=$2} | VIDE 
+partie_gauch_affectation: aff valeur {$$=$2;} | VIDE { $$=0;}
 ;
 ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
+
     rechercher($3,"IDF"," ",$4,0," ");
 }
-| idf partie_gauch_affectation
+| idf partie_gauch_affectation {
+
+    rechercher($1,"IDF"," ",$2,0," ");
+}
 ; 
 TAILLE: TAILLE verg inti {
                                 char* str_inti;
@@ -60,7 +70,7 @@ TAILLE: TAILLE verg inti {
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
 
                                 sprintf(str_inti, "%d", $3);
-                                printf("----------------%s\n", str_inti);
+                                // printf("----------------%s\n", str_inti);
                                 
                                 
                                 char* final_str = malloc(strlen($1) + strlen(str_inti) + 4 + 1);
@@ -73,7 +83,7 @@ TAILLE: TAILLE verg inti {
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
 
                                 sprintf(str_inti, "%d", $1);
-                                printf("----------------%s\n", str_inti);
+                                // printf("----------------%s\n", str_inti);
                                 
                                 $$=str_inti;
     }     //kouna nekhedmou biha hna <==* fi blaset ENSpara w raja3naha w manb3d na7oha
@@ -81,34 +91,34 @@ TAILLE: TAILLE verg inti {
 //ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
 //;
 EXPRE
-    : EXPRE add TERM {$$=$1+$2} 
-    | EXPRE sub TERM {$$=$1-$2}
-    | TERM {$$=$1}
+    : EXPRE add TERM {$$=$1+$2;} 
+    | EXPRE sub TERM {$$=$1-$2;}
+    | TERM {$$=$1;}
     ;
 
 TERM
-    : TERM mul FACTOR {$$=$1*$2}
-    | TERM divi FACTOR {$$=$1/$2}
-    | FACTOR {$$=$1}
+    : TERM mul FACTOR {$$=$1*$2;}
+    | TERM divi FACTOR {$$=$1/$2;}
+    | FACTOR {$$=$1;}
     ;
 
 FACTOR
-    : po EXPRE pf {$$=$2}
-    | OPERAND {$$=$1}
+    : po EXPRE pf {$$=$2;}
+    | OPERAND {$$=$1;}
     ;
 
 OPERAND
-    : idf {$$=$1}
-    | LOGI
-    | inti {$$=$1}
-    | real {$$=$1}
-    | idf po TAILLE pf  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
-    | mc_call idf po ENSpara pf // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+    : idf { $$=0;}
+    | LOGI { $$=0;}
+    | inti {$$=(float)$1;}
+    | real {$$=$1;}
+    | idf po TAILLE pf { $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    | mc_call idf po ENSpara pf { $$=0;} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
-ENSpara: ENSpara verg valeur | valeur
+ENSpara: ENSpara verg valeur | valeur 
 ;
-LOGI: mc_true {$$=$1}
-| mc_false {$$=$1}
+LOGI: mc_true
+| mc_false
 ;
 IDFS: ENSIDF | VIDE
 ;
@@ -138,9 +148,8 @@ assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation
 ;
 OGassi: idf | idf po ENSpara pf
 ;
-valeur: LOGI {$$=$1}
-        | str {$$=$1}
-        | EXPRE {$$=$1} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
+valeur: str { $$=0;}
+        | EXPRE {$$=$1;} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
 ;
 read_statement: mc_read po var pf pvg // kanet idf fi blaset var dertha ha ka parceque 9ader ydir read(t(5)); nafs echi f write var mechi idf
 ;

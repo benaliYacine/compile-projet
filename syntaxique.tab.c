@@ -73,6 +73,7 @@
     #include <stdio.h>
     int nb_ligne=1, Col=1;
     char* file_name;
+    #include "ts.h"
     #include <stdlib.h>
     #include <string.h>
     extern FILE *yyin;
@@ -82,7 +83,7 @@
 
 
 /* Line 189 of yacc.c  */
-#line 86 "syntaxique.tab.c"
+#line 87 "syntaxique.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -162,7 +163,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 13 "syntaxique.y"
+#line 14 "syntaxique.y"
 
          int     entier;
          char*   str;
@@ -171,7 +172,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 175 "syntaxique.tab.c"
+#line 176 "syntaxique.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -183,7 +184,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 187 "syntaxique.tab.c"
+#line 188 "syntaxique.tab.c"
 
 #ifdef short
 # undef short
@@ -509,16 +510,16 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    26,    26,    28,    30,    30,    32,    34,    34,    36,
-      36,    38,    38,    38,    38,    40,    40,    42,    42,    44,
-      44,    44,    46,    46,    48,    51,    53,    66,    80,    81,
-      82,    86,    87,    88,    92,    93,    97,    98,    99,   100,
-     101,   102,   104,   104,   106,   106,   108,   108,   110,   110,
-     112,   112,   114,   114,   116,   116,   116,   116,   116,   116,
-     118,   120,   120,   122,   122,   124,   124,   126,   126,   128,
-     130,   130,   132,   134,   134,   136,   136,   138,   140,   142,
-     142,   142,   142,   144,   146,   146,   146,   148,   148,   150,
-     150,   150,   150,   150,   150
+       0,    36,    36,    38,    40,    40,    42,    44,    44,    46,
+      46,    48,    48,    48,    48,    50,    50,    52,    52,    54,
+      54,    54,    56,    56,    58,    62,    67,    80,    94,    95,
+      96,   100,   101,   102,   106,   107,   111,   112,   113,   114,
+     115,   116,   118,   118,   120,   121,   123,   123,   125,   125,
+     127,   127,   129,   129,   131,   131,   131,   131,   131,   131,
+     133,   135,   135,   137,   137,   139,   139,   141,   141,   143,
+     145,   145,   147,   149,   149,   151,   152,   154,   156,   158,
+     158,   158,   158,   160,   162,   162,   162,   164,   164,   166,
+     166,   166,   166,   166,   166
 };
 #endif
 
@@ -1550,44 +1551,62 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 26 "syntaxique.y"
+#line 36 "syntaxique.y"
     { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; ;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 44 "syntaxique.y"
+#line 54 "syntaxique.y"
     {rechercher((yyvsp[(2) - (7)].str),"IDF","TABLEAU",0,0,(yyvsp[(5) - (7)].str));;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 46 "syntaxique.y"
-    {(yyval.entier)=(yyvsp[(2) - (2)].entier);}
+#line 56 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(2) - (2)].reel);;}
+    break;
+
+  case 23:
+
+/* Line 1455 of yacc.c  */
+#line 56 "syntaxique.y"
+    { (yyval.reel)=0;;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 48 "syntaxique.y"
+#line 58 "syntaxique.y"
     {
-    rechercher((yyvsp[(3) - (4)].str),"IDF"," ",(yyvsp[(4) - (4)].entier),0," ");
+
+    rechercher((yyvsp[(3) - (4)].str),"IDF"," ",(yyvsp[(4) - (4)].reel),0," ");
+;}
+    break;
+
+  case 25:
+
+/* Line 1455 of yacc.c  */
+#line 62 "syntaxique.y"
+    {
+
+    rechercher((yyvsp[(1) - (2)].str),"IDF"," ",(yyvsp[(2) - (2)].reel),0," ");
 ;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 53 "syntaxique.y"
+#line 67 "syntaxique.y"
     {
                                 char* str_inti;
                                 // Allocate memory for str_inti
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
 
                                 sprintf(str_inti, "%d", (yyvsp[(3) - (3)].entier));
-                                printf("----------------%s\n", str_inti);
+                                // printf("----------------%s\n", str_inti);
                                 
                                 
                                 char* final_str = malloc(strlen((yyvsp[(1) - (3)].str)) + strlen(str_inti) + 4 + 1);
@@ -1599,23 +1618,135 @@ yyreduce:
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 66 "syntaxique.y"
+#line 80 "syntaxique.y"
     {
                                 char* str_inti;
                                 // Allocate memory for str_inti
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
 
                                 sprintf(str_inti, "%d", (yyvsp[(1) - (1)].entier));
-                                printf("----------------%s\n", str_inti);
+                                // printf("----------------%s\n", str_inti);
                                 
                                 (yyval.str)=str_inti;
     ;}
     break;
 
+  case 28:
+
+/* Line 1455 of yacc.c  */
+#line 94 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (3)].reel)+(yyvsp[(2) - (3)].reel);;}
+    break;
+
+  case 29:
+
+/* Line 1455 of yacc.c  */
+#line 95 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (3)].reel)-(yyvsp[(2) - (3)].reel);;}
+    break;
+
+  case 30:
+
+/* Line 1455 of yacc.c  */
+#line 96 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
+    break;
+
+  case 31:
+
+/* Line 1455 of yacc.c  */
+#line 100 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (3)].reel)*(yyvsp[(2) - (3)].reel);;}
+    break;
+
+  case 32:
+
+/* Line 1455 of yacc.c  */
+#line 101 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (3)].reel)/(yyvsp[(2) - (3)].reel);;}
+    break;
+
+  case 33:
+
+/* Line 1455 of yacc.c  */
+#line 102 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
+    break;
+
+  case 34:
+
+/* Line 1455 of yacc.c  */
+#line 106 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(2) - (3)].reel);;}
+    break;
+
+  case 35:
+
+/* Line 1455 of yacc.c  */
+#line 107 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
+    break;
+
+  case 36:
+
+/* Line 1455 of yacc.c  */
+#line 111 "syntaxique.y"
+    { (yyval.reel)=0;;}
+    break;
+
+  case 37:
+
+/* Line 1455 of yacc.c  */
+#line 112 "syntaxique.y"
+    { (yyval.reel)=0;;}
+    break;
+
+  case 38:
+
+/* Line 1455 of yacc.c  */
+#line 113 "syntaxique.y"
+    {(yyval.reel)=(float)(yyvsp[(1) - (1)].entier);;}
+    break;
+
+  case 39:
+
+/* Line 1455 of yacc.c  */
+#line 114 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
+    break;
+
+  case 40:
+
+/* Line 1455 of yacc.c  */
+#line 115 "syntaxique.y"
+    { (yyval.reel)=0;;}
+    break;
+
+  case 41:
+
+/* Line 1455 of yacc.c  */
+#line 116 "syntaxique.y"
+    { (yyval.reel)=0;;}
+    break;
+
+  case 75:
+
+/* Line 1455 of yacc.c  */
+#line 151 "syntaxique.y"
+    { (yyval.reel)=0;;}
+    break;
+
+  case 76:
+
+/* Line 1455 of yacc.c  */
+#line 152 "syntaxique.y"
+    {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
+    break;
+
 
 
 /* Line 1455 of yacc.c  */
-#line 1619 "syntaxique.tab.c"
+#line 1750 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1827,7 +1958,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 152 "syntaxique.y"
+#line 168 "syntaxique.y"
 
 
 int main(int argc, char** argv)
