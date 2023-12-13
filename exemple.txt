@@ -1,3 +1,4 @@
+
 INTEGER ROUTINE Comp (X,Y,Z)
 % Déclarations;
 
@@ -12,7 +13,7 @@ REAL MAT2 DIMENSION (20);
 
 % Instructions;
 A = MAT2(5,4) + (B * 5);
-B = 30;
+B = 30*0;
 C = "L3";
 D = TRUE;
 

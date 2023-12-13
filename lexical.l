@@ -79,9 +79,11 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 				//puisqu'on a consiere la detection des entiers trop long comme erreur: si on veut arrêter l'analyseur lexical lorsqu'il trouve une erreur on peut ajouter  yyterminate()
 				//si on consiere la detection des entiers trop long comme warning: printf("warning: Entité entiere trop long a ligne %d a la colonne %d \n ",nb_ligne, Col);
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
-              rechercher(yytext,"Cst","INTEGER",atof(yytext),0," ",P_OU_F); 
+              rechercher(yytext,"Cst","INTEGER",atof(yytext),0," ",P_OU_F);
+			  
 			  Col= Col + strlen(yytext); 
-			  printf (" L entite lexicale reconnue est %s \n", yytext);
+			  
+			  //printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return inti;}
 {real} {
 			  double var=(double)atof(yytext);

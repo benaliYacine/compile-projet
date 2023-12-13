@@ -99,7 +99,8 @@ EXPRE
 
 TERM
     : TERM mul FACTOR {$$=$1*$2;}
-    | TERM divi FACTOR {$$=$1/$2;}
+    | TERM divi FACTOR {
+                        $$=$1/$2;}
     | FACTOR {$$=$1;}
     ;
 
@@ -119,7 +120,7 @@ OPERAND
 ENSpara: ENSpara verg valeur | valeur 
 ;
 LOGI: mc_true
-| mc_false
+    | mc_false
 ;
 IDFS: ENSIDF | VIDE
 ;

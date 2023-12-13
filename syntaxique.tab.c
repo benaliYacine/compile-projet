@@ -514,13 +514,13 @@ static const yytype_uint8 yyrline[] =
        0,    37,    37,    39,    41,    41,    43,    45,    45,    47,
       47,    49,    49,    49,    49,    51,    51,    53,    53,    55,
       55,    55,    57,    57,    59,    63,    68,    81,    95,    96,
-      97,   101,   102,   103,   107,   108,   112,   113,   114,   115,
-     116,   117,   119,   119,   121,   122,   124,   124,   126,   126,
-     128,   128,   130,   130,   132,   132,   132,   132,   132,   132,
-     134,   136,   136,   138,   138,   140,   140,   142,   142,   144,
-     146,   146,   148,   150,   150,   152,   153,   155,   157,   159,
-     159,   159,   159,   161,   163,   163,   163,   165,   165,   167,
-     167,   167,   167,   167,   167
+      97,   101,   102,   104,   108,   109,   113,   114,   115,   116,
+     117,   118,   120,   120,   122,   123,   125,   125,   127,   127,
+     129,   129,   131,   131,   133,   133,   133,   133,   133,   133,
+     135,   137,   137,   139,   139,   141,   141,   143,   143,   145,
+     147,   147,   149,   151,   151,   153,   154,   156,   158,   160,
+     160,   160,   160,   162,   164,   164,   164,   166,   166,   168,
+     168,   168,   168,   168,   168
 };
 #endif
 
@@ -1664,90 +1664,91 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 102 "syntaxique.y"
-    {(yyval.reel)=(yyvsp[(1) - (3)].reel)/(yyvsp[(2) - (3)].reel);;}
+    {
+                        (yyval.reel)=(yyvsp[(1) - (3)].reel)/(yyvsp[(2) - (3)].reel);;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 103 "syntaxique.y"
+#line 104 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 107 "syntaxique.y"
+#line 108 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(2) - (3)].reel);;}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 108 "syntaxique.y"
+#line 109 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 112 "syntaxique.y"
+#line 113 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 113 "syntaxique.y"
+#line 114 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 114 "syntaxique.y"
+#line 115 "syntaxique.y"
     {(yyval.reel)=(float)(yyvsp[(1) - (1)].entier);;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 115 "syntaxique.y"
+#line 116 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 116 "syntaxique.y"
+#line 117 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 117 "syntaxique.y"
+#line 118 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 152 "syntaxique.y"
+#line 153 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 153 "syntaxique.y"
+#line 154 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1751 "syntaxique.tab.c"
+#line 1752 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1959,7 +1960,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 169 "syntaxique.y"
+#line 170 "syntaxique.y"
 
 
 int main(int argc, char** argv)
