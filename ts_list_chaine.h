@@ -19,40 +19,23 @@ typedef struct element_type2
   char type[20];
   pointer_element2 svt;
 } element_type2;
-typedef struct Table_P_Sur_Tables_IDF
-{
-  int state;
-  char name[20];
-  pointer_element1 tab_hachage[300];
-} Table_P_Sur_Tables_IDF;
 
-Table_P_Sur_Tables_IDF LES_TABLE_IDF[100];
-int POSITION_Tables_IDF=-1;
- // idf const
-pointer_element2 tab_hachage_m[300], tab_hachage_s[300];
+pointer_element1 tab_hachage[300];//idf const
+pointer_element2 tab_hachage_m[300],tab_hachage_s[300];
 pointer_element1 tab = NULL, prd = NULL;
-pointer_element2 tabm = NULL, tabs = NULL, prdm = NULL, prds = NULL;
-void initialisation()
-{
-  int i,j;
-  for (i = 0; i < 300; i++)
-  {
-    tab_hachage_s[i] = NULL;
-    tab_hachage_m[i] = NULL;
-  }
-  for (i=0;i<100;i++)
-    LES_TABLE_IDF[i].state=0;
-    for (j = 0; j < 300; j++)
-  {
-    LES_TABLE_IDF[i].tab_hachage[j] = NULL;
-    
+pointer_element2 tabm = NULL, tabs = NULL,prdm = NULL, prds = NULL;
+void initialisation(){
+  int i;
+  for(i=0;i<300;i++){
+      tab_hachage[i]=NULL;
+    tab_hachage_s[i]=NULL;
+    tab_hachage_m[i]=NULL;
   }
 }
-int fonction_de_hachage(char name[20])
-{
-  return ((int)name[0] + (int)name[1]) % 300;
+int fonction_de_hachage(char name[20]){
+  return ((int)name[0]+(int)name[1])%300;
 }
-void inserer(char entite[], char code[], char type[], float val, int y, int f, char taille[])
+void inserer(char entite[], char code[], char type[], float val, int y,int f,char taille[])
 {
   switch (y)
   {
@@ -67,17 +50,17 @@ void inserer(char entite[], char code[], char type[], float val, int y, int f, c
       strcpy(tab->code, code);
       strcpy(tab->type, type);
       tab->val = val;
-      strcpy(tab->taille, taille);
-      tab->svt = NULL;
-      if (LES_TABLE_IDF[POSITION_Tables_IDF].tab_hachage[f] == NULL)
+      strcpy(tab->taille,taille);
+      tab->svt=NULL;
+      if (tab_hachage[f] == NULL)
       {
-        LES_TABLE_IDF[POSITION_Tables_IDF].tab_hachage[f] = tab;
+        tab_hachage[f]=tab;
       }
       else
       {
-        prd = LES_TABLE_IDF[POSITION_Tables_IDF].tab_hachage[f];
-        while (prd->svt != NULL)
-          prd = prd->svt;
+        prd=tab_hachage[f];
+        while(prd->svt!=NULL)
+          prd=prd->svt;
         prd->svt = tab;
       }
     }
@@ -91,61 +74,54 @@ void inserer(char entite[], char code[], char type[], float val, int y, int f, c
     {
       strcpy(tabm->name, entite);
       strcpy(tabm->type, code);
-      tabm->svt = NULL;
+      tabm->svt=NULL;
       if (tab_hachage_m[f] == NULL)
       {
         tab_hachage_m[f] = tabm;
       }
       else
       {
-        prdm = tab_hachage_m[f];
-        while (prdm->svt != NULL)
-          prdm = prdm->svt;
-        prdm->svt = tabm;
+        prdm=tab_hachage_m[f];
+        while(prdm->svt!=NULL)
+          prdm=prdm->svt;
+          prdm->svt = tabm;
       }
     }
     break;
 
   case 2: /*insertion dans la table des separateurs*/
     tabs = malloc(sizeof(element_type2));
-
+    
     if (tabs == NULL)
       printf("memoire plein\n");
     else
     {
       strcpy(tabs->name, entite);
       strcpy(tabs->type, code);
-      tabs->svt = NULL;
+      tabs->svt=NULL;
       if (tab_hachage_s[f] == NULL)
       {
         tab_hachage_s[f] = tabs;
       }
       else
       {
-        prdm = tab_hachage_s[f];
-        while (prds->svt != NULL)
-          prds = prds->svt;
-        prds->svt = tabs;
+        prdm=tab_hachage_s[f];
+        while(prds->svt!=NULL)
+          prds=prds->svt;
+          prds->svt = tabs;
       }
       break;
     }
   }
 }
 
-void rechercher(char entite[], char code[], char type[], float val, int y, char taille[],int P_OU_F)
+void rechercher(char entite[], char code[], char type[], float val, int y,char taille[])
 {
-
   int f = fonction_de_hachage(entite);
-
   switch (y)
   {
   case 0: /*verifier si la case dans la tables des IDF et CONST est libre*/
-    if(P_OU_F==1){
-      POSITION_Tables_IDF++;
-      LES_TABLE_IDF[POSITION_Tables_IDF].state=1;
-      strcpy(LES_TABLE_IDF[POSITION_Tables_IDF].name,entite);
-    }
-    tab = LES_TABLE_IDF[POSITION_Tables_IDF].tab_hachage[f];
+    tab = tab_hachage[f];
     while (tab != NULL && strcmp(entite, tab->name) != 0)
     {
       tab = tab->svt;
@@ -175,8 +151,8 @@ void rechercher(char entite[], char code[], char type[], float val, int y, char 
     break;
 
   case 1: /*verifier si la case dans la tables des mots clÃ©s est libre*/
-    tabm = tab_hachage_m[f];
-
+    tabm= tab_hachage_m[f];
+   
     while (tabm != NULL && strcmp(entite, tabm->name) != 0)
     {
       tabm = tabm->svt;
@@ -188,8 +164,8 @@ void rechercher(char entite[], char code[], char type[], float val, int y, char 
     break;
 
   case 2: /*verifier si la case dans la tables des sÃ©parateurs est libre*/
-    tabs = tab_hachage_s[f];
-
+   tabs = tab_hachage_s[f];
+   
     while (tabs != NULL && strcmp(entite, tabs->name) != 0)
     {
       tabs = tabs->svt;
@@ -204,25 +180,20 @@ void rechercher(char entite[], char code[], char type[], float val, int y, char 
 
 void afficher()
 {
-
-  int f,i=0;
-
-  while(i<100 && LES_TABLE_IDF[i].state==1){
-  printf("/******************Table des symboles IDF De %s****************/ \n",LES_TABLE_IDF[i].name);
-  printf("___________________________________________________________________________________\n");
+  
+  int f;
+  printf("/***************Table des symboles IDF*************/\n");
+  printf("____________________________________________________________________\n");
   printf("\t| Nom_Entite |  Code_Entite   |  Type_Entite | Val_Entite   |    Taille    |\n");
-  printf("____________________________________________________________________________________\n");
-  for (f = 0; f < 300; f++)
+  printf("____________________________________________________________________\n");
+  for(f=0;f<300;f++){
+    tab = tab_hachage[f];
+  while (tab != NULL)
   {
-    tab = LES_TABLE_IDF[i].tab_hachage[f];
-    while (tab != NULL)
-    {
-      printf("\t|%11s |%15s | %12s | %12f | %12s |\n", tab->name, tab->code, tab->type, tab->val, tab->taille);
-      tab = tab->svt;
-    }
-    }
-    printf("\n");
-    i++;
+    printf("\t|%11s |%15s | %12s | %12f | %12s |\n", tab->name, tab->code, tab->type, tab->val,tab->taille);
+
+    tab = tab->svt;
+  }
   }
 
   printf("\n/***************Table des symboles mots clÃ©s*************/\n");
@@ -230,8 +201,7 @@ void afficher()
   printf("_____________________________________\n");
   printf("\t| NomEntite |  CodeEntite | \n");
   printf("_____________________________________\n");
-  for (f = 0; f < 300; f++)
-  {
+  for(f=0;f<300;f++){
     tabm = tab_hachage_m[f];
     while (tabm != NULL)
     {
@@ -246,14 +216,13 @@ void afficher()
   printf("_____________________________________\n");
   printf("\t| NomEntite |  CodeEntite | \n");
   printf("_____________________________________\n");
-  for (f = 0; f < 300; f++)
-  {
+  for(f=0;f<300;f++){
     tabs = tab_hachage_s[f];
-    while (tabs != NULL)
-    {
-      printf("\t|%10s |%12s | \n", tabs->name, tabs->type);
+  while (tabs != NULL)
+  {
+    printf("\t|%10s |%12s | \n", tabs->name, tabs->type);
 
-      tabs = tabs->svt;
-    }
+    tabs = tabs->svt;
+  }
   }
 }

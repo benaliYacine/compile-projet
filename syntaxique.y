@@ -8,6 +8,7 @@
     extern FILE *yyin;
     char* tmp;
     int k;
+    char* NOM_P_OU_F;
     
 %}
 
@@ -51,17 +52,17 @@ DECS: VIDE | ENSDEC
 ;
 ENSDEC: ENSDEC DEC | DEC
 ;
-DEC: TYPE ENSIDF_dec pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg {rechercher($2,"IDF","TABLEAU",0,0,$5);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+DEC: TYPE ENSIDF_dec pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg {rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
 partie_gauch_affectation: aff valeur {$$=$2;} | VIDE { $$=0;}
 ;
 ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
 
-    rechercher($3,"IDF"," ",$4,0," ");
+    rechercher($3,"IDF"," ",$4,0," ",0);
 }
 | idf partie_gauch_affectation {
 
-    rechercher($1,"IDF"," ",$2,0," ");
+    rechercher($1,"IDF"," ",$2,0," ",0);
 }
 ; 
 TAILLE: TAILLE verg inti {
