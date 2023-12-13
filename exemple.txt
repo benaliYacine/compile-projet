@@ -13,7 +13,7 @@ REAL MAT2 DIMENSION (20);
 
 % Instructions;
 A = MAT2(5,4) + (B * 5);
-B = 30*0;
+B = 30;
 C = "L3";
 D = TRUE;
 
@@ -38,7 +38,7 @@ INTEGER TAB DIMENSION (10) ;
 
 % Instructions;
 A = TAB(11) + (B * 7);
-B = 30;
+B = 30/0;
 C = 22+10*B;
 A = CALL nomroutine (A,B,C);
 EQUIVALENCE (A, B, C), (Y, TAB(3));

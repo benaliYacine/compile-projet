@@ -69,7 +69,7 @@ void inserer(char entite[], char code[], char type[], float val, int y, int f, c
       strcpy(tab->type, type);
       tab->val = val;
       tab->svt = NULL;
-      if (taille==NULL)
+      if (taille == NULL)
       {
         strcpy(tab->taille, " ");
       }
@@ -157,7 +157,7 @@ void rechercher(char entite[], char code[], char type[], float val, int y, char 
     }
     if (tab == NULL)
     {
-      
+
       inserer(entite, code, type, val, 0, f, taille);
     }
     else

@@ -9,6 +9,8 @@
     char* tmp;
     int k;
     char* NOM_P_OU_F;
+    int erreurSemantique = 0;
+    int erreurSyntaxique = 0;
     
 %}
 
@@ -34,7 +36,7 @@
 
 
 %%
-s: FCTS PRGM_PRIN { printf(" Le programme est correcte syntaxiquement\n"); YYACCEPT; }
+s: FCTS PRGM_PRIN {YYACCEPT; }
 ;
 PRGM_PRIN: mc_prgrm idf DECS INSTS mc_end
 ;
@@ -99,8 +101,7 @@ EXPRE
 
 TERM
     : TERM mul FACTOR {$$=$1*$2;}
-    | TERM divi FACTOR {
-                        $$=$1/$2;}
+    | TERM divi FACTOR {if($3==0){erreurSemantique=1;YYABORT;}else$$=$1/$2;}
     | FACTOR {$$=$1;}
     ;
 
@@ -183,6 +184,15 @@ int main(int argc, char** argv)
     }
     yyparse();
     yylex();
+    if (erreurSemantique) {
+        printf("File \"%s\", line %d, character %d: sementique error\n",file_name, nb_ligne, Col);
+        return 1;
+    } else if(!erreurSyntaxique){
+        printf("Le programme est correct syntaxiquement et semantiquement.\n");
+        // ... Exécuter le programme ...
+        return 0;
+    }else if( erreurSyntaxique || erreurSemantique)
+                return 0;
     afficher();
     
     if (yyin != stdin) {
@@ -196,4 +206,5 @@ int main(int argc, char** argv)
  int yyerror ( char*  msg )
  {
     printf("File \"%s\", line %d, character %d: syntaxique error\n",file_name, nb_ligne, Col);
+    erreurSyntaxique=1;
   }
