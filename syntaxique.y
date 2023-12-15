@@ -11,6 +11,8 @@
     char* NOM_P_OU_F;
     int erreurSemantique = 0;
     int erreurSyntaxique = 0;
+    int nb_argument=0;
+    
     
 %}
 
@@ -46,7 +48,7 @@ VIDE:
 ;
 ENSFCT: ENSFCT FCT | FCT
 ;
-FCT: TYPE mc_rtin idf po IDFS pf DECS ENSINST assignment mc_endr | TYPE mc_rtin idf po IDFS pf DECS assignment mc_endr
+FCT: TYPE mc_rtin idf po IDFS pf DECS ENSINST assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}  | TYPE mc_rtin idf po IDFS pf  DECS assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
@@ -101,7 +103,7 @@ EXPRE
 
 TERM
     : TERM mul FACTOR {$$=$1*$2;}
-    | TERM divi FACTOR {if($3==0){erreurSemantique=1;YYABORT;}else$$=$1/$2;}
+    | TERM divi FACTOR {if($3==0){erreurSemantique=1;Col-=2;YYABORT;}else $$=$1/$2;}
     | FACTOR {$$=$1;}
     ;
 
@@ -111,21 +113,21 @@ FACTOR
     ;
 
 OPERAND
-    : idf { $$=0;}
+    :  idf {if(!rechercher($1,"IDF"," ",0,0," ",0)){erreurSemantique=1;Col-=2;YYABORT;}else $$=0;}
     | LOGI { $$=0;}
     | inti {$$=(float)$1;}
     | real {$$=$1;}
     | idf po TAILLE pf { $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
-    | mc_call idf po ENSpara pf { $$=0;} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){erreurSemantique=1;Col-=2;YYABORT;}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
-ENSpara: ENSpara verg valeur | valeur 
+ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}
 ;
 LOGI: mc_true
     | mc_false
 ;
 IDFS: ENSIDF | VIDE
 ;
-ENSIDF: ENSIDF verg idf | idf 
+ENSIDF: ENSIDF verg idf {nb_argument++;} | idf {nb_argument++;}
 ;
 INSTS: VIDE | ENSINST
 ;
@@ -190,7 +192,7 @@ int main(int argc, char** argv)
     } else if(!erreurSyntaxique){
         printf("Le programme est correct syntaxiquement et semantiquement.\n");
         // ... Exécuter le programme ...
-        return 0;
+        
     }else if( erreurSyntaxique || erreurSemantique)
                 return 0;
     afficher();

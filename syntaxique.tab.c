@@ -82,11 +82,13 @@
     char* NOM_P_OU_F;
     int erreurSemantique = 0;
     int erreurSyntaxique = 0;
+    int nb_argument=0;
+    
     
 
 
 /* Line 189 of yacc.c  */
-#line 90 "syntaxique.tab.c"
+#line 92 "syntaxique.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -166,7 +168,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 17 "syntaxique.y"
+#line 19 "syntaxique.y"
 
          int     entier;
          char*   str;
@@ -175,7 +177,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 179 "syntaxique.tab.c"
+#line 181 "syntaxique.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -187,7 +189,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 191 "syntaxique.tab.c"
+#line 193 "syntaxique.tab.c"
 
 #ifdef short
 # undef short
@@ -513,16 +515,16 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    39,    39,    41,    43,    43,    45,    47,    47,    49,
-      49,    51,    51,    51,    51,    53,    53,    55,    55,    57,
-      57,    57,    59,    59,    61,    65,    70,    83,    97,    98,
-      99,   103,   104,   105,   109,   110,   114,   115,   116,   117,
-     118,   119,   121,   121,   123,   124,   126,   126,   128,   128,
-     130,   130,   132,   132,   134,   134,   134,   134,   134,   134,
-     136,   138,   138,   140,   140,   142,   142,   144,   144,   146,
-     148,   148,   150,   152,   152,   154,   155,   157,   159,   161,
-     161,   161,   161,   163,   165,   165,   165,   167,   167,   169,
-     169,   169,   169,   169,   169
+       0,    41,    41,    43,    45,    45,    47,    49,    49,    51,
+      51,    53,    53,    53,    53,    55,    55,    57,    57,    59,
+      59,    59,    61,    61,    63,    67,    72,    85,    99,   100,
+     101,   105,   106,   107,   111,   112,   116,   117,   118,   119,
+     120,   121,   123,   123,   125,   126,   128,   128,   130,   130,
+     132,   132,   134,   134,   136,   136,   136,   136,   136,   136,
+     138,   140,   140,   142,   142,   144,   144,   146,   146,   148,
+     150,   150,   152,   154,   154,   156,   157,   159,   161,   163,
+     163,   163,   163,   165,   167,   167,   167,   169,   169,   171,
+     171,   171,   171,   171,   171
 };
 #endif
 
@@ -1554,35 +1556,49 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 39 "syntaxique.y"
+#line 41 "syntaxique.y"
     {YYACCEPT; ;}
+    break;
+
+  case 9:
+
+/* Line 1455 of yacc.c  */
+#line 51 "syntaxique.y"
+    {inserer_fonction((yyvsp[(3) - (10)].str),nb_argument);nb_argument=0;;}
+    break;
+
+  case 10:
+
+/* Line 1455 of yacc.c  */
+#line 51 "syntaxique.y"
+    {inserer_fonction((yyvsp[(3) - (9)].str),nb_argument);nb_argument=0;;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 57 "syntaxique.y"
+#line 59 "syntaxique.y"
     {rechercher((yyvsp[(2) - (7)].str),"IDF","TABLEAU",0,0,(yyvsp[(5) - (7)].str),0);;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 59 "syntaxique.y"
+#line 61 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(2) - (2)].reel);;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 59 "syntaxique.y"
+#line 61 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 61 "syntaxique.y"
+#line 63 "syntaxique.y"
     {
 
     rechercher((yyvsp[(3) - (4)].str),"IDF"," ",(yyvsp[(4) - (4)].reel),0," ",0);
@@ -1592,7 +1608,7 @@ yyreduce:
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 65 "syntaxique.y"
+#line 67 "syntaxique.y"
     {
 
     rechercher((yyvsp[(1) - (2)].str),"IDF"," ",(yyvsp[(2) - (2)].reel),0," ",0);
@@ -1602,7 +1618,7 @@ yyreduce:
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 70 "syntaxique.y"
+#line 72 "syntaxique.y"
     {
                                 char* str_inti;
                                 // Allocate memory for str_inti
@@ -1621,7 +1637,7 @@ yyreduce:
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 83 "syntaxique.y"
+#line 85 "syntaxique.y"
     {
                                 char* str_inti;
                                 // Allocate memory for str_inti
@@ -1637,119 +1653,147 @@ yyreduce:
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 97 "syntaxique.y"
+#line 99 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (3)].reel)+(yyvsp[(2) - (3)].reel);;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 98 "syntaxique.y"
+#line 100 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (3)].reel)-(yyvsp[(2) - (3)].reel);;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 99 "syntaxique.y"
+#line 101 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 103 "syntaxique.y"
+#line 105 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (3)].reel)*(yyvsp[(2) - (3)].reel);;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 104 "syntaxique.y"
-    {if((yyvsp[(3) - (3)].reel)==0){erreurSemantique=1;YYABORT;}else(yyval.reel)=(yyvsp[(1) - (3)].reel)/(yyvsp[(2) - (3)].reel);;}
+#line 106 "syntaxique.y"
+    {if((yyvsp[(3) - (3)].reel)==0){erreurSemantique=1;Col-=2;YYABORT;}else (yyval.reel)=(yyvsp[(1) - (3)].reel)/(yyvsp[(2) - (3)].reel);;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 105 "syntaxique.y"
+#line 107 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 109 "syntaxique.y"
+#line 111 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(2) - (3)].reel);;}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 110 "syntaxique.y"
+#line 112 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 114 "syntaxique.y"
-    { (yyval.reel)=0;;}
+#line 116 "syntaxique.y"
+    {if(!rechercher((yyvsp[(1) - (1)].str),"IDF"," ",0,0," ",0)){erreurSemantique=1;Col-=2;YYABORT;}else (yyval.reel)=0;;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 115 "syntaxique.y"
+#line 117 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 116 "syntaxique.y"
+#line 118 "syntaxique.y"
     {(yyval.reel)=(float)(yyvsp[(1) - (1)].entier);;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 117 "syntaxique.y"
+#line 119 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 118 "syntaxique.y"
+#line 120 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 119 "syntaxique.y"
-    { (yyval.reel)=0;;}
+#line 121 "syntaxique.y"
+    {if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)){erreurSemantique=1;Col-=2;YYABORT;}else {(yyval.reel)=0;nb_argument=0;};}
+    break;
+
+  case 42:
+
+/* Line 1455 of yacc.c  */
+#line 123 "syntaxique.y"
+    {nb_argument++;;}
+    break;
+
+  case 43:
+
+/* Line 1455 of yacc.c  */
+#line 123 "syntaxique.y"
+    {nb_argument++;;}
+    break;
+
+  case 48:
+
+/* Line 1455 of yacc.c  */
+#line 130 "syntaxique.y"
+    {nb_argument++;;}
+    break;
+
+  case 49:
+
+/* Line 1455 of yacc.c  */
+#line 130 "syntaxique.y"
+    {nb_argument++;;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 154 "syntaxique.y"
+#line 156 "syntaxique.y"
     { (yyval.reel)=0;;}
     break;
 
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 155 "syntaxique.y"
+#line 157 "syntaxique.y"
     {(yyval.reel)=(yyvsp[(1) - (1)].reel);;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1753 "syntaxique.tab.c"
+#line 1797 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1961,7 +2005,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 171 "syntaxique.y"
+#line 173 "syntaxique.y"
 
 
 int main(int argc, char** argv)
@@ -1984,7 +2028,7 @@ int main(int argc, char** argv)
     } else if(!erreurSyntaxique){
         printf("Le programme est correct syntaxiquement et semantiquement.\n");
         // ... Exécuter le programme ...
-        return 0;
+        
     }else if( erreurSyntaxique || erreurSemantique)
                 return 0;
     afficher();

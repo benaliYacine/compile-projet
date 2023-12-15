@@ -468,7 +468,8 @@ extern Col;
  extern char *NOM_P_OU_F;//nom proramme ou fonction
 int P_OU_F=0;//is pares nom programme ou fonction
 
-#line 472 "lex.yy.c"
+
+#line 473 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -622,7 +623,7 @@ YY_DECL
 #line 25 "lexical.l"
 
 
-#line 626 "lex.yy.c"
+#line 627 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -984,7 +985,7 @@ YY_RULE_SETUP
 #line 131 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 988 "lex.yy.c"
+#line 989 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

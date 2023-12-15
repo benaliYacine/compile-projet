@@ -12,6 +12,7 @@ extern Col;
  extern char *NOM_P_OU_F;//nom proramme ou fonction
 int P_OU_F=0;//is pares nom programme ou fonction
 
+
 %}
 
 lettre [a-zA-Z]
@@ -21,7 +22,6 @@ idf {lettre}({lettre}|{chiffre})*
 str \"[^"]*\"
 int -{chiffre}+|{chiffre}+
 real (-{chiffre}+|{chiffre}+)\.{chiffre}+
-
 %%
 
 {commentaire} 

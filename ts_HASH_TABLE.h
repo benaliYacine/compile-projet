@@ -25,13 +25,40 @@ typedef struct Table_P_Sur_Tables_IDF
   char name[20];
   pointer_element1 tab_hachage[300];
 } Table_P_Sur_Tables_IDF;
-
+typedef struct Table_Arguments_Fonction
+{
+  char name[20];
+  int state;
+  int nb_argument;
+} Table_Arguments_Fonction;
+Table_Arguments_Fonction TABLE_DES_FONCTION[100];
 Table_P_Sur_Tables_IDF LES_TABLE_IDF[100];
 int POSITION_Tables_IDF = -1;
 // idf const
 pointer_element2 tab_hachage_m[300], tab_hachage_s[300];
 pointer_element1 tab = NULL, prd = NULL;
 pointer_element2 tabm = NULL, tabs = NULL, prdm = NULL, prds = NULL;
+void inserer_fonction(char name_F[], int nb_argument)
+{
+  int i = 0;
+  while (TABLE_DES_FONCTION[i].state == 1)
+  {
+    i++;
+  }
+  TABLE_DES_FONCTION[i].state = 1;
+  TABLE_DES_FONCTION[i].nb_argument = nb_argument;
+  strcpy(TABLE_DES_FONCTION[i].name, name_F);
+}
+int verifier_nb_argument(char name_F[], int nb_argument)
+{
+  int i = 0;
+  while (TABLE_DES_FONCTION[i].state == 1 && strcmp(TABLE_DES_FONCTION[i].name, name_F) != 0)
+    i++;
+  if (TABLE_DES_FONCTION[i].state == 1 && TABLE_DES_FONCTION[i].nb_argument == nb_argument)
+    return 0;
+  else
+    return 1;
+}
 void initialisation()
 {
   int i, j;
@@ -41,7 +68,10 @@ void initialisation()
     tab_hachage_m[i] = NULL;
   }
   for (i = 0; i < 100; i++)
+  {
+    TABLE_DES_FONCTION[i].state = 0;
     LES_TABLE_IDF[i].state = 0;
+  }
   for (j = 0; j < 300; j++)
   {
     LES_TABLE_IDF[i].tab_hachage[j] = NULL;
@@ -138,7 +168,7 @@ void inserer(char entite[], char code[], char type[], float val, int y, int f, c
   }
 }
 
-void rechercher(char entite[], char code[], char type[], float val, int y, char taille[], int P_OU_F)
+int rechercher(char entite[], char code[], char type[], float val, int y, char taille[], int P_OU_F)
 {
   int f = fonction_de_hachage(entite);
   switch (y)
@@ -159,6 +189,7 @@ void rechercher(char entite[], char code[], char type[], float val, int y, char 
     {
 
       inserer(entite, code, type, val, 0, f, taille);
+      return 0;
     }
     else
     {
@@ -177,6 +208,7 @@ void rechercher(char entite[], char code[], char type[], float val, int y, char 
         tab->val = val;
       }
       printf("entite existe deja\n");
+      return 1;
     }
     break;
 
