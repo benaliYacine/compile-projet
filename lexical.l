@@ -3,13 +3,13 @@ extern nb_ligne;
 extern Col;
 #include "Syntaxique.tab.h"
 #include <stdbool.h>
- #include <stdlib.h> // For atoi and atof
- #include <limits.h> // For INT_MAX and INT_MIN
- #include <string.h>
- extern YYSTYPE yylval;
- extern file_name;
- char *pointPtr; //point pointer
- extern char *NOM_P_OU_F;//nom proramme ou fonction
+#include <stdlib.h> // For atoi and atof
+#include <limits.h> // For INT_MAX and INT_MIN
+#include <string.h>
+extern YYSTYPE yylval;
+extern file_name;
+char *pointPtr; //point pointer
+extern char *NOM_P_OU_F;//nom proramme ou fonction
 int P_OU_F=0;//is pares nom programme ou fonction
 
 
