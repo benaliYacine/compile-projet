@@ -9,8 +9,7 @@
     char* tmp;
     int k;
     int nb_argument=0;
-    
-    
+
 %}
 
 %union {
@@ -98,7 +97,7 @@ TAILLE: TAILLE verg inti {
 
                                 sprintf(str_inti, "%d", $1);
                                 // printf("----------------%s\n", str_inti);
-                                
+
                                 $$=str_inti;
     }     //kouna nekhedmou biha hna <==* fi blaset ENSpara w raja3naha w manb3d na7oha
 ;

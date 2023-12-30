@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 typedef struct element_type1 *pointer_element1;
+
 typedef struct element_type1
 {
   char name[20];
@@ -14,24 +15,28 @@ typedef struct element_type1
 } element_type1;
 
 typedef struct element_type2 *pointer_element2;
+
 typedef struct element_type2
 {
   char name[20];
   char type[20];
   pointer_element2 svt;
 } element_type2;
+
 typedef struct Table_P_Sur_Tables_IDF
 {
   int state;
   char name[20];
   pointer_element1 tab_hachage[300];
 } Table_P_Sur_Tables_IDF;
+
 typedef struct Table_Arguments_Fonction
 {
   char name[20];
   int state;
   int nb_argument;
 } Table_Arguments_Fonction;
+
 Table_Arguments_Fonction TABLE_DES_FONCTION[100];
 Table_P_Sur_Tables_IDF LES_TABLE_IDF[100];
 int POSITION_Tables_IDF = -1;
@@ -39,23 +44,28 @@ int POSITION_Tables_IDF = -1;
 pointer_element2 tab_hachage_m[300], tab_hachage_s[300];
 pointer_element1 tab = NULL, prd = NULL;
 pointer_element2 tabm = NULL, tabs = NULL, prdm = NULL, prds = NULL;
-int Declarer(char entite[]){ //hadi t3 double declaration w t3 variable declarer ou non
-    int f = fonction_de_hachage(entite);
-    tab = LES_TABLE_IDF[POSITION_Tables_IDF].tab_hachage[f];
-    while (tab != NULL && strcmp(entite, tab->name) != 0)
+
+int Declarer(char entite[])
+{
+  int f = fonction_de_hachage(entite);
+  tab = LES_TABLE_IDF[POSITION_Tables_IDF].tab_hachage[f];
+  while (tab != NULL && strcmp(entite, tab->name) != 0)
+  {
+    tab = tab->svt;
+  }
+  printf("----------------%s\n", tab->name);
+  if (tab != NULL)
+    if (tab->declarer == 1)
     {
-      tab = tab->svt;
-    }
-    if(tab!=NULL)
-    if (tab->declarer == 1){
       return 0;
     }
-    else{
-      tab->declarer=1;
+    else
+    {
+      tab->declarer = 1;
       return 1;
     }
-
 }
+
 void inserer_fonction(char name_F[], int nb_argument)
 {
   int i = 0;
@@ -67,6 +77,7 @@ void inserer_fonction(char name_F[], int nb_argument)
   TABLE_DES_FONCTION[i].nb_argument = nb_argument;
   strcpy(TABLE_DES_FONCTION[i].name, name_F);
 }
+
 int verifier_nb_argument(char name_F[], int nb_argument)
 {
   int i = 0;
@@ -77,6 +88,7 @@ int verifier_nb_argument(char name_F[], int nb_argument)
   else
     return 1;
 }
+
 void initialisation()
 {
   int i, j;
@@ -95,10 +107,12 @@ void initialisation()
     LES_TABLE_IDF[i].tab_hachage[j] = NULL;
   }
 }
+
 int fonction_de_hachage(char name[20])
 {
   return ((int)name[0] + (int)name[1]) % 300;
 }
+
 void inserer(char entite[], char code[], char type[], float val, int y, int f, char taille[])
 {
   switch (y)
@@ -116,7 +130,7 @@ void inserer(char entite[], char code[], char type[], float val, int y, int f, c
       strcpy(tab->code, code);
       strcpy(tab->type, type);
       tab->val = val;
-      tab->declarer=0;
+      tab->declarer = 0;
       tab->svt = NULL;
       if (taille == NULL)
       {
@@ -206,7 +220,7 @@ int rechercher(char entite[], char code[], char type[], float val, int y, char t
     }
     if (tab == NULL)
     {
-      inserer(entite, code, type, val, 0, f,taille);
+      inserer(entite, code, type, val, 0, f, taille);
       return 0;
     }
     else
