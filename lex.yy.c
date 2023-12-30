@@ -978,7 +978,7 @@ YY_RULE_SETUP
 case 46:
 YY_RULE_SETUP
 #line 130 "lexical.l"
-{ printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);return err;}
+{yyerror("Lexical error");return -1;} 
 	YY_BREAK
 case 47:
 YY_RULE_SETUP

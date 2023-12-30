@@ -9,8 +9,6 @@
     char* tmp;
     int k;
     char* NOM_P_OU_F;
-    int erreurSemantique = 0;
-    int erreurSyntaxique = 0;
     int nb_argument=0;
     
     
@@ -56,16 +54,28 @@ DECS: VIDE | ENSDEC
 ;
 ENSDEC: ENSDEC DEC | DEC
 ;
-DEC: TYPE ENSIDF_dec pvg | TYPE idf mul inti pvg | TYPE idf mc_dim po TAILLE pf pvg {rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+DEC: TYPE ENSIDF_dec pvg | TYPE idf {if(!Declarer($2)){
+        Col-=2;
+        yyerror("Sementique erreur");
+    }} mul inti pvg 
+    | TYPE idf mc_dim po TAILLE pf pvg {if(!Declarer($2)){
+        yyerror("Sementique erreur");}rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
 partie_gauch_affectation: aff valeur {$$=$2;} | VIDE { $$=0;}
 ;
 ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
-
+    if(!Declarer($3)){
+        Col-=2;
+        yyerror("Sementique erreur");
+    }
     rechercher($3,"IDF"," ",$4,0," ",0);
 }
 | idf partie_gauch_affectation {
-
+    if(!Declarer($1)){
+        Col-=2;
+        yyerror("Sementique erreur");
+        
+    }
     rechercher($1,"IDF"," ",$2,0," ",0);
 }
 ; 
@@ -103,7 +113,7 @@ EXPRE
 
 TERM
     : TERM mul FACTOR {$$=$1*$2;}
-    | TERM divi FACTOR {if($3==0){erreurSemantique=1;Col-=2;YYABORT;}else $$=$1/$2;}
+    | TERM divi FACTOR {if($3==0){yyerror("Sementique erreur");}else $$=$1/$2;}
     | FACTOR {$$=$1;}
     ;
 
@@ -113,12 +123,12 @@ FACTOR
     ;
 
 OPERAND
-    :  idf {if(!rechercher($1,"IDF"," ",0,0," ",0)){erreurSemantique=1;Col-=2;YYABORT;}else $$=0;}
+    :  idf {$$=0;}
     | LOGI { $$=0;}
     | inti {$$=(float)$1;}
     | real {$$=$1;}
     | idf po TAILLE pf { $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
-    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){erreurSemantique=1;Col-=2;YYABORT;}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique erreur");}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
 ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}
 ;
@@ -151,7 +161,11 @@ else_clause: mc_else ENSINST |
 ;
 assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation 
 ;
-OGassi: idf | idf po ENSpara pf
+OGassi: idf{if(Declarer($1)){
+        Col-=2;
+        yyerror("Sementique erreur");      
+    }} 
+    | idf po ENSpara pf
 ;
 valeur: str { $$=0;}
         | EXPRE {$$=$1;} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
@@ -186,27 +200,20 @@ int main(int argc, char** argv)
     }
     yyparse();
     yylex();
-    if (erreurSemantique) {
-        printf("File \"%s\", line %d, character %d: sementique error\n",file_name, nb_ligne, Col);
-        return 1;
-    } else if(!erreurSyntaxique){
-        printf("Le programme est correct syntaxiquement et semantiquement.\n");
-        // ... Exécuter le programme ...
-        
-    }else if( erreurSyntaxique || erreurSemantique)
-                return 0;
     afficher();
     
     if (yyin != stdin) {
         fclose(yyin);
     }
     
+    
    return 0;
  }
  yywrap ()
  {}
- int yyerror ( char*  msg )
+
+int yyerror ( char*  msg )
  {
-    printf("File \"%s\", line %d, character %d: syntaxique error\n",file_name, nb_ligne, Col);
-    erreurSyntaxique=1;
+    printf("File \"%s\", line %d, character %d: %s\n",file_name, nb_ligne, Col,msg);
+    exit(EXIT_FAILURE);
   }

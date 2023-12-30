@@ -127,7 +127,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 [ \t] Col= Col + strlen(yytext);
 \n {Col= 1; nb_ligne++;}
 
-. { printf("File \"%s\", line %d, character %d: lexical error\n",file_name, nb_ligne, Col);return err;}
+. {yyerror("Lexical error");return -1;} 
 %%
 
 

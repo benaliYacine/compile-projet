@@ -9,6 +9,7 @@ typedef struct element_type1
   char type[20];
   float val;
   char taille[20];
+  int declarer;
   pointer_element1 svt;
 } element_type1;
 
@@ -38,6 +39,24 @@ int POSITION_Tables_IDF = -1;
 pointer_element2 tab_hachage_m[300], tab_hachage_s[300];
 pointer_element1 tab = NULL, prd = NULL;
 pointer_element2 tabm = NULL, tabs = NULL, prdm = NULL, prds = NULL;
+int Declarer(char entite[]){
+    int f = fonction_de_hachage(entite);
+    tab = LES_TABLE_IDF[POSITION_Tables_IDF].tab_hachage[f];
+    while (tab != NULL && strcmp(entite, tab->name) != 0)
+    {
+      tab = tab->svt;
+    }
+    printf("----------------%s\n",tab->name);
+    if(tab!=NULL)
+    if (tab->declarer == 1){
+      return 0;
+    }
+    else{
+      tab->declarer=1;
+      return 1;
+    }
+
+}
 void inserer_fonction(char name_F[], int nb_argument)
 {
   int i = 0;
@@ -98,6 +117,7 @@ void inserer(char entite[], char code[], char type[], float val, int y, int f, c
       strcpy(tab->code, code);
       strcpy(tab->type, type);
       tab->val = val;
+      tab->declarer=0;
       tab->svt = NULL;
       if (taille == NULL)
       {
@@ -187,8 +207,7 @@ int rechercher(char entite[], char code[], char type[], float val, int y, char t
     }
     if (tab == NULL)
     {
-
-      inserer(entite, code, type, val, 0, f, taille);
+      inserer(entite, code, type, val, 0, f,taille);
       return 0;
     }
     else
@@ -264,7 +283,7 @@ void afficher()
     i++;
   }
 
-  printf("\n/***************Table des symboles mots clÃ©s*************/\n");
+  printf("\n/***************Table des symboles mots cles*************/\n");
 
   printf("_____________________________________\n");
   printf("\t| NomEntite |  CodeEntite | \n");
@@ -280,7 +299,20 @@ void afficher()
     }
   }
 
-  printf("\n/***************Table des symboles sÃ©parateurs*************/\n");
+  printf("\n/***************Table des symboles separateurs*************/\n");
+
+  for (f = 0; f < 300; f++)
+  {
+    tabm = tab_hachage_m[f];
+    while (tabm != NULL)
+    {
+      printf("\t|%10s |%12s | \n", tabm->name, tabm->type);
+
+      tabm = tabm->svt;
+    }
+  }
+
+  printf("\n/***************Table des symboles separateurs*************/\n");
 
   printf("_____________________________________\n");
   printf("\t| NomEntite |  CodeEntite | \n");
