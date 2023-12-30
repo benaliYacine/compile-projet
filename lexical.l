@@ -9,7 +9,6 @@ extern Col;
  extern YYSTYPE yylval;
  extern file_name;
  char *pointPtr; //point pointer
- extern char *NOM_P_OU_F;//nom proramme ou fonction
 int P_OU_F=0;//is pares nom programme ou fonction
 
 
@@ -66,7 +65,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 					rechercher(yytext,"IDF"," ",0,0," ",P_OU_F);  
 					if(P_OU_F==1){
 						P_OU_F=0;
-					} 
+					}
               Col= Col + strlen(yytext);
 			  if (yyleng>10) printf ("warning: IDF trop long a la ligne %d a la colonne %d \n ",nb_ligne, Col);
               printf (" L entite lexicale reconnue est %s \n", yytext); 
@@ -127,7 +126,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 [ \t] Col= Col + strlen(yytext);
 \n {Col= 1; nb_ligne++;}
 
-. {yyerror("Lexical error");return -1;} 
+. {yyerror("Lexical error");return err;} 
 %%
 
 

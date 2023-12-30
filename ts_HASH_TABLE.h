@@ -39,14 +39,13 @@ int POSITION_Tables_IDF = -1;
 pointer_element2 tab_hachage_m[300], tab_hachage_s[300];
 pointer_element1 tab = NULL, prd = NULL;
 pointer_element2 tabm = NULL, tabs = NULL, prdm = NULL, prds = NULL;
-int Declarer(char entite[]){
+int Declarer(char entite[]){ //hadi t3 double declaration w t3 variable declarer ou non
     int f = fonction_de_hachage(entite);
     tab = LES_TABLE_IDF[POSITION_Tables_IDF].tab_hachage[f];
     while (tab != NULL && strcmp(entite, tab->name) != 0)
     {
       tab = tab->svt;
     }
-    printf("----------------%s\n",tab->name);
     if(tab!=NULL)
     if (tab->declarer == 1){
       return 0;

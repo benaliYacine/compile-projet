@@ -8,7 +8,6 @@
     extern FILE *yyin;
     char* tmp;
     int k;
-    char* NOM_P_OU_F;
     int nb_argument=0;
     
     
@@ -36,7 +35,7 @@
 
 
 %%
-s: FCTS PRGM_PRIN {YYACCEPT; }
+s: FCTS PRGM_PRIN {YYACCEPT;}
 ;
 PRGM_PRIN: mc_prgrm idf DECS INSTS mc_end
 ;
@@ -162,10 +161,11 @@ else_clause: mc_else ENSINST |
 assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation 
 ;
 OGassi: idf{if(Declarer($1)){
-        Col-=2;
         yyerror("Sementique erreur");      
     }} 
-    | idf po ENSpara pf
+    | idf po ENSpara pf {if(Declarer($1)){
+        yyerror("Sementique erreur");      
+    }} 
 ;
 valeur: str { $$=0;}
         | EXPRE {$$=$1;} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
