@@ -121,11 +121,15 @@ FACTOR
     ;
 
 OPERAND
-    :  idf {$$=0;}
+    :  idf {{if(Declarer($1)){
+        yyerror("Sementique erreur");      
+    }} $$=0;}
     | LOGI { $$=0;}
     | inti {$$=(float)$1;}
     | real {$$=$1;}
-    | idf po TAILLE pf { $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    | idf po TAILLE pf {{if(Declarer($1)){
+        yyerror("Sementique erreur");      
+    }} $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
     | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique erreur");}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
 ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}
@@ -151,7 +155,12 @@ ens_list_var: ens_list_var verg po list_var pf | po list_var pf
 ;
 list_var: list_var verg var | var 
 ;
-var: idf | idf po ENSpara pf
+var: idf {if(Declarer($1)){
+        yyerror("Sementique erreur");      
+    }} 
+     | idf po ENSpara pf {if(Declarer($1)){
+        yyerror("Sementique erreur");      
+    }} 
 ;
 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif 
 ;
@@ -181,7 +190,7 @@ CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT
 ;
 CONDIT: po CONDI pf | EXPLOGI 
 ;
-EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
+EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE 
 ;
 %%
 

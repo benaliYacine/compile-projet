@@ -5,8 +5,9 @@ PROGRAM HelloAcad
 INTEGER A=5,B=4; 
 CHARACTER C*20;
 REAL Y;
-k=8;
-TAB(3)=5; 
+IF(A.AND.B) THEN
+    A=B;
+ENDIF
 
 
 % Instructions;
