@@ -121,14 +121,14 @@ FACTOR
     ;
 
 OPERAND
-    :  idf {{if(Declarer($1)){
-        yyerror("Sementique erreur");      
+    :  idf {{if(!Declarer($1)){
+       yyerror("Sementique error",$1,"est non declare.");      
     }} $$=0;}
     | LOGI { $$=0;}
     | inti {$$=(float)$1;}
     | real {$$=$1;}
-    | idf po TAILLE pf {{if(Declarer($1)){
-        yyerror("Sementique erreur");      
+    | idf po TAILLE pf {{if(!Declarer($1)){
+        yyerror("Sementique error",$1,"est non declare.");      
     }} $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
     | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
@@ -155,11 +155,11 @@ ens_list_var: ens_list_var verg po list_var pf | po list_var pf
 ;
 list_var: list_var verg var | var 
 ;
-var: idf {if(Declarer($1)){
-        yyerror("Sementique erreur");      
+var: idf {if(!Declarer($1)){
+        yyerror("Sementique error",$1,"est non declare.");      
     }} 
-     | idf po ENSpara pf {if(Declarer($1)){
-        yyerror("Sementique erreur");      
+     | idf po ENSpara pf {if(!Declarer($1)){
+        yyerror("Sementique error",$1,"est non declare.");      
     }} 
 ;
 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif 
