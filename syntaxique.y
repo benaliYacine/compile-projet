@@ -139,7 +139,7 @@ LOGI: mc_true
 ;
 IDFS: ENSIDF | VIDE
 ;
-ENSIDF: ENSIDF verg idf {nb_argument++;} | idf {nb_argument++;}
+ENSIDF: ENSIDF verg idf {Declarer($3);nb_argument++;} | idf {Declarer($1);nb_argument++;}
 ;
 INSTS: VIDE | ENSINST
 ;

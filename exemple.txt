@@ -1,17 +1,16 @@
-
-
+INTEGER ROUTINE HAMID(A,B,C)
+A=B;
+ENDR
 PROGRAM HelloAcad
 % Déclarations;
 INTEGER A=5,B=4; 
 CHARACTER C*20;
 REAL Y;
-IF(A.AND.B) THEN
-    A=B;
-ENDIF
 
 
+A=CALL HAMID(A,B,C);
 % Instructions;
 
 
-EQUIVALENCE (A, B, C), (Y, TAB(3));
+%EQUIVALENCE (A, B, C), (Y, TAB(3));
 END
