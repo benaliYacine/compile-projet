@@ -111,14 +111,9 @@ void initialisation()
 
 int fonction_de_hachage(char name[20])
 {
-  int i;
-  int hashValue = 281;
-  for (i = 0; name[i] != '\0'; i++)
-  {
-    hashValue = hashValue + name[i];
-  }
-  printf("---hash index: %d\n", hashValue % 300);
-  return hashValue % 300;
+  int index = ((int)name[0] + (int)name[1]) % 300;
+  printf("----index:%d", index);
+  return index;
 }
 
 void inserer(char entite[], char code[], char type[], float val, int y, int hash_index, char taille[])

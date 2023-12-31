@@ -121,7 +121,7 @@ FACTOR
     ;
 
 OPERAND
-    :  idf {{if(!Declarer($1)){
+    :idf {{if(!Declarer($1)){
        yyerror("Sementique error",$1,"est non declare.");      
     }} $$=0;}
     | LOGI { $$=0;}
@@ -166,14 +166,7 @@ if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif
 ;
 else_clause: mc_else ENSINST |
 ;
-assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation 
-;
-OGassi: idf{if(!Declarer($1)){
-        yyerror("Sementique error",$1,"est non declare.");      
-    }} 
-    | idf po ENSpara pf {if(!Declarer($1)){
-        yyerror("Sementique error",$1,"est non declare.");      
-    }} 
+assignment: var aff valeur pvg //OGassi operande gauche d'afectation 
 ;
 valeur: str { $$=0;}
         | EXPRE {$$=$1;} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
@@ -182,15 +175,15 @@ read_statement: mc_read po var pf pvg // kanet idf fi blaset var dertha ha ka pa
 ;
 write_statement: mc_write po ENS_PARA_WRITE pf pvg 
 ;
-ENS_PARA_WRITE: ENS_PARA_WRITE verg str  | ENS_PARA_WRITE verg var | str | var
+ENS_PARA_WRITE: ENS_PARA_WRITE verg str | ENS_PARA_WRITE verg var | str | var
 ;
 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo 
 ;
 CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT 
 ;
-CONDIT: po CONDI pf | EXPLOGI 
+CONDIT: po CONDI pf | EXPLOGI | 
 ;
-EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE 
+EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
 ;
 %%
 
