@@ -52,26 +52,26 @@ DECS: VIDE | ENSDEC
 ;
 ENSDEC: ENSDEC DEC | DEC
 ;
-DEC: TYPE ENSIDF_dec pvg | TYPE idf {if(!Declarer($2)){
+DEC: TYPE ENSIDF_dec pvg | TYPE idf {if(Declarer($2)){
         Col-=2;
-        yyerror("Sementique erreur");
+        yyerror("Sementique error",$2,"est deja declare.");
     }} mul inti pvg 
-    | TYPE idf mc_dim po TAILLE pf pvg {if(!Declarer($2)){
-        yyerror("Sementique erreur");}rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+    | TYPE idf mc_dim po TAILLE pf pvg {if(Declarer($2)){
+        yyerror("Sementique error",$2,"est deja declare.");}rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
 partie_gauch_affectation: aff valeur {$$=$2;} | VIDE { $$=0;}
 ;
 ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
-    if(!Declarer($3)){
+    if(Declarer($3)){
         Col-=2;
-        yyerror("Sementique erreur");
+        yyerror("Sementique error",$3,"est deja declare.");
     }
     rechercher($3,"IDF"," ",$4,0," ",0);
 }
 | idf partie_gauch_affectation {
-    if(!Declarer($1)){
+    if(Declarer($1)){
         Col-=2;
-        yyerror("Sementique erreur");
+        yyerror("Sementique error",$1,"est deja declare.");
         
     }
     rechercher($1,"IDF"," ",$2,0," ",0);
@@ -111,7 +111,7 @@ EXPRE
 
 TERM
     : TERM mul FACTOR {$$=$1*$2;}
-    | TERM divi FACTOR {if($3==0){yyerror("Sementique erreur");}else $$=$1/$2;}
+    | TERM divi FACTOR {if($3==0){yyerror("Sementique error","","division sur zero.");}else $$=$1/$2;}
     | FACTOR {$$=$1;}
     ;
 
@@ -126,7 +126,7 @@ OPERAND
     | inti {$$=(float)$1;}
     | real {$$=$1;}
     | idf po TAILLE pf { $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
-    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique erreur");}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
 ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}
 ;
@@ -159,11 +159,11 @@ else_clause: mc_else ENSINST |
 ;
 assignment: OGassi aff valeur pvg //OGassi operande gauche d'afectation 
 ;
-OGassi: idf{if(Declarer($1)){
-        yyerror("Sementique erreur");      
+OGassi: idf{if(!Declarer($1)){
+        yyerror("Sementique error",$1,"est non declare.");      
     }} 
-    | idf po ENSpara pf {if(Declarer($1)){
-        yyerror("Sementique erreur");      
+    | idf po ENSpara pf {if(!Declarer($1)){
+        yyerror("Sementique error",$1,"est non declare.");      
     }} 
 ;
 valeur: str { $$=0;}
@@ -211,8 +211,13 @@ int main(int argc, char** argv)
  yywrap ()
  {}
 
-int yyerror ( char*  msg )
+// int yyerror ( char*  msg )
+//  {
+//     printf("File \"%s\", line %d, character %d: %s\n",file_name, nb_ligne, Col,msg);
+//     exit(EXIT_FAILURE);
+//   }
+int yyerror ( char*  msg, char* entite, char* description)
  {
-    printf("File \"%s\", line %d, character %d: %s\n",file_name, nb_ligne, Col,msg);
+    printf("File \"%s\", line %d, character %d: %s, %s %s\n", file_name, nb_ligne, Col, msg, entite, description);
     exit(EXIT_FAILURE);
   }
