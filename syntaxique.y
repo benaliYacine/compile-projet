@@ -10,6 +10,7 @@
     char* tmp;
     int qc=0;
     int nb_argument=0;
+    extern char *type;
 
 %}
 
@@ -69,6 +70,7 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
         Col-=2;
         yyerror("Sementique error",$3,"est deja declare.");
     }
+
     rechercher($3,"IDF"," ",$4,0," ",0);
 }
 | idf partie_gauch_affectation {

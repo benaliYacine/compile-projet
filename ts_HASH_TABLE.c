@@ -171,7 +171,12 @@ int rechercher(char *entite, char *code, char *type, float val, int y, char *tai
 {
   printf("we have entered rechercher\n");
   printf("---valeur here is: %f\n", val);
+  
   int hash_index = fonction_de_hachage(entite);
+  if(y>2){
+    val= strtod(entite, NULL);
+    y=0;
+  }
   switch (y)
   {
   case 0: /*verifier si la case dans la tables des IDF et CONST est libre*/
@@ -185,6 +190,7 @@ int rechercher(char *entite, char *code, char *type, float val, int y, char *tai
       strcpy(LES_TABLES_IDF[POSITION_Tables_IDF].name, entite);
     }
     tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+    
     while (tab_idf_pointer != NULL && strcmp(entite, tab_idf_pointer->name) != 0)
     {
       printf("---tab_idf_pointer: %d\n", tab_idf_pointer);
@@ -192,6 +198,7 @@ int rechercher(char *entite, char *code, char *type, float val, int y, char *tai
     }
     if (tab_idf_pointer == NULL)
     {
+       
       printf("---jddiiid\n");
       inserer(entite, code, type, val, 0, hash_index, taille);
       return 0;
@@ -200,17 +207,27 @@ int rechercher(char *entite, char *code, char *type, float val, int y, char *tai
     {
       if (strcmp(type, " ") != 0)
       { // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
-        strcpy(tab_idf_pointer->type, type);
-
+        if(strcmp(type,"TABLEAU")==0){
+          strcat(tab_idf_pointer->type," ");
+          strcat(tab_idf_pointer->type,"TABLEAU");
+        }
+        else
+          strcpy(tab_idf_pointer->type, type);
+        
+       
       } // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
-      if (strcmp(taille, " ") != 0)
+      if (taille!=NULL&&strcmp(taille, " ") != 0)
       { // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
         strcpy(tab_idf_pointer->taille, taille);
+        
       } // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+      
       if (tab_idf_pointer->val == 0.0)
       {
+         
         // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
         tab_idf_pointer->val = val;
+         
       }
       printf("entite existe deja\n");
       return 1;
@@ -253,15 +270,15 @@ void afficher()
   while (i < 100 && LES_TABLES_IDF[i].state == 1)
   {
     printf("/******************Table des symboles IDF De %s****************/ \n", LES_TABLES_IDF[i].name);
-    printf("___________________________________________________________________________________\n");
-    printf("\t| Nom_Entite |  Code_Entite   |  Type_Entite | Val_Entite   |    Taille    |\n");
-    printf("____________________________________________________________________________________\n");
+    printf("______________________________________________________________________________________\n");
+    printf("\t| Nom_Entite |  Code_Entite   |  Type_Entite    | Val_Entite   |    Taille    |\n");
+    printf("_______________________________________________________________________________________\n");
     for (hash_index = 0; hash_index < 300; hash_index++)
     {
       tab_idf_pointer = LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
       while (tab_idf_pointer != NULL)
       {
-        printf("\t|%11s |%15s | %12s | %12f | %12s |\n", tab_idf_pointer->name, tab_idf_pointer->code, tab_idf_pointer->type, tab_idf_pointer->val, tab_idf_pointer->taille);
+        printf("\t|%11s |%15s | %15s | %12f | %12s |\n", tab_idf_pointer->name, tab_idf_pointer->code, tab_idf_pointer->type, tab_idf_pointer->val, tab_idf_pointer->taille);
         tab_idf_pointer = tab_idf_pointer->svt;
       }
     }

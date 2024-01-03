@@ -1,16 +1,18 @@
 INTEGER ROUTINE HAMID(A,B,C)
+INTEGER D;
+INTEGER tab DIMENSION (20);
 A=B;
 ENDR
 PROGRAM HelloAcad
 % Déclarations;
-INTEGER A=5,B=4; 
+INTEGER A=5;
 CHARACTER d*20;
 REAL Y;
 A=8;
 A=55+41;
 IF (A) THEN A=8; ENDIF
 
-
+WRITE("FADSaf");
 
 % Instructions;
 
