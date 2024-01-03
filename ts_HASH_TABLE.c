@@ -4,6 +4,26 @@
 #include <string.h>
 #include "ts_HASH_TABLE.h"
 
+int Operation(char op1[],char op2[]){
+  int hash_index = fonction_de_hachage(op1);
+  pointer_element1 tab_idf_pointer_1 = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+  while (tab_idf_pointer_1 != NULL && strcmp(op1, tab_idf_pointer_1->name) != 0)
+  {
+    tab_idf_pointer_1 = tab_idf_pointer_1->svt;
+  }
+  hash_index = fonction_de_hachage(op2);
+  pointer_element1 tab_idf_pointer_2=LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+    while (tab_idf_pointer_2 != NULL && strcmp(op2, tab_idf_pointer_2->name) != 0)
+  {
+    tab_idf_pointer_2 = tab_idf_pointer_2->svt;
+  }
+  if(strcmp(tab_idf_pointer_1->type,tab_idf_pointer_2->type)==0)
+    return 1;
+  
+  else if(strcmp(tab_idf_pointer_1->type,"INTEGER")==0&&strcmp(tab_idf_pointer_2->type,"REAL")==0||strcmp(tab_idf_pointer_2->type,"INTEGER")==0&&strcmp(tab_idf_pointer_1->type,"REAL")==0)
+    return 1;
+    else return 0;
+}
 int Declarer(char entite[])
 {
   int hash_index = fonction_de_hachage(entite);
@@ -201,7 +221,6 @@ int rechercher(char *entite, char *code, char *type, float val, int y, char *tai
        
       printf("---jddiiid\n");
       inserer(entite, code, type, val, 0, hash_index, taille);
-      return 0;
     }
     else
     {

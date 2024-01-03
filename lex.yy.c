@@ -946,7 +946,7 @@ YY_RULE_SETUP
 case 40:
 YY_RULE_SETUP
 #line 118 "lexical.l"
-{strcpy(type," ");rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
+{printf("---whyyyyyyyyyyyyyyyyyyyy\n");strcpy(type," ");rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP

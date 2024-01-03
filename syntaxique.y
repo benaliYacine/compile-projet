@@ -30,11 +30,11 @@
 %type <str> TAILLE
 %type <reel> partie_gauch_affectation
 %type <reel> valeur
-%type <reel> EXPRE
-%type <reel> TERM
+%type <str> EXPRE
+%type <str> TERM
 %type <reel> OPERAND
-%type <reel> FACTOR
-%type <reel> EXPREt
+%type <str> FACTOR
+%type <str> EXPREt
 
 
 %%
@@ -74,6 +74,7 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
     rechercher($3,"IDF"," ",$4,0," ",0);
 }
 | idf partie_gauch_affectation {
+    
     if(Declarer($1)){
         Col-=2;
         yyerror("Sementique error",$1,"est deja declare.");
@@ -117,19 +118,19 @@ EXPRE: EXPRE lt EXPREt{ $$=0;}
     | EXPREt
 ;
 EXPREt
-    : EXPREt add TERM {$$=$1+$2;} 
-    | EXPREt sub TERM {$$=$1-$2;}
+    : EXPREt add TERM {if(!Operation($1,$3))yyerror("Sementique error","","incompatible type.");sprintf($$,"%f",atof($1)+atof($3));} 
+    | EXPREt sub TERM {sprintf($$,"%f",atof($1)-atof($3));}
     | TERM {$$=$1;}
     ;
 TERM
-    : TERM mul FACTOR {$$=$1*$2;}
-    | TERM divi FACTOR {if($3==0){yyerror("Sementique error","","division sur zero.");}else $$=$1/$2;}
+    : TERM mul FACTOR {sprintf($$,"%f",atof($1)*atof($3));}
+    | TERM divi FACTOR {if($3==0){yyerror("Sementique error","","division sur zero.");}else sprintf($$,"%f",atof($1)/atof($3));}
     | FACTOR {$$=$1;}
     ;
 
 FACTOR
-    : po EXPRE pf {$$=$2;}
-    | OPERAND {$$=$1;}
+    : po EXPRE pf {sprintf($$,"%f",atof($2));}
+    | OPERAND {sprintf($$,"%f",$1);}
     ;
 
 OPERAND
@@ -181,7 +182,7 @@ else_clause: mc_else ENSINST |
 assignment: var aff valeur pvg //OGassi operande gauche d'afectation 
 ;
 valeur: str { $$=0;}
-        | EXPRE {$$=$1;} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
+        | EXPRE {$$=atof($1);} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
 ;
 read_statement: mc_read po var pf pvg // kanet idf fi blaset var dertha ha ka parceque 9ader ydir read(t(5)); nafs echi f write var mechi idf
 ;
