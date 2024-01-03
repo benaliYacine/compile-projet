@@ -19,10 +19,11 @@
 }
 
 %token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
-
+%left lt gt ge eq ne le
 %left add sub
 %left mul divi
 %left mc_or mc_and
+
 
 %type <str> TAILLE
 %type <reel> partie_gauch_affectation
@@ -31,6 +32,7 @@
 %type <reel> TERM
 %type <reel> OPERAND
 %type <reel> FACTOR
+%type <reel> EXPREt
 
 
 %%
@@ -103,12 +105,19 @@ TAILLE: TAILLE verg inti {
 ;
 //ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
 //;
-EXPRE
-    : EXPRE add TERM {$$=$1+$2;} 
-    | EXPRE sub TERM {$$=$1-$2;}
+EXPRE: EXPRE lt EXPREt{ $$=0;}
+    | EXPRE gt EXPREt{ $$=0;}
+    | EXPRE ge EXPREt{ $$=0;}
+    | EXPRE eq EXPREt{ $$=0;}
+    | EXPRE ne EXPREt{ $$=0;}
+    | EXPRE le EXPREt{ $$=0;}
+    | EXPREt
+;
+EXPREt
+    : EXPREt add TERM {$$=$1+$2;} 
+    | EXPREt sub TERM {$$=$1-$2;}
     | TERM {$$=$1;}
     ;
-
 TERM
     : TERM mul FACTOR {$$=$1*$2;}
     | TERM divi FACTOR {if($3==0){yyerror("Sementique error","","division sur zero.");}else $$=$1/$2;}
@@ -177,14 +186,13 @@ write_statement: mc_write po ENS_PARA_WRITE pf pvg
 ;
 ENS_PARA_WRITE: ENS_PARA_WRITE verg str | ENS_PARA_WRITE verg var | str | var
 ;
-dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo 
+dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo
 ;
-CONDI: CONDI mc_or CONDIT | CONDI mc_and CONDIT | CONDIT 
+CONDI: CONDI mc_or CONDI | CONDI mc_and CONDIT | CONDIT
 ;
-CONDIT: po CONDI pf | EXPLOGI | 
+CONDIT: EXPRE
 ;
-EXPLOGI: EXPRE lt EXPRE | EXPRE gt EXPRE | EXPRE ge EXPRE | EXPRE eq EXPRE | EXPRE ne EXPRE | EXPRE le EXPRE
-;
+
 %%
 
 int main(int argc, char** argv)

@@ -54,7 +54,7 @@ int Declarer(char entite[])
   {
     tab_idf_pointer = tab_idf_pointer->svt;
   }
-  printf("----------------%s\n", tab_idf_pointer->name);
+  // printf("----------------%s\n", tab_idf_pointer->name);
   if (tab_idf_pointer != NULL)
     if (tab_idf_pointer->declarer == 1)
     {
@@ -111,12 +111,17 @@ void initialisation()
 
 int fonction_de_hachage(char name[20])
 {
-  int index = ((int)name[0] + (int)name[1]) % 300;
-  printf("----index:%d", index);
-  return index;
+  int i;
+  int hashValue = 281;
+  for (i = 0; name[i] != '\0'; i++)
+  {
+    hashValue = hashValue + name[i];
+  }
+  printf("---hash index: %d\n", hashValue % 300);
+  return hashValue % 300;
 }
 
-void inserer(char entite[], char code[], char type[], float val, int y, int hash_index, char taille[])
+void inserer(char* entite, char* code, char* type, float val, int y, int hash_index, char* taille)
 {
   switch (y)
   {
@@ -204,15 +209,17 @@ void inserer(char entite[], char code[], char type[], float val, int y, int hash
   }
 }
 
-int rechercher(char entite[], char code[], char type[], float val, int y, char taille[], int P_OU_F)
+int rechercher(char* entite, char* code, char* type, float val, int y, char* taille, int P_OU_F)
 {
-  printf("dkhalna l rech\n");
+  printf("we have entered rechercher\n");
+  printf("---valeur here is: %f\n", val);
   int hash_index = fonction_de_hachage(entite);
   switch (y)
   {
   case 0: /*verifier si la case dans la tables des IDF et CONST est libre*/
 
-    printf("---valeur f rech: %f\n", val);
+    printf("---we have entered case 0:\n");
+    printf("---valeur here is: %f\n", val);
     if (P_OU_F == 1)
     {
       POSITION_Tables_IDF++;

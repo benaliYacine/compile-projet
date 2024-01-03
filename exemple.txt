@@ -8,9 +8,10 @@ CHARACTER d*20;
 REAL Y;
 A=8;
 A=55+41;
+IF (A) THEN A=8; ENDIF
 
 
-A=CALL HAMID(A,B,C);
+
 % Instructions;
 
 
