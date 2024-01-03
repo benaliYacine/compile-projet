@@ -2,12 +2,13 @@
     #include <stdio.h>
     int nb_ligne=1, Col=1;
     char* file_name;
-    #include "ts_HASH_TABLE.h"
+    #include "ts_HASH_TABLE.c"
+    #include "pgm.c"
     #include <stdlib.h>
     #include <string.h>
     extern FILE *yyin;
     char* tmp;
-    int k;
+    int qc=0;
     int nb_argument=0;
 
 %}
@@ -210,6 +211,7 @@ int main(int argc, char** argv)
     yyparse();
     yylex();
     afficher();
+    afficher_qdr();
     
     if (yyin != stdin) {
         fclose(yyin);
