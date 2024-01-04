@@ -115,7 +115,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 "-" {rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return sub;}
 "+" {rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return add;}
 "=" {rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return aff;}
-";" {strcpy(type," ");rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
+";" {printf("---whyyyyyyyyyyyyyyyyyyyy\n");strcpy(type," ");rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
 "(" {rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return po;}
 ")" {rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pf;}
 "," {rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return verg;}

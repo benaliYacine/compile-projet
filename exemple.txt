@@ -6,10 +6,10 @@ ENDR
 PROGRAM HelloAcad
 % Déclarations;
 INTEGER A=5;
-CHARACTER d*20;
+
 REAL Y;
 A=8;
-A=55+41;
+A=55;
 IF (A) THEN A=8; ENDIF
 
 WRITE("FADSaf");
