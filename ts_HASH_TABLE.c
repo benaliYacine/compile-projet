@@ -38,7 +38,7 @@ int fonction_de_hachage(char name[20])
   return hashValue % 300;
 }
 
-void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[])
+void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[],int P_OU_F)
 {
   switch (y)
   {
@@ -56,6 +56,8 @@ void inserer(char entite[], char code[], char type[], char val[], int y, int has
       strcpy(tab_idf_pointer->type, type);
       strcpy(tab_idf_pointer->val, val);
       tab_idf_pointer->declarer = 0;
+      if(P_OU_F)
+        tab_idf_pointer->declarer = 1;
       tab_idf_pointer->svt = NULL;
       if (taille == NULL)
       {
@@ -159,7 +161,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
     {
 
       printf("---jddiiid\n");
-      inserer(entite, code, type, val, 0, hash_index, taille);
+      inserer(entite, code, type, val, 0, hash_index, taille,P_OU_F);
     }
     else
     {
@@ -197,7 +199,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
       tab_mot_cle_pointer = tab_mot_cle_pointer->svt;
     }
     if (tab_mot_cle_pointer == NULL)
-      inserer(entite, code, type, val, 1, hash_index, taille);
+      inserer(entite, code, type, val, 1, hash_index, taille,P_OU_F);
     else
       printf("entite existe deja\n");
     break;
@@ -210,7 +212,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
       tab_sepa_pointer = tab_sepa_pointer->svt;
     }
     if (tab_sepa_pointer == NULL)
-      inserer(entite, code, type, val, 2, hash_index, taille);
+      inserer(entite, code, type, val, 2, hash_index, taille,P_OU_F);
     else
       printf("entite existe deja\n");
     break;
@@ -278,13 +280,13 @@ void afficher()
 
 char* GetTypeFromVal(char entite[])
 {
-  if (isInteger(str)) {
+  if (isInteger(entite)) {
         return "INTEGER";
     }
-    else if (isFloat(str)) {
+    else if (isFloat(entite)) {
         return "FLOAT";
     }
-    else if (isBoolean(str)) {
+    else if (isBoolean(entite)) {
         return "BOOLEAN";
     }
     else {
@@ -313,23 +315,29 @@ bool areCompatible(char entite1[], char entite2[]) {
 
 int Operation(char op1[], char op2[])
 {
+  
+  printf("%s\n",op1);
   int hash_index = fonction_de_hachage(op1);
   pointer_element1 tab_idf_pointer_1 = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
   while (tab_idf_pointer_1 != NULL && strcmp(op1, tab_idf_pointer_1->name) != 0)
   {
     tab_idf_pointer_1 = tab_idf_pointer_1->svt;
   }
+  
   hash_index = fonction_de_hachage(op2);
   pointer_element1 tab_idf_pointer_2 = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
   while (tab_idf_pointer_2 != NULL && strcmp(op2, tab_idf_pointer_2->name) != 0)
   {
     tab_idf_pointer_2 = tab_idf_pointer_2->svt;
   }
-  if (strcmp(tab_idf_pointer_1->type, tab_idf_pointer_2->type) == 0)
+  if (strcmp(tab_idf_pointer_1->type, tab_idf_pointer_2->type) == 0){
     return 1;
+  }
 
-  else if (strcmp(tab_idf_pointer_1->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_2->type, "REAL") == 0 || strcmp(tab_idf_pointer_2->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_1->type, "REAL") == 0)
+  else if (strcmp(tab_idf_pointer_1->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_2->type, "REAL") == 0 || strcmp(tab_idf_pointer_2->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_1->type, "REAL") == 0){
+    
     return 1;
+  }
   else
     return 0;
 }

@@ -67,7 +67,7 @@ void initialisation();
 
 int fonction_de_hachage(char name[20]);
 
-void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[]);
+void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[],int P_OU_F);
 
 int rechercher(char entite[], char code[], char type[], char val[], int y, char taille[], int P_OU_F);
 

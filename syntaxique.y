@@ -20,7 +20,7 @@
          float reel;
 }
 
-%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
+%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
 %left lt gt ge eq ne le
 %left add sub
 %left mul divi
@@ -35,6 +35,10 @@
 %type <str> OPERAND
 %type <str> FACTOR
 %type <str> EXPREt
+%type <str> LOGI
+%type <str> var
+%type <str> CONDI
+%type <str> CONDIT
 
 
 %%
@@ -48,7 +52,7 @@ VIDE:
 ;
 ENSFCT: ENSFCT FCT | FCT
 ;
-FCT: TYPE mc_rtin idf po IDFS pf DECS ENSINST assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}  | TYPE mc_rtin idf po IDFS pf  DECS assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}
+FCT: TYPE mc_rtin idf po IDFS pf DECS ENSINST assignment mc_endr {Declarer($3);inserer_fonction($3,nb_argument);nb_argument=0;}  | TYPE mc_rtin idf po IDFS pf  DECS assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
@@ -118,13 +122,13 @@ EXPRE: EXPRE lt EXPREt{ $$=0;}
     | EXPREt
 ;
 EXPREt
-    : EXPREt add TERM {if(!Operation($1,$3))yyerror("Sementique error","","incompatible type.");sprintf($$,"%f",atof($1)+atof($3));} 
-    | EXPREt sub TERM {sprintf($$,"%f",atof($1)-atof($3));}
+    : EXPREt add TERM {if(!Operation($1,$3))yyerror("Sementique error","","incompatible type.");sprintf($$,"%g",atof($1)+atof($3));} 
+    | EXPREt sub TERM {if(!Operation($1,$3))yyerror("Sementique error","","incompatible type.");sprintf($$,"%g",atof($1)-atof($3));}
     | TERM {$$=$1;}
     ;
 TERM
-    : TERM mul FACTOR {sprintf($$,"%f",atof($1)*atof($3));}
-    | TERM divi FACTOR {if($3==0){yyerror("Sementique error","","division sur zero.");}else sprintf($$,"%f",atof($1)/atof($3));}
+    : TERM mul FACTOR {if(!Operation($1,$3))yyerror("Sementique error","","incompatible type.");sprintf($$,"%g",atof($1)*atof($3));}
+    | TERM divi FACTOR {if(!Operation($1,$3))yyerror("Sementique error","","incompatible type.");if(strcmp($3,"0")==0){yyerror("Sementique error","","division sur zero.");}else sprintf($$,"%g",atof($1)/atof($3));}
     | FACTOR {$$=$1;}
     ;
 
@@ -134,19 +138,22 @@ FACTOR
     ;
 
 OPERAND
-    :idf {
+    :
+    idf {
             if(!Declarer($1)){
                 yyerror("Sementique error",$1,"est non declare.");
-            }$$=GetVal($1);
+            }
+            $$=$1;
+            //$$=GetVal($1);
         }
     | LOGI { $$=$1;}
 
     | inti {char backToStr[20];
-            sprintf(backToStr, "%d", val);
+            sprintf(backToStr, "%d", $1);
             $$=backToStr;}
 
     | real {char backToStr[20];
-            sprintf(backToStr, "%f", val);
+            sprintf(backToStr, "%g", $1); // -g bh na7iw les 0 li manahtajohmch
             $$=backToStr;}
 
     | idf po ENSpara pf {{if(!Declarer($1)){
@@ -185,7 +192,7 @@ var: idf {if(!Declarer($1)){
     }}
      | idf po ENSpara pf {if(!Declarer($1)){
             yyerror("Sementique error",$1,"est non declare.");  
-        $$="1";
+        $$=$1;
     }} 
 ;
 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif 
@@ -210,8 +217,8 @@ CONDI: CONDI mc_or CONDI {if (isBoolean($1) && isBoolean($3)) {
         bool val2 = strcmp($3, "true") == 0;
         bool res = val1 | val2;
         // Conversion back to string is trivial here
-        char *backToStr = val ? "true" : "false";
-        $$=backToStr
+        char *backToStr = res ? "true" : "false";
+        $$=backToStr;
     }
     else {
         yyerror("Sementique error","","cannot use or with non boolean operands");
@@ -221,8 +228,8 @@ CONDI: CONDI mc_or CONDI {if (isBoolean($1) && isBoolean($3)) {
         bool val2 = strcmp($3, "true") == 0;
         bool res = val1 & val2;
         // Conversion back to string is trivial here
-        char *backToStr = val ? "true" : "false";
-        $$=backToStr
+        char *backToStr = res ? "true" : "false";
+        $$=backToStr;
     }
     else {
         yyerror("Sementique error","","cannot use or with non boolean operands");
