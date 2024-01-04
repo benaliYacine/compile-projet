@@ -6,6 +6,7 @@
     #include "pgm.c"
     #include <stdlib.h>
     #include <string.h>
+    #include <stdbool.h>
     extern FILE *yyin;
     char* tmp;
     int qc=0;
@@ -14,12 +15,14 @@
 %}
 
 %union {
-         int     entier;
-         char*   str;
-         float reel;
+        int     entier;
+        char*   str;
+        float   reel;
+        bool    boolean;
+        Multi_types   multi_types;
 }
 
-%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
+%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
 %left lt gt ge eq ne le
 %left add sub
 %left mul divi
@@ -27,13 +30,13 @@
 
 
 %type <str> TAILLE
-%type <reel> partie_gauch_affectation
-%type <reel> valeur
-%type <reel> EXPRE
-%type <reel> TERM
-%type <reel> OPERAND
-%type <reel> FACTOR
-%type <reel> EXPREt
+%type <multi_types> partie_gauch_affectation
+%type <multi_types> valeur
+%type <multi_types> EXPRE
+%type <multi_types> TERM
+%type <multi_types> OPERAND
+%type <multi_types> FACTOR
+%type <multi_types> EXPREt
 
 
 %%
@@ -106,22 +109,28 @@ TAILLE: TAILLE verg inti {
 ;
 //ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
 //;
-EXPRE: EXPRE lt EXPREt{ $$=0;}
-    | EXPRE gt EXPREt{ $$=0;}
-    | EXPRE ge EXPREt{ $$=0;}
-    | EXPRE eq EXPREt{ $$=0;}
-    | EXPRE ne EXPREt{ $$=0;}
-    | EXPRE le EXPREt{ $$=0;}
-    | EXPREt
+EXPRE: EXPRE lt EXPREt { $$.entier=0;
+        $$.type=1;}
+    | EXPRE gt EXPREt { $$.entier=0;
+        $$.type=1;}
+    | EXPRE ge EXPREt { $$.entier=0;
+        $$.type=1;}
+    | EXPRE eq EXPREt { $$.entier=0;
+        $$.type=1;}
+    | EXPRE ne EXPREt { $$.entier=0;
+        $$.type=1;}
+    | EXPRE le EXPREt { $$.entier=0;
+        $$.type=1;}
+    | EXPREt {$$=$1;}
 ;
 EXPREt
-    : EXPREt add TERM {$$=$1+$2;} 
-    | EXPREt sub TERM {$$=$1-$2;}
+    : EXPREt add TERM {$$=add($1,$2);}
+    | EXPREt sub TERM {$$=sub($1,$2);}
     | TERM {$$=$1;}
     ;
 TERM
-    : TERM mul FACTOR {$$=$1*$2;}
-    | TERM divi FACTOR {if($3==0){yyerror("Sementique error","","division sur zero.");}else $$=$1/$2;}
+    : TERM mul FACTOR {$$=mul($1,$2);}
+    | TERM divi FACTOR {if($3==0){yyerror("Sementique error","","division sur zero.");}else $$=div($1,$2);}
     | FACTOR {$$=$1;}
     ;
 
@@ -133,14 +142,19 @@ FACTOR
 OPERAND
     :idf {{if(!Declarer($1)){
        yyerror("Sementique error",$1,"est non declare.");      
-    }} $$=0;}
-    | LOGI { $$=0;}
-    | inti {$$=(float)$1;}
-    | real {$$=$1;}
-    | idf po TAILLE pf {{if(!Declarer($1)){
+    }} $$.entier=0;
+        $$.type=1;}
+    | LOGI { $$.entier=0;
+        $$.type=1;}
+    | inti {$$.entier=$1;
+        $$.type=1;}
+    | real {$$.real=$1;
+        $$.type=2;}
+    | idf po ENSpara pf {{if(!Declarer($1)){ // lazem nvirifiw ida ens para sont des ints
         yyerror("Sementique error",$1,"est non declare.");      
-    }} $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
-    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+    }} $$.entier=0;
+        $$.type=1;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$.entier=0;$$.type=1;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
     ;
 ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}
 ;
@@ -178,7 +192,8 @@ else_clause: mc_else ENSINST |
 ;
 assignment: var aff valeur pvg //OGassi operande gauche d'afectation 
 ;
-valeur: str { $$=0;}
+valeur: str { $$.str=str;
+            $$.type=3;}
         | EXPRE {$$=$1;} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
 ;
 read_statement: mc_read po var pf pvg // kanet idf fi blaset var dertha ha ka parceque 9ader ydir read(t(5)); nafs echi f write var mechi idf

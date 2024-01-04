@@ -48,6 +48,203 @@ int verifier_nb_argument(char name_F[], int nb_argument)
     return 1;
 }
 
+void printVar(Multi_types v) {
+    switch (v.type) {
+        case 1:
+            printf("%d",v.entier);
+            break;
+        case 2:
+            printf("%f",v.reel);
+            break;
+        case 3:
+            printf("%s",v.str);
+            break;
+        case 4:
+            printf("%s", v.boolean ? "true" : "false");
+            break;
+    }
+}
+
+int are_compatible(Multi_types op1, Multi_types op2)
+{
+  if (op1.type == op2.type)
+  {
+    return 1;
+  }
+  else
+  {
+    if ((op1.type == 1 && op2.type == 2) || (op1.type == 2 && op2.type == 1))
+    {
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
+  }
+}
+
+Multi_types add(Multi_types op1, Multi_types op2)
+{
+  Multi_types res;
+  if (are_compatible(op1, op2))
+  {
+    if (op1.type == 1 && op2.type == 1)
+    {
+      res.type = 1;
+      res.entier = op1.entier + op2.entier;
+    }
+    else
+    {
+      if (op1.type == 2 && op2.type == 1)
+      {
+        res.type = 2;
+        res.reel = op1.reel + op2.entier;
+      }
+      else
+      {
+        if (op1.type == 1 && op2.type == 2)
+        {
+          res.type = 2;
+          res.reel = op1.entier + op2.reel;
+        }
+        else
+        {
+          if (op1.type == 2 && op2.type == 2)
+          {
+            res.type = 2;
+            res.reel = op1.reel + op2.reel;
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    printf("erreur not compatible types");
+  }
+}
+Multi_types sub(Multi_types op1, Multi_types op2)
+{
+  Multi_types res;
+  if (are_compatible(op1, op2))
+  {
+    if (op1.type == 1 && op2.type == 1)
+    {
+      res.type = 1;
+      res.entier = op1.entier - op2.entier;
+    }
+    else
+    {
+      if (op1.type == 2 && op2.type == 1)
+      {
+        res.type = 2;
+        res.reel = op1.reel - op2.entier;
+      }
+      else
+      {
+        if (op1.type == 1 && op2.type == 2)
+        {
+          res.type = 2;
+          res.reel = op1.entier - op2.reel;
+        }
+        else
+        {
+          if (op1.type == 2 && op2.type == 2)
+          {
+            res.type = 2;
+            res.reel = op1.reel - op2.reel;
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    printf("erreur not compatible types");
+  }
+}
+Multi_types mul(Multi_types op1, Multi_types op2)
+{
+  Multi_types res;
+  if (are_compatible(op1, op2))
+  {
+    if (op1.type == 1 && op2.type == 1)
+    {
+      res.type = 1;
+      res.entier = op1.entier * op2.entier;
+    }
+    else
+    {
+      if (op1.type == 2 && op2.type == 1)
+      {
+        res.type = 2;
+        res.reel = op1.reel * op2.entier;
+      }
+      else
+      {
+        if (op1.type == 1 && op2.type == 2)
+        {
+          res.type = 2;
+          res.reel = op1.entier * op2.reel;
+        }
+        else
+        {
+          if (op1.type == 2 && op2.type == 2)
+          {
+            res.type = 2;
+            res.reel = op1.reel * op2.reel;
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    printf("erreur not compatible types");
+  }
+}
+Multi_types div(Multi_types op1, Multi_types op2)
+{
+  Multi_types res;
+  if (are_compatible(op1, op2))
+  {
+    if (op1.type == 1 && op2.type == 1)
+    {
+      res.type = 1;
+      res.entier = op1.entier / op2.entier;
+    }
+    else
+    {
+      if (op1.type == 2 && op2.type == 1)
+      {
+        res.type = 2;
+        res.reel = op1.reel / op2.entier;
+      }
+      else
+      {
+        if (op1.type == 1 && op2.type == 2)
+        {
+          res.type = 2;
+          res.reel = op1.entier / op2.reel;
+        }
+        else
+        {
+          if (op1.type == 2 && op2.type == 2)
+          {
+            res.type = 2;
+            res.reel = op1.reel / op2.reel;
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    printf("erreur not compatible types");
+  }
+}
+
 void initialisation()
 {
   int i, j;
@@ -79,7 +276,7 @@ int fonction_de_hachage(char name[20])
   return hashValue % 300;
 }
 
-void inserer(char *entite, char *code, char *type, float val, int y, int hash_index, char *taille)
+void inserer(char *entite, char *code, char *type, Multi_types val, int y, int hash_index, char *taille)
 {
   switch (y)
   {
@@ -167,7 +364,7 @@ void inserer(char *entite, char *code, char *type, float val, int y, int hash_in
   }
 }
 
-int rechercher(char *entite, char *code, char *type, float val, int y, char *taille, int P_OU_F)
+int rechercher(char *entite, char *code, char *type, Multi_types val, int y, char *taille, int P_OU_F)
 {
   printf("we have entered rechercher\n");
   printf("---valeur here is: %f\n", val);

@@ -3,12 +3,21 @@
 
 typedef struct element_type1 *pointer_element1;
 
+typedef struct Multi_types
+{
+  int type;
+  int entier;
+  float reel;
+  char *str;
+  bool boolean;
+} Multi_types;
+
 typedef struct element_type1
 {
   char name[20];
   char code[20];
   char type[20];
-  float val;
+  Multi_types val;
   char taille[20];
   int declarer;
   pointer_element1 svt;
@@ -51,15 +60,24 @@ void inserer_fonction(char name_F[], int nb_argument);
 
 int verifier_nb_argument(char name_F[], int nb_argument);
 
+int are_compatible(garti op1, garti op2);
+
+Multi_types add(Multi_types op1, Multi_types op2);
+
+Multi_types sub(Multi_types op1, Multi_types op2);
+
+Multi_types mul(Multi_types op1, Multi_types op2);
+
+Multi_types div(Multi_types op1, Multi_types op2);
+
 void initialisation();
 
 int fonction_de_hachage(char name[20]);
 
-void inserer(char *entite, char *code, char *type, float val, int y, int hash_index, char *taille);
+void inserer(char *entite, char *code, char *type, Multi_types val, int y, int hash_index, char *taille);
 
-int rechercher(char *entite, char *code, char *type, float val, int y, char *taille, int P_OU_F);
+int rechercher(char *entite, char *code, char *type, Multi_types val, int y, char *taille, int P_OU_F);
 
 void afficher();
 
 #endif // ts_HASH_TABLE_H
-
