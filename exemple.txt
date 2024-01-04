@@ -1,22 +1,9 @@
-INTEGER ROUTINE HAMID(A,B,C)
-INTEGER a;
-INTEGER c;
-INTEGER D;
-HAMID=a;
-ENDR
+
 PROGRAM HelloAcad
-% Déclarations;
-INTEGER A=5;
+
+INTEGER tab DIMENSION(4);
 CHARACTER C*20;
 LOGICAL D=TRUE;
-A=8.3+6;
-IF(A.LT.D) THEN A=6;
-ENDIF
-WRITE("FADSaf");
-READ(A);
+tab(2)=5;
 
-% Instructions;
-
-
-%EQUIVALENCE (A, B, C), (Y, TAB(3));
 END

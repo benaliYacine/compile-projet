@@ -65,7 +65,8 @@ DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declar
         yyerror("Sementique error",$2,"est deja declare.");
     }} mul inti pvg 
     | TYPE idf mc_dim po TAILLE pf pvg {if(Declarer($2)){
-        yyerror("Sementique error",$2,"est deja declare.");}rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+        yyerror("Sementique error",$2,"est deja declare.");}
+        rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
 partie_gauch_affectation: aff valeur {$$=$2;} | VIDE { $$=0;}
 ;
@@ -84,10 +85,12 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
         yyerror("Sementique error",$1,"est deja declare.");
         
     }
-    rechercher($1,"IDF"," ",$2,0," ",0);
+    rechercher($1,"IDF"," ",$2,0," ",0);   
 }
 ; 
-TAILLE: TAILLE verg inti {
+TAILLE: TAILLE verg inti {  if($3<0){
+                            yyerror("Sementique error","","taille negative");
+                                    }
                                 char* str_inti;
                                 // Allocate memory for str_inti
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
@@ -101,6 +104,9 @@ TAILLE: TAILLE verg inti {
                                 $$=final_str;
     }
         | inti {
+                    if($1<0){
+                            yyerror("Sementique error","","taille negative");
+                                    }
                                 char* str_inti;
                                 // Allocate memory for str_inti
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
@@ -156,9 +162,9 @@ OPERAND
             sprintf(backToStr, "%g", $1); // -g bh na7iw les 0 li manahtajohmch
             $$=backToStr;}
 
-    | idf po ENSpara pf {{if(!Declarer($1)){
+    | idf po TAILLE pf {{if(!Declarer($1)){
         yyerror("Sementique error",$1,"est non declare.");      
-    }} $$="1";}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang");  $$="1";}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
 
     | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$="1";nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
 ;
@@ -190,10 +196,12 @@ var: idf {if(!Declarer($1)){
         yyerror("Sementique error",$1,"est non declare.");
         $$=$1;
     }}
-     | idf po ENSpara pf {if(!Declarer($1)){
-            yyerror("Sementique error",$1,"est non declare.");  
+     | idf po TAILLE pf {if(!Declarer($1)){
+            yyerror("Sementique error",$1,"est non declare."); 
+     }
+            if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
         $$=$1;
-    }} 
+    } 
 ;
 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif 
 ;

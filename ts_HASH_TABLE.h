@@ -47,6 +47,8 @@ pointer_element2 tab_mot_cle_pointer = NULL, tab_sepa_pointer = NULL, prdm = NUL
 
 int Declarer(char entite[]);
 
+int verifier_in_out_table(char entite[],char CAZER[]);
+
 void inserer_fonction(char name_F[], int nb_argument);
 
 int verifier_nb_argument(char name_F[], int nb_argument);
