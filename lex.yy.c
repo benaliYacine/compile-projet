@@ -467,7 +467,7 @@ extern Col;
  char *pointPtr; //point pointer
 int P_OU_F=0;//is pares nom programme ou fonction
 float valeur;
- char type[20];
+ char type[20]=" ";
 #line 472 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
@@ -713,153 +713,153 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 29 "lexical.l"
-{strcpy(type," ");rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);P_OU_F=1;return mc_prgrm;}
+{strcpy(type," ");rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);P_OU_F=1;return mc_prgrm;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 30 "lexical.l"
-{strcpy(type," ");rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);P_OU_F=1;return mc_rtin;}
+{strcpy(type," ");rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);P_OU_F=1;return mc_rtin;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 31 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endr;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endr;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 32 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_call;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_call;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 33 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dim;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dim;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 34 "lexical.l"
-{strcpy(type,yytext);rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_logi;}
+{strcpy(type,yytext);rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_logi;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 35 "lexical.l"
-{strcpy(type,yytext);rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_char;}
+{strcpy(type,yytext);rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_char;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 36 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_true;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_true;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 37 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_false;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_false;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 38 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_read;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_read;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 39 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_write;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_write;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 41 "lexical.l"
-{strcpy(type,yytext);rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_int;}
+{strcpy(type,yytext);rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_int;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 42 "lexical.l"
-{strcpy(type,yytext);rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_real;}
+{strcpy(type,yytext);rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_real;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 43 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_end;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_end;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 44 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_if;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_if;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 45 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_then;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_then;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 46 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_else;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_else;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 47 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endif;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endif;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 48 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dowhile;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dowhile;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 49 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_enddo;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_enddo;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 50 "lexical.l"
-{rechercher(yytext,"Mot cle",0,0, 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_equival;}
+{rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_equival;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 53 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_or;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_or;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 54 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_and;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_and;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 55 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return lt;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return lt;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 56 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return gt;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return gt;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 57 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return le;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return le;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 58 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ne;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ne;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 59 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return eq;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return eq;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 60 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ge;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return ge;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 64 "lexical.l"
 {yylval.str=strdup(yytext);
-					rechercher(yytext,"IDF",type,0,0," ",P_OU_F);  
+					rechercher(yytext,"IDF",type," ",0," ",P_OU_F);  
 					if(P_OU_F==1){
 						P_OU_F=0;
 					}
@@ -879,8 +879,8 @@ YY_RULE_SETUP
 				//si on consiere la detection des entiers trop long comme warning: printf("warning: Entité entiere trop long a ligne %d a la colonne %d \n ",nb_ligne, Col);
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
               valeur=(float)atof(yytext);
-			  rechercher(yytext,"Cst","INTEGER",valeur,0," ",P_OU_F);
-			  
+			  rechercher(yytext,"Cst","INTEGER",yytext,0," ",P_OU_F);
+
 			  Col= Col + strlen(yytext); 
 			  
 			  //printf (" L entite lexicale reconnue est %s \n", yytext);
@@ -904,7 +904,7 @@ YY_RULE_SETUP
 					if (intPart<-32768 || intPart>32767 || (int)fractionalPart>32767){
 						yyerror("Lexical error",yytext,"est trop long.");return err;}
 			  }
-              rechercher(yytext,"Cst","FLOAT",atof(yytext),0," ",P_OU_F); 
+              rechercher(yytext,"Cst","FLOAT",yytext,0," ",P_OU_F); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return real;}
@@ -913,7 +913,7 @@ case 34:
 YY_RULE_SETUP
 #line 107 "lexical.l"
 {yylval.str=strdup(yytext);
-			  rechercher(yytext,"Cst","CHARACTER",0,0," ",P_OU_F);  
+			  rechercher(yytext,"Cst","CHARACTER",yytext,0," ",P_OU_F);  
               Col= Col + strlen(yytext);
               printf (" L entite lexicale reconnue est %s \n", yytext); 
 			  return str;}
@@ -921,47 +921,47 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 113 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return divi;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return divi;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 114 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mul;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mul;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 115 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return sub;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return sub;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 116 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return add;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return add;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 117 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return aff;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return aff;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 118 "lexical.l"
-{printf("---whyyyyyyyyyyyyyyyyyyyy\n");strcpy(type," ");rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
+{printf("---whyyyyyyyyyyyyyyyyyyyy\n");strcpy(type," ");rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 119 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return po;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return po;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 120 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pf;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pf;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 121 "lexical.l"
-{rechercher(yytext,"separateur",0,0, 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return verg;}
+{rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return verg;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP

@@ -28,11 +28,11 @@
 
 
 %type <str> TAILLE
-%type <reel> partie_gauch_affectation
-%type <reel> valeur
+%type <str> partie_gauch_affectation
+%type <str> valeur
 %type <str> EXPRE
 %type <str> TERM
-%type <reel> OPERAND
+%type <str> OPERAND
 %type <str> FACTOR
 %type <str> EXPREt
 
@@ -56,7 +56,7 @@ DECS: VIDE | ENSDEC
 ;
 ENSDEC: ENSDEC DEC | DEC
 ;
-DEC: TYPE ENSIDF_dec pvg | TYPE idf {if(Declarer($2)){
+DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declarer($2)){
         Col-=2;
         yyerror("Sementique error",$2,"est deja declare.");
     }} mul inti pvg 
@@ -129,26 +129,37 @@ TERM
     ;
 
 FACTOR
-    : po EXPRE pf {sprintf($$,"%f",atof($2));}
-    | OPERAND {sprintf($$,"%f",$1);}
+    : po EXPRE pf { $$=$2;}
+    | OPERAND { $$=$1;}
     ;
 
 OPERAND
-    :idf {{if(!Declarer($1)){
-       yyerror("Sementique error",$1,"est non declare.");      
-    }} $$=0;}
-    | LOGI { $$=0;}
-    | inti {$$=(float)$1;}
-    | real {$$=$1;}
-    | idf po TAILLE pf {{if(!Declarer($1)){
+    :idf {
+            if(!Declarer($1)){
+                yyerror("Sementique error",$1,"est non declare.");
+            }$$=GetVal($1);
+        }
+    | LOGI { $$=$1;}
+
+    | inti {char backToStr[20];
+            sprintf(backToStr, "%d", val);
+            $$=backToStr;}
+
+    | real {char backToStr[20];
+            sprintf(backToStr, "%f", val);
+            $$=backToStr;}
+
+    | idf po ENSpara pf {{if(!Declarer($1)){
         yyerror("Sementique error",$1,"est non declare.");      
-    }} $$=0;}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
-    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$=0;nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
-    ;
+    }} $$="1";}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+
+    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$="1";nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+;
+
 ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}
 ;
-LOGI: mc_true
-    | mc_false
+LOGI: mc_true {$$="true";}
+    | mc_false {$$="false";}
 ;
 IDFS: ENSIDF | VIDE
 ;
@@ -164,25 +175,27 @@ eqival_statement : mc_equival ens_list_vars pvg
 ;
 ens_list_vars: ens_list_var | VIDE
 ;
-ens_list_var: ens_list_var verg po list_var pf | po list_var pf 
+ens_list_var: ens_list_var verg po list_var pf | po list_var pf
 ;
-list_var: list_var verg var | var 
+list_var: list_var verg var | var
 ;
 var: idf {if(!Declarer($1)){
-        yyerror("Sementique error",$1,"est non declare.");      
-    }} 
+        yyerror("Sementique error",$1,"est non declare.");
+        $$=$1;
+    }}
      | idf po ENSpara pf {if(!Declarer($1)){
-        yyerror("Sementique error",$1,"est non declare.");      
+            yyerror("Sementique error",$1,"est non declare.");  
+        $$="1";
     }} 
 ;
 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif 
 ;
 else_clause: mc_else ENSINST |
 ;
-assignment: var aff valeur pvg //OGassi operande gauche d'afectation 
+assignment: var aff valeur pvg {$1=$3;} //OGassi operande gauche d'afectation 
 ;
-valeur: str { $$=0;}
-        | EXPRE {$$=atof($1);} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
+valeur: str {$$=GetVal($1);} //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
+        | EXPRE {$$=$1;} // hna expre rafda valeur belmiis true wela 5 3la chakl string
 ;
 read_statement: mc_read po var pf pvg // kanet idf fi blaset var dertha ha ka parceque 9ader ydir read(t(5)); nafs echi f write var mechi idf
 ;
@@ -192,9 +205,41 @@ ENS_PARA_WRITE: ENS_PARA_WRITE verg str | ENS_PARA_WRITE verg var | str | var
 ;
 dowhile_statement: mc_dowhile po CONDI pf ENSINST mc_enddo
 ;
-CONDI: CONDI mc_or CONDI | CONDI mc_and CONDIT | CONDIT
+CONDI: CONDI mc_or CONDI {if (isBoolean($1) && isBoolean($3)) {
+        bool val1 = strcmp($1, "true") == 0;
+        bool val2 = strcmp($3, "true") == 0;
+        bool res = val1 | val2;
+        // Conversion back to string is trivial here
+        char *backToStr = val ? "true" : "false";
+        $$=backToStr
+    }
+    else {
+        yyerror("Sementique error","","cannot use or with non boolean operands");
+    }}
+    | CONDI mc_and CONDIT{if (isBoolean($1) && isBoolean($3)) {
+        bool val1 = strcmp($1, "true") == 0;
+        bool val2 = strcmp($3, "true") == 0;
+        bool res = val1 & val2;
+        // Conversion back to string is trivial here
+        char *backToStr = val ? "true" : "false";
+        $$=backToStr
+    }
+    else {
+        yyerror("Sementique error","","cannot use or with non boolean operands");
+    }} 
+    | CONDIT {if (isBoolean($1)) {
+        $$=$1;
+    }
+    else {
+        yyerror("Sementique error",$1,"is not boolean");
+    }}
 ;
-CONDIT: EXPRE
+CONDIT: EXPRE {if (isBoolean($1)) {
+        $$=$1;
+    }
+    else {
+        yyerror("Sementique error",$1,"is not boolean");
+    }}
 ;
 
 %%

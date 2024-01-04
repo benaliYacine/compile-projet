@@ -5,10 +5,10 @@ typedef struct element_type1 *pointer_element1;
 
 typedef struct element_type1
 {
-  char name[20];
+  char name[500];//bah ida str twiil yekfi
   char code[20];
   char type[20];
-  float val;
+  char val[500];
   char taille[20];
   int declarer;
   pointer_element1 svt;
@@ -51,13 +51,25 @@ void inserer_fonction(char name_F[], int nb_argument);
 
 int verifier_nb_argument(char name_F[], int nb_argument);
 
+bool isInteger(const char *str);
+
+bool isFloat(const char *str);
+
+bool isBoolean(const char *str);
+
+char* GetType(char entite[]);
+
+char* GetVal(char entite[]);
+
+char* GetFct(char entite[]);
+
 void initialisation();
 
 int fonction_de_hachage(char name[20]);
 
-void inserer(char *entite, char *code, char *type, float val, int y, int hash_index, char *taille);
+void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[]);
 
-int rechercher(char *entite, char *code, char *type, float val, int y, char *taille, int P_OU_F);
+int rechercher(char entite[], char code[], char type[], char val[], int y, char taille[], int P_OU_F);
 
 void afficher();
 

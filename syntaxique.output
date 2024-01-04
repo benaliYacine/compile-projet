@@ -72,7 +72,7 @@ Grammar
    44        | LOGI
    45        | inti
    46        | real
-   47        | idf po TAILLE pf
+   47        | idf po ENSpara pf
    48        | mc_call idf po ENSpara pf
 
    49 ENSpara: ENSpara verg valeur
@@ -222,7 +222,7 @@ partie_gauch_affectation (58)
 ENSIDF_dec (59)
     on left: 24 25, on right: 18 24
 TAILLE (60)
-    on left: 26 27, on right: 21 26 47
+    on left: 26 27, on right: 21 26
 EXPRE (61)
     on left: 28 29 30 31 32 33 34, on right: 28 29 30 31 32 33 41 81
     92
@@ -235,7 +235,7 @@ FACTOR (64)
 OPERAND (65)
     on left: 43 44 45 46 47 48, on right: 42
 ENSpara (66)
-    on left: 49 50, on right: 48 49 75
+    on left: 49 50, on right: 47 48 49 75
 LOGI (67)
     on left: 51 52, on right: 44
 IDFS (68)
@@ -984,7 +984,7 @@ state 68
 state 69
 
    43 OPERAND: idf .
-   47        | idf . po TAILLE pf
+   47        | idf . po ENSpara pf
 
     po  shift, and go to state 104
 
@@ -1318,11 +1318,25 @@ state 103
 
 state 104
 
-   47 OPERAND: idf po . TAILLE pf
+   47 OPERAND: idf po . ENSpara pf
 
-    inti  shift, and go to state 117
+    idf       shift, and go to state 69
+    inti      shift, and go to state 70
+    real      shift, and go to state 71
+    mc_call   shift, and go to state 72
+    mc_true   shift, and go to state 73
+    mc_false  shift, and go to state 74
+    str       shift, and go to state 75
+    po        shift, and go to state 76
 
-    TAILLE  go to state 136
+    EXPRE    go to state 77
+    EXPREt   go to state 78
+    TERM     go to state 79
+    FACTOR   go to state 80
+    OPERAND  go to state 81
+    ENSpara  go to state 136
+    LOGI     go to state 82
+    valeur   go to state 88
 
 
 state 105
@@ -1758,11 +1772,11 @@ state 135
 
 state 136
 
-   26 TAILLE: TAILLE . verg inti
-   47 OPERAND: idf po TAILLE . pf
+   47 OPERAND: idf po ENSpara . pf
+   49 ENSpara: ENSpara . verg valeur
 
     pf    shift, and go to state 165
-    verg  shift, and go to state 150
+    verg  shift, and go to state 122
 
 
 state 137
@@ -2057,7 +2071,7 @@ state 164
 
 state 165
 
-   47 OPERAND: idf po TAILLE pf .
+   47 OPERAND: idf po ENSpara pf .
 
     $default  reduce using rule 47 (OPERAND)
 
