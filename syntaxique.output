@@ -2057,7 +2057,7 @@ state 167
 
     $default  reduce using rule 5 (VIDE)
 
-    VIDE               go to state 175
+    VIDE               go to state 174
     INST               go to state 65
     eqival_statement   go to state 36
     var                go to state 37
@@ -2116,7 +2116,7 @@ state 172
     FACTOR   go to state 80
     OPERAND  go to state 81
     LOGI     go to state 82
-    valeur   go to state 175
+    valeur   go to state 176
 
 
 state 173
@@ -2150,16 +2150,16 @@ state 174
 
 state 175
 
-   49 ENSpara: ENSpara verg valeur .
+   76 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause . mc_endif
 
-    $default  reduce using rule 49 (ENSpara)
+    mc_endif  shift, and go to state 178
 
 
 state 176
 
-   76 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause . mc_endif
+   49 ENSpara: ENSpara verg valeur .
 
-    mc_endif  shift, and go to state 178
+    $default  reduce using rule 49 (ENSpara)
 
 
 state 177

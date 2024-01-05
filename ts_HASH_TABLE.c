@@ -26,9 +26,9 @@ void initialisation()
   }
 }
 
-int verifier_in_out_table(char entite[],char CAZER[])
+int verifier_in_out_table(char entite[], char CAZER[])
 {
-  int tab[100],i=0;
+  int tab[100], i = 0;
   char *token;
   int integer;
   int hash_index = fonction_de_hachage(entite);
@@ -37,29 +37,29 @@ int verifier_in_out_table(char entite[],char CAZER[])
   {
     tab_idf_pointer = tab_idf_pointer->svt;
   }
-  if(strlen(tab_idf_pointer->taille)!=strlen(CAZER))
+  if (strlen(tab_idf_pointer->taille) != strlen(CAZER))
     return 0;
-  
+
   // Utilisation de strtok pour séparer la chaîne en tokens
   token = strtok(CAZER, ",");
   while (token != NULL)
   {
-    
+
     // Utilisation de atoi pour convertir le token en entier
     integer = atoi(token);
-    tab[i]=integer;
+    tab[i] = integer;
     i++;
     // Passage au token suivant
     token = strtok(NULL, ",");
   }
-  
+
   token = strtok(tab_idf_pointer->taille, ",");
-  i=0;
+  i = 0;
   while (token != NULL)
   {
     // Utilisation de atoi pour convertir le token en entier
     integer = atoi(token);
-    if(tab[i]<0||tab[i]>=integer)
+    if (tab[i] < 0 || tab[i] >= integer)
       return 0;
     i++;
     // Passage au token suivant
@@ -321,7 +321,6 @@ void afficher()
 //  semantique fcts
 
 char *GetTypeFromVal(char entite[])
-char *GetTypeFromVal(char entite[])
 {
   if (isInteger(entite))
   {
@@ -342,11 +341,12 @@ char *GetTypeFromVal(char entite[])
 }
 
 // Helper function to determine if an entity is a type string
-bool isTypeString(char *entity) {
-    return (strcmp(entity, "INTEGER") == 0 || 
-            strcmp(entity, "FLOAT") == 0 || 
-            strcmp(entity, "CHARACTER") == 0 || 
-            strcmp(entity, "LOGICAL") == 0);
+bool isTypeString(char *entity)
+{
+  return (strcmp(entity, "INTEGER") == 0 ||
+          strcmp(entity, "FLOAT") == 0 ||
+          strcmp(entity, "CHARACTER") == 0 ||
+          strcmp(entity, "LOGICAL") == 0);
 }
 
 // Function to check if two entities are compatible
@@ -354,21 +354,27 @@ bool areCompatible(char entite1[], char entite2[])
 {
 
   char *type1, *type2;
-  printf("\n\n------------we want to compare %s with %s\n\n",entite1,entite2);
+  printf("\n\n------------we want to compare %s with %s\n\n", entite1, entite2);
 
-  if (isTypeString(entite1)) {
-        type1 = strdup(entite1); // Directly use the entity as its type
-    } else {
-        type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
-    }
+  if (isTypeString(entite1))
+  {
+    type1 = strdup(entite1); // Directly use the entity as its type
+  }
+  else
+  {
+    type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
+  }
 
-    if (isTypeString(entite2)) {
-        type2 = strdup(entite2); // Directly use the entity as its type
-    } else {
-        type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
-    }
+  if (isTypeString(entite2))
+  {
+    type2 = strdup(entite2); // Directly use the entity as its type
+  }
+  else
+  {
+    type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
+  }
 
-  printf("\n\n------------now we want to compare %s with %s\n\n",type1,type2);
+  printf("\n\n------------now we want to compare %s with %s\n\n", type1, type2);
 
   if (strcmp(type1, type2) == 0)
   { // Same type
@@ -500,7 +506,7 @@ char *ltEntities(char entite1[], char entite2[])
   {
     int val1 = strtol(entite1, NULL, 10);
     int val2 = strtol(entite2, NULL, 10);
-    printf("\n\n------------here is the two ints we want to compare %d,%d\n\n",val1,val2);
+    printf("\n\n------------here is the two ints we want to compare %d,%d\n\n", val1, val2);
     return (val1 < val2) ? "true" : "false";
   }
   else
@@ -714,11 +720,6 @@ bool isInteger(const char *str)
   char *end;
   strtol(str, &end, 10);
   return *end == '\0';
-bool isInteger(const char *str)
-{ // hna const ghi optimization bah tgoul lel comilateur beli had l argument manich ra7 nmodifih koun
-  char *end;
-  strtol(str, &end, 10);
-  return *end == '\0';
 }
 
 bool isFloat(const char *str)
@@ -726,16 +727,8 @@ bool isFloat(const char *str)
   char *end;
   strtof(str, &end);
   return *end == '\0';
-bool isFloat(const char *str)
-{
-  char *end;
-  strtof(str, &end);
-  return *end == '\0';
 }
 
-bool isBoolean(const char *str)
-{
-  return strcmp(str, "true") == 0 || strcmp(str, "false") == 0;
 bool isBoolean(const char *str)
 {
   return strcmp(str, "true") == 0 || strcmp(str, "false") == 0;
@@ -753,7 +746,7 @@ char *GetTypeFromTS(char entite[])
     {
       if (!strcmp(tab_idf_pointer->name, entite))
       {
-        printf("\n\n------------we have %s with type %s\n\n",tab_idf_pointer->name,tab_idf_pointer->type);
+        printf("\n\n------------we have %s with type %s\n\n", tab_idf_pointer->name, tab_idf_pointer->type);
         return tab_idf_pointer->type;
       }
       else

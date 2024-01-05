@@ -39,10 +39,6 @@
 %type <str> CONDIT
 %type <str> LOGI
 %type <str> var
-%type <str> LOGI
-%type <str> var
-%type <str> CONDI
-%type <str> CONDIT
 
 
 %%
@@ -274,8 +270,6 @@ CONDI: CONDI mc_or CONDI {if (isBoolean($1) && isBoolean($3)) {
         // Conversion back to string is trivial here
         char *backToStr = res ? "true" : "false";
         $$=backToStr;
-        char *backToStr = res ? "true" : "false";
-        $$=backToStr;
     }
     else {
         yyerror("Sementique error","","cannot use or with non boolean operands");
@@ -285,8 +279,6 @@ CONDI: CONDI mc_or CONDI {if (isBoolean($1) && isBoolean($3)) {
         bool val2 = strcmp($3, "true") == 0;
         bool res = val1 & val2;
         // Conversion back to string is trivial here
-        char *backToStr = res ? "true" : "false";
-        $$=backToStr;
         char *backToStr = res ? "true" : "false";
         $$=backToStr;
     }
