@@ -43,14 +43,19 @@ typedef struct table_les_tableaux{
   char name[20];
   int state;
   int dementions;
-  table_string dim1[1000];
-  table_string dim2[1000][1000];
+  table_string dim1[200];
+  table_string dim2[200][200];
 }table_les_tableaux;
+typedef struct F_P_tables{
+  table_les_tableaux Table_LES_TABLEAUX[50];
+}F_P_tables;
 
-table_les_tableaux Table_LES_TABLEAUX[50];
+F_P_tables F_P_TABLE[20];
+
 Table_Arguments_Fonction TABLE_DES_FONCTION_NB_ARG[100];
 Table_Pointers_Sur_Tables_IDF LES_TABLES_IDF[100];
 int POSITION_Tables_IDF = -1;
+int POSITION_F_P_tables = -1;
 // idf const
 pointer_element2 tab_hachage_mot_cle[300], tab_hachage_sepa[300];
 pointer_element1 tab_idf_pointer = NULL, prd = NULL;
