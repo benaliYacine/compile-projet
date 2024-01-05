@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 #include "ts_HASH_TABLE.h"
-
 
 // TS fcts
 
@@ -274,42 +274,320 @@ void afficher()
   }
 }
 
-//semantique fcts
+// semantique fcts
 
-char* GetTypeFromVal(char entite[])
+char *GetTypeFromVal(char entite[])
 {
-  if (isInteger(str)) {
-        return "INTEGER";
-    }
-    else if (isFloat(str)) {
-        return "FLOAT";
-    }
-    else if (isBoolean(str)) {
-        return "BOOLEAN";
-    }
-    else {
-        return " ";
-    }
+  if (isInteger(entite))
+  {
+    return "INTEGER";
+  }
+  else if (isFloat(entite))
+  {
+    return "FLOAT";
+  }
+  else if (isBoolean(entite))
+  {
+    return "LOGICAL";
+  }
+  else
+  {
+    return " ";
+  }
+}
+
+// Helper function to determine if an entity is a type string
+bool isTypeString(char *entity) {
+    return (strcmp(entity, "INTEGER") == 0 || 
+            strcmp(entity, "FLOAT") == 0 || 
+            strcmp(entity, "CHARACTER") == 0 || 
+            strcmp(entity, "LOGICAL") == 0);
 }
 
 // Function to check if two entities are compatible
-bool areCompatible(char entite1[], char entite2[]) {
-    char* type1 = GetTypeFromVal(entite1);
-    char* type2 = GetTypeFromVal(entite2);
+bool areCompatible(char entite1[], char entite2[])
+{
 
-    if (strcmp(type1, type2) == 0) {  // Same type
-        return true;
+  char *type1, *type2;
+  printf("\n\n------------we want to compare %s with %s\n\n",entite1,entite2);
+
+  if (isTypeString(entite1)) {
+        type1 = strdup(entite1); // Directly use the entity as its type
+    } else {
+        type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
     }
-    else if ((strcmp(type1, "INTEGER") == 0 && strcmp(type2, "FLOAT") == 0) ||
-             (strcmp(type1, "FLOAT") == 0 && strcmp(type2, "INTEGER") == 0)) {
-        // INTEGER and FLOAT are compatible
-        return true;
+
+    if (isTypeString(entite2)) {
+        type2 = strdup(entite2); // Directly use the entity as its type
+    } else {
+        type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
     }
-    else {
-        return false;
-    }
+
+  printf("\n\n------------now we want to compare %s with %s\n\n",type1,type2);
+
+  if (strcmp(type1, type2) == 0)
+  { // Same type
+    return true;
+  }
+  else if ((strcmp(type1, "INTEGER") == 0 && strcmp(type2, "FLOAT") == 0) ||
+           (strcmp(type1, "FLOAT") == 0 && strcmp(type2, "INTEGER") == 0))
+  {
+    // INTEGER and FLOAT are compatible
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
+// Function to check if arithmetic operations can be performed on two entities
+bool canPerformArithmetic(char entite1[], char entite2[])
+{
+  char *type1 = strdup(GetTypeFromVal(entite1));
+  char *type2 = strdup(GetTypeFromVal(entite2));
+  printf("\n\n------------entities are= %s,%s\n\n", entite1, entite2);
+  printf("\n\n------------types are= %s,%s\n\n", type1, type2);
+  // Check if both types are either INTEGER or FLOAT
+  bool isType1Numeric = (strcmp(type1, "INTEGER") == 0 || strcmp(type1, "FLOAT") == 0);
+  bool isType2Numeric = (strcmp(type2, "INTEGER") == 0 || strcmp(type2, "FLOAT") == 0);
+
+  return isType1Numeric && isType2Numeric;
+}
+
+char *addEntities(char entite1[], char entite2[])
+{
+  static char backToStr[20]; // Static to return it from the function
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    sprintf(backToStr, "%d", val1 + val2);
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    sprintf(backToStr, "%g", val1 + val2);
+  }
+
+  return backToStr;
+}
+char *subEntities(char entite1[], char entite2[])
+{
+  static char backToStr[20]; // Static to return it from the function
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    sprintf(backToStr, "%d", val1 - val2);
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    sprintf(backToStr, "%g", val1 - val2);
+  }
+
+  return backToStr;
+}
+
+char *mulEntities(char entite1[], char entite2[])
+{
+  static char backToStr[20]; // Static to return it from the function
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    sprintf(backToStr, "%d", val1 * val2);
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    sprintf(backToStr, "%g", val1 * val2);
+  }
+
+  return backToStr;
+}
+char *divEntities(char entite1[], char entite2[])
+{
+  static char backToStr[20]; // Static to return it from the function
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    sprintf(backToStr, "%d", val1 * val2);
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    sprintf(backToStr, "%g", val1 * val2);
+  }
+
+  return backToStr;
+}
+
+char *ltEntities(char entite1[], char entite2[])
+{
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    printf("\n\n------------here is the two ints we want to compare %d,%d\n\n",val1,val2);
+    return (val1 < val2) ? "true" : "false";
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    return (val1 < val2) ? "true" : "false";
+  }
+}
+char *gtEntities(char entite1[], char entite2[])
+{
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    return (val1 > val2) ? "true" : "false";
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    return (val1 > val2) ? "true" : "false";
+  }
+}
+char *geEntities(char entite1[], char entite2[])
+{
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    return (val1 >= val2) ? "true" : "false";
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    return (val1 >= val2) ? "true" : "false";
+  }
+}
+char *eqEntities(char entite1[], char entite2[])
+{
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    return (val1 == val2) ? "true" : "false";
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    return (val1 == val2) ? "true" : "false";
+  }
+}
+char *neEntities(char entite1[], char entite2[])
+{
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    return (val1 != val2) ? "true" : "false";
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    return (val1 != val2) ? "true" : "false";
+  }
+}
+char *leEntities(char entite1[], char entite2[])
+{
+
+  char *type1 = GetTypeFromVal(entite1);
+  char *type2 = GetTypeFromVal(entite2);
+
+  if (strcmp(type1, "INTEGER") == 0 && strcmp(type2, "INTEGER") == 0)
+  {
+    int val1 = strtol(entite1, NULL, 10);
+    int val2 = strtol(entite2, NULL, 10);
+    return (val1 <= val2) ? "true" : "false";
+  }
+  else
+  {
+    float val1 = (strcmp(type1, "INTEGER") == 0) ? (float)strtol(entite1, NULL, 10) : strtof(entite1, NULL);
+    float val2 = (strcmp(type2, "INTEGER") == 0) ? (float)strtol(entite2, NULL, 10) : strtof(entite2, NULL);
+    return (val1 <= val2) ? "true" : "false";
+  }
+}
+
+float convertStrToFloat(char *entite)
+{
+  if (isInteger(entite))
+  {
+    int val = strtol(entite, NULL, 10);
+    return (float)val; // Convert integer to float
+  }
+  else if (isFloat(entite))
+  {
+    return strtof(entite, NULL); // Already a float
+  }
+  else
+  {
+    // Handle the case where the string is neither an integer nor a float
+    // This could be an error or a default value, depending on your application
+    return 0.0f; // Example: default to 0.0
+  }
+}
+
+// Function to check if the entity is "zero"
+bool isEntityZero(char *entite)
+{
+  float value = convertStrToFloat(entite);
+  const float epsilon = 1e-6; // Small threshold for floating point comparison
+
+  return fabs(value) < epsilon;
+}
 
 int Operation(char op1[], char op2[])
 {
@@ -378,27 +656,28 @@ int verifier_nb_argument(char name_F[], int nb_argument)
     return 1;
 }
 
-
-bool isInteger(const char *str) { //hna const ghi optimization bah tgoul lel comilateur beli had l argument manich ra7 nmodifih koun
-    char *end;
-    strtol(str, &end, 10);
-    return *end == '\0';
+bool isInteger(const char *str)
+{ // hna const ghi optimization bah tgoul lel comilateur beli had l argument manich ra7 nmodifih koun
+  char *end;
+  strtol(str, &end, 10);
+  return *end == '\0';
 }
 
-bool isFloat(const char *str) {
-    char *end;
-    strtof(str, &end);
-    return *end == '\0';
-}
-
-bool isBoolean(const char *str) {
-    return strcmp(str, "true") == 0 || strcmp(str, "false") == 0;
-}
-
-
-char* GetType(char entite[])
+bool isFloat(const char *str)
 {
-  int i;
+  char *end;
+  strtof(str, &end);
+  return *end == '\0';
+}
+
+bool isBoolean(const char *str)
+{
+  return strcmp(str, "true") == 0 || strcmp(str, "false") == 0;
+}
+
+char *GetTypeFromTS(char entite[])
+{
+  int i = 0;
   int hash_index = fonction_de_hachage(entite);
   while (i < 100 && LES_TABLES_IDF[i].state == 1)
   {
@@ -408,6 +687,7 @@ char* GetType(char entite[])
     {
       if (!strcmp(tab_idf_pointer->name, entite))
       {
+        printf("\n\n------------we have %s with type %s\n\n",tab_idf_pointer->name,tab_idf_pointer->type);
         return tab_idf_pointer->type;
       }
       else
@@ -422,9 +702,9 @@ char* GetType(char entite[])
     return NULL;
 }
 
-char* GetVal(char entite[])
+char *GetValFromTS(char entite[])
 {
-  int i;
+  int i = 0;
   int hash_index = fonction_de_hachage(entite);
   while (i < 100 && LES_TABLES_IDF[i].state == 1)
   {
@@ -448,9 +728,9 @@ char* GetVal(char entite[])
     return NULL;
 }
 
-char* GetFct(char entite[])
+char *GetFctFromTS(char entite[])
 {
-  int i;
+  int i = 0;
   int hash_index = fonction_de_hachage(entite);
   while (i < 100 && LES_TABLES_IDF[i].state == 1)
   {
@@ -472,9 +752,11 @@ char* GetFct(char entite[])
     return NULL;
 }
 
-int SetVal(char entite[],char val[])
+int SetValInTS(char entite[], char val[])
 {
-  int i;
+  printf("\n\n------------we want to put %s in %s\n\n", val, entite);
+
+  int i = 0;
   int hash_index = fonction_de_hachage(entite);
   while (i < 100 && LES_TABLES_IDF[i].state == 1)
   {
@@ -484,6 +766,7 @@ int SetVal(char entite[],char val[])
     {
       if (!strcmp(tab_idf_pointer->name, entite))
       {
+        printf("\n\n------------we have put %s in %s\n\n", val, tab_idf_pointer->name);
         strcpy(tab_idf_pointer->val, val);
         return 1;
       }
@@ -496,5 +779,8 @@ int SetVal(char entite[],char val[])
     i++;
   }
   if (tab_idf_pointer == NULL)
+  {
+    printf("\n\n------------we could not put %s in %s\n\n", val, tab_idf_pointer);
     return 0;
+  }
 }

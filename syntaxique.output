@@ -117,7 +117,7 @@ Grammar
    76 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif
 
    77 else_clause: mc_else ENSINST
-   78            | /* empty */
+   78            | VIDE
 
    79 assignment: var aff valeur pvg
 
@@ -202,7 +202,7 @@ PRGM_PRIN (48)
 FCTS (49)
     on left: 3 4, on right: 1
 VIDE (50)
-    on left: 5, on right: 3 14 23 54 57 69
+    on left: 5, on right: 3 14 23 54 57 69 78
 ENSFCT (51)
     on left: 6 7, on right: 4 6
 FCT (52)
@@ -2112,13 +2112,14 @@ state 169
     mc_dowhile  shift, and go to state 30
     mc_equival  shift, and go to state 31
 
-    $default  reduce using rule 78 (else_clause)
+    $default  reduce using rule 5 (VIDE)
 
+    VIDE               go to state 175
     INST               go to state 65
     eqival_statement   go to state 36
     var                go to state 37
     if_statement       go to state 38
-    else_clause        go to state 175
+    else_clause        go to state 176
     assignment         go to state 39
     read_statement     go to state 40
     write_statement    go to state 41
@@ -2164,7 +2165,7 @@ state 174
     mc_dowhile  shift, and go to state 30
     mc_equival  shift, and go to state 31
 
-    ENSINST            go to state 176
+    ENSINST            go to state 177
     INST               go to state 35
     eqival_statement   go to state 36
     var                go to state 37
@@ -2177,12 +2178,19 @@ state 174
 
 state 175
 
-   76 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause . mc_endif
+   78 else_clause: VIDE .
 
-    mc_endif  shift, and go to state 177
+    $default  reduce using rule 78 (else_clause)
 
 
 state 176
+
+   76 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause . mc_endif
+
+    mc_endif  shift, and go to state 178
+
+
+state 177
 
    59 ENSINST: ENSINST . INST
    77 else_clause: mc_else ENSINST .
@@ -2206,7 +2214,7 @@ state 176
     dowhile_statement  go to state 42
 
 
-state 177
+state 178
 
    76 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif .
 

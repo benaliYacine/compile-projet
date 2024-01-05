@@ -81,7 +81,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
               //valeur=(float)atof(yytext);
 			  rechercher(yytext,"Cst","INTEGER",yytext,0," ",P_OU_F);
 
-			  Col= Col + strlen(yytext); 
+			  Col= Col + strlen(yytext);
 
 			  //printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return inti;}
