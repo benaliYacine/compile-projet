@@ -46,23 +46,8 @@ typedef struct table_les_tableaux{
   table_string dim1[1000];
   table_string dim2[1000][1000];
 }table_les_tableaux;
-/*
-typedef struct initiali_tab *pointer_initiali_tab;
 
-typedef struct initiali_tab
-{
-  char entite[20];
-  pointer_initiali_tab dimension[100];
-} initiali_tab;
-*/
-/*struct Node {
-    char value[20];
-    struct Node *next;
-};
-*/
-
-// Fonction pour créer un nouveau nœud
-table_les_tableaux Table_LES_TABLEAUX[100];
+table_les_tableaux Table_LES_TABLEAUX[50];
 Table_Arguments_Fonction TABLE_DES_FONCTION_NB_ARG[100];
 Table_Pointers_Sur_Tables_IDF LES_TABLES_IDF[100];
 int POSITION_Tables_IDF = -1;

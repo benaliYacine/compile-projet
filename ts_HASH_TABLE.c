@@ -39,6 +39,7 @@ void A_M_tab(char name[],char taille1[],char val[])
 }
 int initiali_tab(char name[], char taille1[])
 {
+  
   int tab1[2], i = 0, j = 0, k = 0, l = 0;
   int dimensions = 0;
   char *token;
@@ -63,6 +64,7 @@ int initiali_tab(char name[], char taille1[])
   }
   if (dimensions == 1)
   {
+    printf("***********ani hna\n");
     i = 0;
     while (Table_LES_TABLEAUX[i].state == 1)
       i++;
@@ -79,7 +81,7 @@ int initiali_tab(char name[], char taille1[])
     Table_LES_TABLEAUX[i].state = 1;
     strcpy(Table_LES_TABLEAUX[i].name, name);
     Table_LES_TABLEAUX[i].dementions = 2;
-    for (j = 0; j < tab1[0]; i++)
+    for (j = 0; j < tab1[0]; j++)
       for (k = 0; k < tab1[1]; k++)
         strcpy(Table_LES_TABLEAUX[i].dim2[j][k].entite, "");
   }
@@ -96,6 +98,10 @@ void initialisation()
   {
     TABLE_DES_FONCTION_NB_ARG[i].state = 0;
     LES_TABLES_IDF[i].state = 0;
+   
+  }
+  for (i = 0; i < 50; i++)
+  {
     Table_LES_TABLEAUX[i].state = 0;
   }
   for (j = 0; j < 300; j++)
