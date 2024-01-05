@@ -904,7 +904,7 @@ YY_RULE_SETUP
 					if (intPart<-32768 || intPart>32767 || (int)fractionalPart>32767){
 						yyerror("Lexical error",yytext,"est trop long.");return err;}
 			  }
-              rechercher(yytext,"Cst","FLOAT",yytext,0," ",P_OU_F); 
+              rechercher(yytext,"Cst","REAL",yytext,0," ",P_OU_F); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return real;}
@@ -946,7 +946,7 @@ YY_RULE_SETUP
 case 40:
 YY_RULE_SETUP
 #line 118 "lexical.l"
-{printf("---whyyyyyyyyyyyyyyyyyyyy\n");strcpy(type," ");rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
+{strcpy(type," ");rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP

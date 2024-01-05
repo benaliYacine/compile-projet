@@ -20,7 +20,7 @@
          float reel;
 }
 
-%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
+%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str><str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
 %left lt gt ge eq ne le
 %left add sub
 %left mul divi
@@ -39,6 +39,10 @@
 %type <str> CONDIT
 %type <str> LOGI
 %type <str> var
+%type <str> LOGI
+%type <str> var
+%type <str> CONDI
+%type <str> CONDIT
 
 
 %%
@@ -52,7 +56,7 @@ VIDE:
 ;
 ENSFCT: ENSFCT FCT | FCT
 ;
-FCT: TYPE mc_rtin idf po IDFS pf DECS ENSINST assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}  | TYPE mc_rtin idf po IDFS pf  DECS assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}
+FCT: TYPE mc_rtin idf po IDFS pf DECS ENSINST assignment mc_endr {Declarer($3);inserer_fonction($3,nb_argument);nb_argument=0;}  | TYPE mc_rtin idf po IDFS pf  DECS assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
@@ -65,7 +69,8 @@ DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declar
         yyerror("Sementique error",$2,"est deja declare.");
     }} mul inti pvg 
     | TYPE idf mc_dim po TAILLE pf pvg {if(Declarer($2)){
-        yyerror("Sementique error",$2,"est deja declare.");}rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+        yyerror("Sementique error",$2,"est deja declare.");}
+        rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
 partie_gauch_affectation: aff valeur {$$=$2;} | VIDE { $$=" ";}
 ;
@@ -81,11 +86,12 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
     if(Declarer($1)){
         yyerror("Sementique error",$1,"est deja declare.");
     }
-    rechercher($1,"IDF"," ",$2,0," ",0);
+    rechercher($1,"IDF"," ",$2,0," ",0);   
 }
 ; 
-TAILLE
-    : TAILLE verg inti {
+TAILLE: TAILLE verg inti {  if($3<0){
+                            yyerror("Sementique error","","taille negative");
+                                    }
                                 char* str_inti;
                                 // Allocate memory for str_inti
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
@@ -96,8 +102,12 @@ TAILLE
                                 
                                 char* final_str = malloc(strlen($1) + strlen(str_inti) + 4 + 1);
                                 sprintf(final_str, "%s,%s", $1, str_inti);
-                                $$=final_str;}
-    | inti {
+                                $$=final_str;
+    }
+        | inti {
+                    if($1<0){
+                            yyerror("Sementique error","","taille negative");
+                                    }
                                 char* str_inti;
                                 // Allocate memory for str_inti
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
@@ -172,7 +182,8 @@ FACTOR
     ;
 
 OPERAND
-    :idf {
+    :
+    idf {
             if(!Declarer($1)){
                 yyerror("Sementique error",$1,"est non declare.");
             }char *res=GetValFromTS($1);
@@ -191,9 +202,9 @@ OPERAND
             sprintf(backToStr, "%g", $1);
             $$=strdup(backToStr);}
 
-    | idf po ENSpara pf {{if(!Declarer($1)){
+    | idf po TAILLE pf {{if(!Declarer($1)){
         yyerror("Sementique error",$1,"est non declare.");      
-    }} $$="1";}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang");  $$="1";}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
 
     | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$="1";nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
 ;
@@ -225,10 +236,12 @@ var: idf {if(!Declarer($1)){
         yyerror("Sementique error",$1,"est non declare.");
         $$=$1;
     }}
-     | idf po ENSpara pf {if(!Declarer($1)){
-            yyerror("Sementique error",$1,"est non declare.");  
-        $$="1";
-    }} 
+     | idf po TAILLE pf {if(!Declarer($1)){
+            yyerror("Sementique error",$1,"est non declare."); 
+     }
+            if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
+        $$=$1;
+    } 
 ;
 if_statement: mc_if po CONDI pf mc_then ENSINST else_clause mc_endif 
 ;
@@ -261,6 +274,8 @@ CONDI: CONDI mc_or CONDI {if (isBoolean($1) && isBoolean($3)) {
         // Conversion back to string is trivial here
         char *backToStr = res ? "true" : "false";
         $$=backToStr;
+        char *backToStr = res ? "true" : "false";
+        $$=backToStr;
     }
     else {
         yyerror("Sementique error","","cannot use or with non boolean operands");
@@ -270,6 +285,8 @@ CONDI: CONDI mc_or CONDI {if (isBoolean($1) && isBoolean($3)) {
         bool val2 = strcmp($3, "true") == 0;
         bool res = val1 & val2;
         // Conversion back to string is trivial here
+        char *backToStr = res ? "true" : "false";
+        $$=backToStr;
         char *backToStr = res ? "true" : "false";
         $$=backToStr;
     }

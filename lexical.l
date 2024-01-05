@@ -100,7 +100,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 					if (intPart<-32768 || intPart>32767 || (int)fractionalPart>32767){
 						yyerror("Lexical error",yytext,"est trop long.");return err;}
 			  }
-              rechercher(yytext,"Cst","FLOAT",yytext,0," ",P_OU_F); 
+              rechercher(yytext,"Cst","REAL",yytext,0," ",P_OU_F); 
 			  Col= Col + strlen(yytext); 
 			  printf (" L entite lexicale reconnue est %s \n", yytext);
 			  return real;}
@@ -115,7 +115,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 "-" {rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return sub;}
 "+" {rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return add;}
 "=" {rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return aff;}
-";" {printf("---whyyyyyyyyyyyyyyyyyyyy\n");strcpy(type," ");rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
+";" {strcpy(type," ");rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pvg;}
 "(" {rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return po;}
 ")" {rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return pf;}
 "," {rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return verg;}

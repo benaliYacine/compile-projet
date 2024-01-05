@@ -26,6 +26,48 @@ void initialisation()
   }
 }
 
+int verifier_in_out_table(char entite[],char CAZER[])
+{
+  int tab[100],i=0;
+  char *token;
+  int integer;
+  int hash_index = fonction_de_hachage(entite);
+  pointer_element1 tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+  while (tab_idf_pointer != NULL && strcmp(entite, tab_idf_pointer->name) != 0)
+  {
+    tab_idf_pointer = tab_idf_pointer->svt;
+  }
+  if(strlen(tab_idf_pointer->taille)!=strlen(CAZER))
+    return 0;
+  
+  // Utilisation de strtok pour séparer la chaîne en tokens
+  token = strtok(CAZER, ",");
+  while (token != NULL)
+  {
+    
+    // Utilisation de atoi pour convertir le token en entier
+    integer = atoi(token);
+    tab[i]=integer;
+    i++;
+    // Passage au token suivant
+    token = strtok(NULL, ",");
+  }
+  
+  token = strtok(tab_idf_pointer->taille, ",");
+  i=0;
+  while (token != NULL)
+  {
+    // Utilisation de atoi pour convertir le token en entier
+    integer = atoi(token);
+    if(tab[i]<0||tab[i]>=integer)
+      return 0;
+    i++;
+    // Passage au token suivant
+    token = strtok(NULL, ",");
+  }
+  return 1;
+}
+
 int fonction_de_hachage(char name[20])
 {
   int i;
@@ -38,7 +80,7 @@ int fonction_de_hachage(char name[20])
   return hashValue % 300;
 }
 
-void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[])
+void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[], int P_OU_F)
 {
   switch (y)
   {
@@ -56,6 +98,8 @@ void inserer(char entite[], char code[], char type[], char val[], int y, int has
       strcpy(tab_idf_pointer->type, type);
       strcpy(tab_idf_pointer->val, val);
       tab_idf_pointer->declarer = 0;
+      if (P_OU_F)
+        tab_idf_pointer->declarer = 1;
       tab_idf_pointer->svt = NULL;
       if (taille == NULL)
       {
@@ -159,7 +203,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
     {
 
       printf("---jddiiid\n");
-      inserer(entite, code, type, val, 0, hash_index, taille);
+      inserer(entite, code, type, val, 0, hash_index, taille, P_OU_F);
     }
     else
     {
@@ -197,7 +241,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
       tab_mot_cle_pointer = tab_mot_cle_pointer->svt;
     }
     if (tab_mot_cle_pointer == NULL)
-      inserer(entite, code, type, val, 1, hash_index, taille);
+      inserer(entite, code, type, val, 1, hash_index, taille, P_OU_F);
     else
       printf("entite existe deja\n");
     break;
@@ -210,7 +254,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
       tab_sepa_pointer = tab_sepa_pointer->svt;
     }
     if (tab_sepa_pointer == NULL)
-      inserer(entite, code, type, val, 2, hash_index, taille);
+      inserer(entite, code, type, val, 2, hash_index, taille, P_OU_F);
     else
       printf("entite existe deja\n");
     break;
@@ -274,8 +318,9 @@ void afficher()
   }
 }
 
-// semantique fcts
+//  semantique fcts
 
+char *GetTypeFromVal(char entite[])
 char *GetTypeFromVal(char entite[])
 {
   if (isInteger(entite))
@@ -591,12 +636,15 @@ bool isEntityZero(char *entite)
 
 int Operation(char op1[], char op2[])
 {
+
+  printf("%s\n", op1);
   int hash_index = fonction_de_hachage(op1);
   pointer_element1 tab_idf_pointer_1 = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
   while (tab_idf_pointer_1 != NULL && strcmp(op1, tab_idf_pointer_1->name) != 0)
   {
     tab_idf_pointer_1 = tab_idf_pointer_1->svt;
   }
+
   hash_index = fonction_de_hachage(op2);
   pointer_element1 tab_idf_pointer_2 = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
   while (tab_idf_pointer_2 != NULL && strcmp(op2, tab_idf_pointer_2->name) != 0)
@@ -604,10 +652,15 @@ int Operation(char op1[], char op2[])
     tab_idf_pointer_2 = tab_idf_pointer_2->svt;
   }
   if (strcmp(tab_idf_pointer_1->type, tab_idf_pointer_2->type) == 0)
+  {
     return 1;
+  }
 
   else if (strcmp(tab_idf_pointer_1->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_2->type, "REAL") == 0 || strcmp(tab_idf_pointer_2->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_1->type, "REAL") == 0)
+  {
+
     return 1;
+  }
   else
     return 0;
 }
@@ -661,6 +714,11 @@ bool isInteger(const char *str)
   char *end;
   strtol(str, &end, 10);
   return *end == '\0';
+bool isInteger(const char *str)
+{ // hna const ghi optimization bah tgoul lel comilateur beli had l argument manich ra7 nmodifih koun
+  char *end;
+  strtol(str, &end, 10);
+  return *end == '\0';
 }
 
 bool isFloat(const char *str)
@@ -668,8 +726,16 @@ bool isFloat(const char *str)
   char *end;
   strtof(str, &end);
   return *end == '\0';
+bool isFloat(const char *str)
+{
+  char *end;
+  strtof(str, &end);
+  return *end == '\0';
 }
 
+bool isBoolean(const char *str)
+{
+  return strcmp(str, "true") == 0 || strcmp(str, "false") == 0;
 bool isBoolean(const char *str)
 {
   return strcmp(str, "true") == 0 || strcmp(str, "false") == 0;

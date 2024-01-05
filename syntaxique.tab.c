@@ -402,7 +402,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  11
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   183
+#define YYLAST   181
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  46
@@ -492,14 +492,14 @@ static const yytype_int8 yyrhs[] =
       35,    63,    -1,    63,    -1,    63,    36,    64,    -1,    63,
       37,    64,    -1,    64,    -1,    42,    61,    43,    -1,    65,
       -1,     3,    -1,    67,    -1,     7,    -1,     8,    -1,     3,
-      42,    66,    43,    -1,    10,     3,    42,    66,    43,    -1,
+      42,    60,    43,    -1,    10,     3,    42,    66,    43,    -1,
       66,    44,    81,    -1,    81,    -1,    14,    -1,    15,    -1,
       69,    -1,    50,    -1,    69,    44,     3,    -1,     3,    -1,
       50,    -1,    71,    -1,    71,    72,    -1,    72,    -1,    78,
       -1,    82,    -1,    83,    -1,    85,    -1,    80,    -1,    73,
       -1,    28,    74,    18,    -1,    75,    -1,    50,    -1,    75,
       44,    42,    76,    43,    -1,    42,    76,    43,    -1,    76,
-      44,    77,    -1,    77,    -1,     3,    -1,     3,    42,    66,
+      44,    77,    -1,    77,    -1,     3,    -1,     3,    42,    60,
       43,    -1,    23,    42,    86,    43,    24,    71,    79,    39,
       -1,    25,    71,    -1,    50,    -1,    77,     4,    81,    18,
       -1,    19,    -1,    61,    -1,    16,    42,    77,    43,    18,
@@ -512,16 +512,16 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    45,    45,    47,    49,    49,    51,    53,    53,    55,
-      55,    57,    57,    57,    57,    59,    59,    61,    61,    63,
-      63,    63,    67,    70,    70,    72,    80,    91,   103,   116,
-     121,   126,   131,   136,   141,   146,   149,   154,   158,   161,
-     165,   169,   173,   174,   178,   187,   189,   193,   197,   201,
-     204,   204,   206,   207,   209,   209,   211,   211,   213,   213,
-     215,   215,   217,   217,   217,   217,   217,   217,   219,   221,
-     221,   223,   223,   225,   225,   227,   231,   236,   238,   238,
-     240,   249,   250,   252,   254,   256,   256,   256,   256,   258,
-     260,   271,   282,   289
+       0,    41,    41,    43,    45,    45,    47,    49,    49,    51,
+      51,    53,    53,    53,    53,    55,    55,    57,    57,    59,
+      59,    59,    63,    66,    66,    68,    76,    86,    99,   112,
+     113,   114,   115,   116,   117,   118,   121,   122,   123,   126,
+     127,   128,   132,   133,   137,   140,   141,   142,   143,   146,
+     148,   148,   150,   151,   153,   153,   155,   155,   157,   157,
+     159,   159,   161,   161,   161,   161,   161,   161,   163,   165,
+     165,   167,   167,   169,   169,   171,   174,   178,   180,   180,
+     182,   184,   185,   187,   189,   191,   191,   191,   191,   193,
+     195,   195,   195,   197
 };
 #endif
 
@@ -603,7 +603,7 @@ static const yytype_uint8 yydefact[] =
       24,     0,    26,    19,     0,     0,     0,     0,     0,     0,
        0,    70,     0,    69,     3,    60,     0,     6,     0,    44,
       46,    47,     0,    52,    53,    81,     0,    82,    35,    38,
-      41,    43,    45,    23,     0,     0,     6,     0,    51,     0,
+      41,    43,    45,    23,     0,     0,     6,    28,     0,     0,
       87,    88,     0,    93,     0,    92,     0,     0,    74,    68,
        0,     0,     0,    56,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,    28,     0,     0,
@@ -611,8 +611,8 @@ static const yytype_uint8 yydefact[] =
       72,     0,     0,    80,     0,    66,     0,     0,    42,    31,
       32,    33,    34,    29,    30,    36,    37,    39,    40,     0,
        0,    21,    50,    83,    84,    85,    86,    90,    91,     0,
-       0,    73,     0,    66,    10,    48,     0,    22,    27,     6,
-      89,    71,     9,    49,     0,    79,     0,    78,    77
+       0,    73,     0,    66,    10,    48,     0,    22,    27,    79,
+      89,    71,     9,    49,     0,     0,    78,    77
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -621,43 +621,43 @@ static const yytype_int16 yydefgoto[] =
       -1,     5,    13,     6,    18,     8,     9,    19,    20,    21,
       22,    51,    52,    25,   118,    77,    78,    79,    80,    81,
       87,    82,    46,    47,    33,    34,    35,    36,    62,    63,
-      97,    37,    38,   176,    39,    88,    40,    41,    92,    42,
+      97,    37,    38,   175,    39,    88,    40,    41,    92,    42,
       94,    95
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -101
+#define YYPACT_NINF -99
 static const yytype_int16 yypact[] =
 {
-      82,  -101,  -101,  -101,  -101,    18,    45,  -101,    82,  -101,
-      10,  -101,    25,  -101,  -101,    52,    82,    22,  -101,    55,
-      96,    82,  -101,    57,     6,    -5,    26,    28,    43,    54,
-      58,    63,  -101,    31,    96,  -101,  -101,    83,  -101,  -101,
-    -101,  -101,  -101,  -101,  -101,  -101,    49,    64,    19,    72,
-    -101,    53,  -101,  -101,   120,    19,   132,     2,    33,    33,
-     132,  -101,   125,   107,  -101,  -101,    19,    82,   151,   115,
-    -101,  -101,   155,  -101,  -101,  -101,    33,    99,    17,    20,
-    -101,  -101,  -101,  -101,   152,   153,   157,    23,  -101,   119,
-    -101,  -101,    47,    99,    16,  -101,    50,    67,  -101,  -101,
-     121,   146,    96,  -101,    19,   123,    85,    33,    33,    33,
-      33,    33,    33,    33,    33,    33,    33,  -101,    77,   148,
-    -101,  -101,    19,   149,   150,    27,    33,    33,   147,    96,
-    -101,   132,   132,  -101,    96,   161,    90,    19,  -101,    17,
-      17,    17,    17,    17,    17,    20,    20,  -101,  -101,   154,
-     166,  -101,  -101,  -101,  -101,  -101,  -101,  -101,  -101,    96,
-      46,  -101,    94,   165,  -101,  -101,    98,  -101,  -101,    81,
-    -101,  -101,  -101,  -101,    96,  -101,   136,    96,  -101
+      44,   -99,   -99,   -99,   -99,    10,    34,   -99,    44,   -99,
+      11,   -99,    48,   -99,   -99,    67,    44,    33,   -99,    85,
+      81,    44,   -99,    87,     7,    19,    51,    57,    61,   103,
+     104,   105,   -99,    86,    81,   -99,   -99,   118,   -99,   -99,
+     -99,   -99,   -99,   -99,   -99,   -99,   106,   107,    26,   108,
+     -99,   112,   -99,   -99,   149,    26,   150,    25,    12,    12,
+     150,   -99,   136,   111,   -99,   -99,    26,    44,   153,   115,
+     -99,   -99,   155,   -99,   -99,   -99,    12,    84,    38,    49,
+     -99,   -99,   -99,   -99,   152,   154,   156,    52,   -99,   119,
+     -99,   -99,    58,    84,     9,   -99,    24,    62,   -99,   -99,
+     121,   146,    81,   -99,    26,   123,    80,    12,    12,    12,
+      12,    12,    12,    12,    12,    12,    12,   -99,    75,   148,
+     -99,   -99,    26,   151,   157,    47,    12,    12,   143,    81,
+     -99,   150,   150,   -99,    81,   159,    90,    26,   -99,    38,
+      38,    38,    38,    38,    38,    49,    49,   -99,   -99,   158,
+     163,   -99,   -99,   -99,   -99,   -99,   -99,   -99,   -99,    81,
+      32,   -99,    93,   162,   -99,   -99,    95,   -99,   -99,    66,
+     -99,   -99,   -99,   -99,    81,   133,    81,   -99
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -101,  -101,  -101,  -101,     0,  -101,   168,    11,   110,  -101,
-     158,  -101,    92,  -101,  -101,   -44,    38,    39,    40,  -101,
-    -100,  -101,  -101,  -101,  -101,   -94,   -33,  -101,  -101,  -101,
-      48,   -54,  -101,  -101,   -90,   -41,  -101,  -101,  -101,  -101,
-     -50,    56
+     -99,   -99,   -99,   -99,     1,   -99,   165,     8,   110,   -99,
+     160,   -99,    88,   -99,   -99,   -46,    20,    27,    28,   -99,
+     -95,   -99,   -99,   -99,   -99,   -98,   -34,   -99,   -99,   -99,
+      46,   -54,   -99,   -99,   -88,   -43,   -99,   -99,   -99,   -99,
+     -52,    53
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -667,48 +667,48 @@ static const yytype_int16 yypgoto[] =
 #define YYTABLE_NINF -21
 static const yytype_int16 yytable[] =
 {
-       7,    65,    89,    91,   136,    26,    98,    83,   134,    96,
-      48,    10,   135,    53,    93,    93,    15,    49,    11,    10,
-      32,    90,    69,    45,    50,   101,    70,    71,    16,    72,
-      26,    61,   106,    73,    74,   160,    69,   166,    75,    54,
-      70,    71,   -20,    72,   163,   126,   155,    73,    74,    26,
-      12,   113,   114,    64,   127,    17,   115,   116,    24,   128,
-      44,    76,    27,    28,    23,   169,   121,   122,    55,    29,
-      56,   156,    30,   170,    31,    76,   157,   161,    98,   126,
-     177,   152,    93,    93,    26,    57,    50,    66,   127,    85,
-     124,   125,    67,   129,     1,     2,    58,    27,    28,    26,
-      59,    65,     3,     4,    29,    60,   174,    30,    68,    31,
-     130,   131,    27,    28,    84,   107,   108,   109,   110,    29,
-     149,   150,    30,    86,    31,   111,   112,    65,   138,   107,
-     108,   109,   110,   165,   122,    26,    65,   171,   131,   111,
-     112,   173,   122,    99,    65,   139,   140,   141,   142,   143,
-     144,   100,   145,   146,   103,   147,   148,   104,   105,   117,
-     119,    48,   123,   132,   133,   137,   151,   153,   154,   175,
-     164,   159,   167,   168,   172,   178,    14,   102,   120,    43,
-     162,     0,     0,   158
+      65,     7,    89,    91,   134,    83,    98,    96,    10,   136,
+      11,    48,    93,    93,   135,    69,    10,    15,    49,    70,
+      71,    32,    72,   101,    45,    50,    73,    74,    26,    69,
+     106,   160,    61,    70,    71,    26,    72,    53,   126,    12,
+      73,    74,   166,   -20,    90,    75,   163,   127,    27,    28,
+      26,    16,   128,   126,    76,    29,     1,     2,    30,   170,
+      31,   169,   127,    54,     3,     4,   155,   129,    76,    26,
+      17,   156,   113,   114,   157,    23,   176,   161,    98,   152,
+      93,    93,    27,    28,    26,   115,   116,    50,    24,    29,
+      44,   174,    30,    55,    31,   121,   122,    27,    28,    56,
+      65,   124,   125,    57,    29,   130,   131,    30,    64,    31,
+     107,   108,   109,   110,   107,   108,   109,   110,   149,   150,
+     111,   112,    66,   138,   111,   112,    65,   139,   140,   141,
+     142,   143,   144,   165,   122,    65,   171,   131,   173,   122,
+     145,   146,    65,   147,   148,    58,    59,    60,    85,    67,
+      84,    68,    86,    26,    99,   100,   103,   104,   105,   117,
+      48,   119,   123,   132,   133,   137,   151,   159,   164,   153,
+     168,   172,   177,    14,   120,   154,   167,   102,   162,     0,
+     158,    43
 };
 
-static const yytype_int16 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       0,    34,    56,    57,   104,     3,    60,    48,   102,    59,
-       4,     0,   102,    18,    58,    59,     6,    11,     0,     8,
-      20,    19,     3,    23,    24,    66,     7,     8,     3,    10,
-       3,    31,    76,    14,    15,   129,     3,   137,    19,    44,
-       7,     8,    36,    10,   134,    29,    19,    14,    15,     3,
-       5,    34,    35,    22,    38,     3,    36,    37,     3,    43,
-       3,    42,    16,    17,    42,   159,    43,    44,    42,    23,
-      42,   125,    26,    27,    28,    42,   126,   131,   132,    29,
-     174,   122,   126,   127,     3,    42,    86,     4,    38,    36,
-      43,    44,    43,    43,    12,    13,    42,    16,    17,     3,
-      42,   134,    20,    21,    23,    42,    25,    26,    44,    28,
-      43,    44,    16,    17,    42,    30,    31,    32,    33,    23,
-      43,    44,    26,     3,    28,    40,    41,   160,    43,    30,
-      31,    32,    33,    43,    44,     3,   169,    43,    44,    40,
-      41,    43,    44,    18,   177,   107,   108,   109,   110,   111,
-     112,    44,   113,   114,     3,   115,   116,    42,     3,     7,
-       7,     4,    43,    42,    18,    42,    18,    18,    18,   169,
-       9,    24,    18,     7,     9,    39,     8,    67,    86,    21,
-     132,    -1,    -1,   127
+      34,     0,    56,    57,   102,    48,    60,    59,     0,   104,
+       0,     4,    58,    59,   102,     3,     8,     6,    11,     7,
+       8,    20,    10,    66,    23,    24,    14,    15,     3,     3,
+      76,   129,    31,     7,     8,     3,    10,    18,    29,     5,
+      14,    15,   137,    36,    19,    19,   134,    38,    16,    17,
+       3,     3,    43,    29,    42,    23,    12,    13,    26,    27,
+      28,   159,    38,    44,    20,    21,    19,    43,    42,     3,
+       3,   125,    34,    35,   126,    42,   174,   131,   132,   122,
+     126,   127,    16,    17,     3,    36,    37,    86,     3,    23,
+       3,    25,    26,    42,    28,    43,    44,    16,    17,    42,
+     134,    43,    44,    42,    23,    43,    44,    26,    22,    28,
+      30,    31,    32,    33,    30,    31,    32,    33,    43,    44,
+      40,    41,     4,    43,    40,    41,   160,   107,   108,   109,
+     110,   111,   112,    43,    44,   169,    43,    44,    43,    44,
+     113,   114,   176,   115,   116,    42,    42,    42,    36,    43,
+      42,    44,     3,     3,    18,    44,     3,    42,     3,     7,
+       4,     7,    43,    42,    18,    42,    18,    24,     9,    18,
+       7,     9,    39,     8,    86,    18,    18,    67,   132,    -1,
+     127,    21
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -723,7 +723,7 @@ static const yytype_uint8 yystos[] =
       50,    57,    58,    18,    44,    42,    42,    42,    42,    42,
       42,    50,    74,    75,    22,    72,     4,    43,    44,     3,
        7,     8,    10,    14,    15,    19,    42,    61,    62,    63,
-      64,    65,    67,    81,    42,    36,     3,    66,    81,    77,
+      64,    65,    67,    81,    42,    36,     3,     7,    60,    77,
       19,    77,    84,    61,    86,    87,    86,    76,    77,    18,
       44,    81,    54,     3,    42,     3,    61,    30,    31,    32,
       33,    40,    41,    34,    35,    36,    37,     7,    60,     7,
@@ -732,7 +732,7 @@ static const yytype_uint8 yystos[] =
       62,    62,    62,    62,    62,    63,    63,    64,    64,    43,
       44,    18,    81,    18,    18,    19,    77,    86,    87,    24,
       71,    77,    76,    80,     9,    43,    66,    18,     7,    71,
-      27,    43,     9,    43,    25,    50,    79,    71,    39
+      27,    43,     9,    43,    25,    79,    71,    39
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1553,7 +1553,7 @@ yyreduce:
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 55 "syntaxique.y"
+#line 51 "syntaxique.y"
     {inserer_fonction((yyvsp[(3) - (10)].str),nb_argument);nb_argument=0;;}
     break;
 
@@ -1579,27 +1579,28 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 67 "syntaxique.y"
     {if(Declarer((yyvsp[(2) - (7)].str))){
-        yyerror("Sementique error",(yyvsp[(2) - (7)].str),"est deja declare.");}rechercher((yyvsp[(2) - (7)].str),"IDF","TABLEAU",0,0,(yyvsp[(5) - (7)].str),0);;}
+        yyerror("Sementique error",(yyvsp[(2) - (7)].str),"est deja declare.");}
+        rechercher((yyvsp[(2) - (7)].str),"IDF","TABLEAU",0,0,(yyvsp[(5) - (7)].str),0);;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 70 "syntaxique.y"
+#line 66 "syntaxique.y"
     {(yyval.str)=(yyvsp[(2) - (2)].str);;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 70 "syntaxique.y"
+#line 66 "syntaxique.y"
     { (yyval.str)=0;;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 72 "syntaxique.y"
+#line 68 "syntaxique.y"
     {
     if(Declarer((yyvsp[(3) - (4)].str))){
         Col-=2;
@@ -1613,7 +1614,7 @@ yyreduce:
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 80 "syntaxique.y"
+#line 76 "syntaxique.y"
     {
     
     if(Declarer((yyvsp[(1) - (2)].str))){
@@ -1621,14 +1622,14 @@ yyreduce:
         yyerror("Sementique error",(yyvsp[(1) - (2)].str),"est deja declare.");
         
     }
-    rechercher((yyvsp[(1) - (2)].str),"IDF"," ",(yyvsp[(2) - (2)].str),0," ",0);
+    rechercher((yyvsp[(1) - (2)].str),"IDF"," ",(yyvsp[(2) - (2)].str),0," ",0);   
 ;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 91 "syntaxique.y"
+#line 86 "syntaxique.y"
     {
                                 char* str_inti;
                                 // Allocate memory for str_inti
@@ -1646,8 +1647,11 @@ yyreduce:
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 103 "syntaxique.y"
+#line 99 "syntaxique.y"
     {
+                    if((yyvsp[(1) - (1)].entier)<0){
+                            yyerror("Sementique error","","taille negative");
+                                    }
                                 char* str_inti;
                                 // Allocate memory for str_inti
                                 str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
@@ -1661,247 +1665,179 @@ yyreduce:
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 116 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(ltEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
+#line 112 "syntaxique.y"
+    { (yyval.str)=0;;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 121 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(gtEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
+#line 113 "syntaxique.y"
+    { (yyval.str)=0;;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 126 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(geEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
+#line 114 "syntaxique.y"
+    { (yyval.str)=0;;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 131 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(eqEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
+#line 115 "syntaxique.y"
+    { (yyval.str)=0;;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 136 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(neEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
+#line 116 "syntaxique.y"
+    { (yyval.str)=0;;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 141 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(leEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
-    break;
-
-  case 35:
-
-/* Line 1455 of yacc.c  */
-#line 146 "syntaxique.y"
-    {(yyval.str)=(yyvsp[(1) - (1)].str);;}
+#line 117 "syntaxique.y"
+    { (yyval.str)=0;;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 149 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
+#line 121 "syntaxique.y"
+    {if(!Operation((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)))yyerror("Sementique error","","incompatible type.");sprintf((yyval.str),"%f",atof((yyvsp[(1) - (3)].str))+atof((yyvsp[(3) - (3)].str)));;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 154 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(subEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
+#line 122 "syntaxique.y"
+    {sprintf((yyval.str),"%f",atof((yyvsp[(1) - (3)].str))-atof((yyvsp[(3) - (3)].str)));;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 158 "syntaxique.y"
+#line 123 "syntaxique.y"
     {(yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 161 "syntaxique.y"
-    {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(mulEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        ;}
+#line 126 "syntaxique.y"
+    {sprintf((yyval.str),"%f",atof((yyvsp[(1) - (3)].str))*atof((yyvsp[(3) - (3)].str)));;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 165 "syntaxique.y"
-    {if(isEntityZero((yyvsp[(3) - (3)].str))){yyerror("Sementique error","","division sur zero.");}else {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   (yyval.str)=strdup(divEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-                        } ;}
+#line 127 "syntaxique.y"
+    {if((yyvsp[(3) - (3)].str)==0){yyerror("Sementique error","","division sur zero.");}else sprintf((yyval.str),"%f",atof((yyvsp[(1) - (3)].str))/atof((yyvsp[(3) - (3)].str)));;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 169 "syntaxique.y"
+#line 128 "syntaxique.y"
     {(yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 173 "syntaxique.y"
-    { (yyval.str)=(yyvsp[(2) - (3)].str);;}
+#line 132 "syntaxique.y"
+    {sprintf((yyval.str),"%f",atof((yyvsp[(2) - (3)].str)));;}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 174 "syntaxique.y"
-    { (yyval.str)=(yyvsp[(1) - (1)].str);;}
+#line 133 "syntaxique.y"
+    {sprintf((yyval.str),"%f",(yyvsp[(1) - (1)].str));;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 178 "syntaxique.y"
-    {
-            if(!Declarer((yyvsp[(1) - (1)].str))){
-                yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");
-            }char *res=GetValFromTS((yyvsp[(1) - (1)].str));
-            printf("\n\n------------val ta3 idf= %s\n\n",res);
-            if (res==NULL || res==" "){
-                yyerror("Sementique error",(yyvsp[(1) - (1)].str),"n'a pas d'une valeur");
-            } else{(yyval.str)=strdup(res);}
-        ;}
+#line 137 "syntaxique.y"
+    {{if(!Declarer((yyvsp[(1) - (1)].str))){
+       yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");      
+    }} (yyval.str)=0;;}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 187 "syntaxique.y"
-    { (yyval.str)=(yyvsp[(1) - (1)].str);;}
+#line 140 "syntaxique.y"
+    { (yyval.str)=0;;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 189 "syntaxique.y"
-    {char backToStr[20];
-            sprintf(backToStr, "%d", (yyvsp[(1) - (1)].entier));
-            (yyval.str)=strdup(backToStr);;}
+#line 141 "syntaxique.y"
+    {(yyval.str)=(float)(yyvsp[(1) - (1)].entier);;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 193 "syntaxique.y"
-    {char backToStr[20];
-            sprintf(backToStr, "%g", (yyvsp[(1) - (1)].reel));
-            (yyval.str)=strdup(backToStr);;}
+#line 142 "syntaxique.y"
+    {(yyval.str)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 197 "syntaxique.y"
+#line 143 "syntaxique.y"
     {{if(!Declarer((yyvsp[(1) - (4)].str))){
         yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare.");      
-    }} (yyval.str)="1";;}
+    }} (yyval.str)=0;;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 201 "syntaxique.y"
-    {if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {(yyval.str)="1";nb_argument=0;};}
+#line 146 "syntaxique.y"
+    {if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {(yyval.str)=0;nb_argument=0;};}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 204 "syntaxique.y"
+#line 148 "syntaxique.y"
     {nb_argument++;;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 204 "syntaxique.y"
+#line 148 "syntaxique.y"
     {nb_argument++;;}
-    break;
-
-  case 52:
-
-/* Line 1455 of yacc.c  */
-#line 206 "syntaxique.y"
-    {(yyval.str)=strdup("true");;}
-    break;
-
-  case 53:
-
-/* Line 1455 of yacc.c  */
-#line 207 "syntaxique.y"
-    {(yyval.str)=strdup("false");;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 211 "syntaxique.y"
+#line 155 "syntaxique.y"
     {Declarer((yyvsp[(3) - (3)].str));nb_argument++;;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 211 "syntaxique.y"
+#line 155 "syntaxique.y"
     {Declarer((yyvsp[(1) - (1)].str));nb_argument++;;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 227 "syntaxique.y"
+#line 171 "syntaxique.y"
     {if(!Declarer((yyvsp[(1) - (1)].str))){
         yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");
         (yyval.str)=(yyvsp[(1) - (1)].str);
@@ -1911,10 +1847,9 @@ yyreduce:
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 231 "syntaxique.y"
+#line 174 "syntaxique.y"
     {if(!Declarer((yyvsp[(1) - (4)].str))){
-            yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare.");  
-        (yyval.str)="1";
+        yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare.");      
     };}
     break;
 
@@ -1935,79 +1870,21 @@ yyreduce:
   case 81:
 
 /* Line 1455 of yacc.c  */
-#line 249 "syntaxique.y"
-    {(yyval.str)=strdup(GetValFromTS((yyvsp[(1) - (1)].str)));;}
+#line 184 "syntaxique.y"
+    { (yyval.str)=(yyvsp[(1) - (1)].reel);;}
     break;
 
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 250 "syntaxique.y"
+#line 185 "syntaxique.y"
     {(yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
-  case 90:
-
-/* Line 1455 of yacc.c  */
-#line 260 "syntaxique.y"
-    {if (isBoolean((yyvsp[(1) - (3)].str)) && isBoolean((yyvsp[(3) - (3)].str))) {
-        bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
-        bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
-        bool res = val1 | val2;
-        // Conversion back to string is trivial here
-        char *backToStr = res ? "true" : "false";
-        (yyval.str)=backToStr;
-    }
-    else {
-        yyerror("Sementique error","","cannot use or with non boolean operands");
-    };}
-    break;
-
-  case 91:
-
-/* Line 1455 of yacc.c  */
-#line 271 "syntaxique.y"
-    {if (isBoolean((yyvsp[(1) - (3)].str)) && isBoolean((yyvsp[(3) - (3)].str))) {
-        bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
-        bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
-        bool res = val1 & val2;
-        // Conversion back to string is trivial here
-        char *backToStr = res ? "true" : "false";
-        (yyval.str)=backToStr;
-    }
-    else {
-        yyerror("Sementique error","","cannot use or with non boolean operands");
-    };}
-    break;
-
-  case 92:
-
-/* Line 1455 of yacc.c  */
-#line 282 "syntaxique.y"
-    {if (isBoolean((yyvsp[(1) - (1)].str))) {
-        (yyval.str)=(yyvsp[(1) - (1)].str);
-    }
-    else {
-        yyerror("Sementique error",(yyvsp[(1) - (1)].str),"is not boolean");
-    };}
-    break;
-
-  case 93:
-
-/* Line 1455 of yacc.c  */
-#line 289 "syntaxique.y"
-    {if (isBoolean((yyvsp[(1) - (1)].str))) {
-        (yyval.str)=(yyvsp[(1) - (1)].str);
-    }
-    else {
-        yyerror("Sementique error",(yyvsp[(1) - (1)].str),"is not boolean");
-    };}
-    break;
-
 
 
 /* Line 1455 of yacc.c  */
-#line 2011 "syntaxique.tab.c"
+#line 1871 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2219,7 +2096,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 297 "syntaxique.y"
+#line 200 "syntaxique.y"
 
 
 int main(int argc, char** argv)
