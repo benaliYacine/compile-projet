@@ -75,5 +75,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
 
 void afficher();
 
+bool areCompatible(char entite1[], char entite2[]);
+
 #endif // ts_HASH_TABLE_H
 

@@ -31,6 +31,7 @@ int verifier_in_out_table(char entite[], char CAZER[])
   int tab[100], i = 0;
   char *token;
   int integer;
+  char taille[20];
   int hash_index = fonction_de_hachage(entite);
   pointer_element1 tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
   while (tab_idf_pointer != NULL && strcmp(entite, tab_idf_pointer->name) != 0)
@@ -52,8 +53,8 @@ int verifier_in_out_table(char entite[], char CAZER[])
     // Passage au token suivant
     token = strtok(NULL, ",");
   }
-
-  token = strtok(tab_idf_pointer->taille, ",");
+  strcpy(taille, tab_idf_pointer->taille);
+  token = strtok(taille, ",");
   i = 0;
   while (token != NULL)
   {
@@ -328,7 +329,7 @@ char *GetTypeFromVal(char entite[])
   }
   else if (isFloat(entite))
   {
-    return "FLOAT";
+    return "REAL";
   }
   else if (isBoolean(entite))
   {
@@ -343,10 +344,16 @@ char *GetTypeFromVal(char entite[])
 // Helper function to determine if an entity is a type string
 bool isTypeString(char *entity)
 {
-  return (strcmp(entity, "INTEGER") == 0 ||
-          strcmp(entity, "FLOAT") == 0 ||
-          strcmp(entity, "CHARACTER") == 0 ||
-          strcmp(entity, "LOGICAL") == 0);
+  printf("type entite: %s\n", entity);
+  if (strstr(entity, "INTEGER") != NULL ||
+      strstr(entity, "REAL") != NULL ||
+      strstr(entity, "CHARACTER") != NULL ||
+      strstr(entity, "LOGICAL") != NULL)
+  {
+    return true;
+  }
+  else
+    return false;
 }
 
 // Function to check if two entities are compatible
@@ -354,6 +361,7 @@ bool areCompatible(char entite1[], char entite2[])
 {
 
   char *type1, *type2;
+
   printf("\n\n------------we want to compare %s with %s\n\n", entite1, entite2);
 
   if (isTypeString(entite1))
@@ -376,16 +384,12 @@ bool areCompatible(char entite1[], char entite2[])
 
   printf("\n\n------------now we want to compare %s with %s\n\n", type1, type2);
 
-  if (strcmp(type1, type2) == 0)
+  if (strstr(type1, type2) != NULL)
   { // Same type
     return true;
   }
-  else if ((strcmp(type1, "INTEGER") == 0 && strcmp(type2, "FLOAT") == 0) ||
-           (strcmp(type1, "FLOAT") == 0 && strcmp(type2, "INTEGER") == 0))
-  {
-    // INTEGER and FLOAT are compatible
+  if (strstr(type1, "REAL") != NULL && strstr(type2, "INTEGER") != NULL)
     return true;
-  }
   else
   {
     return false;
@@ -400,8 +404,8 @@ bool canPerformArithmetic(char entite1[], char entite2[])
   printf("\n\n------------entities are= %s,%s\n\n", entite1, entite2);
   printf("\n\n------------types are= %s,%s\n\n", type1, type2);
   // Check if both types are either INTEGER or FLOAT
-  bool isType1Numeric = (strcmp(type1, "INTEGER") == 0 || strcmp(type1, "FLOAT") == 0);
-  bool isType2Numeric = (strcmp(type2, "INTEGER") == 0 || strcmp(type2, "FLOAT") == 0);
+  bool isType1Numeric = (strcmp(type1, "INTEGER") == 0 || strcmp(type1, "REAL") == 0);
+  bool isType2Numeric = (strcmp(type2, "INTEGER") == 0 || strcmp(type2, "REAL") == 0);
 
   return isType1Numeric && isType2Numeric;
 }
