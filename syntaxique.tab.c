@@ -82,11 +82,12 @@
     int qc=0;
     int nb_argument=0;
     extern char *type;
+    char taille[20];
 
 
 
 /* Line 189 of yacc.c  */
-#line 90 "syntaxique.tab.c"
+#line 91 "syntaxique.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -166,7 +167,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 17 "syntaxique.y"
+#line 18 "syntaxique.y"
 
          int     entier;
          char*   str;
@@ -175,7 +176,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 179 "syntaxique.tab.c"
+#line 180 "syntaxique.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -187,7 +188,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 191 "syntaxique.tab.c"
+#line 192 "syntaxique.tab.c"
 
 #ifdef short
 # undef short
@@ -512,16 +513,16 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    45,    45,    47,    49,    49,    51,    53,    53,    55,
-      55,    57,    57,    57,    57,    59,    59,    61,    61,    63,
-      63,    63,    67,    73,    73,    75,    82,    90,   105,   121,
-     126,   131,   136,   141,   146,   151,   154,   159,   163,   166,
-     170,   174,   178,   179,   184,   193,   195,   199,   203,   207,
-     210,   210,   212,   213,   215,   215,   217,   217,   219,   219,
-     221,   221,   223,   223,   223,   223,   223,   223,   225,   227,
-     227,   229,   229,   231,   231,   233,   237,   244,   246,   246,
-     248,   257,   258,   260,   262,   264,   264,   264,   264,   266,
-     268,   279,   290,   297
+       0,    46,    46,    48,    50,    50,    52,    54,    54,    56,
+      56,    58,    58,    58,    58,    60,    60,    62,    62,    64,
+      64,    64,    68,    74,    74,    76,    83,    91,   107,   123,
+     128,   133,   138,   143,   148,   153,   156,   161,   165,   168,
+     172,   176,   180,   181,   186,   195,   197,   201,   205,   209,
+     212,   212,   214,   215,   217,   217,   219,   219,   221,   221,
+     223,   223,   225,   225,   225,   225,   225,   225,   227,   229,
+     229,   231,   231,   233,   233,   235,   239,   246,   248,   248,
+     250,   262,   263,   265,   267,   269,   269,   269,   269,   271,
+     273,   284,   295,   302
 };
 #endif
 
@@ -1546,28 +1547,28 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 45 "syntaxique.y"
+#line 46 "syntaxique.y"
     {YYACCEPT;;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 55 "syntaxique.y"
+#line 56 "syntaxique.y"
     {Declarer((yyvsp[(3) - (10)].str));inserer_fonction((yyvsp[(3) - (10)].str),nb_argument);nb_argument=0;;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 55 "syntaxique.y"
+#line 56 "syntaxique.y"
     {inserer_fonction((yyvsp[(3) - (9)].str),nb_argument);nb_argument=0;;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 63 "syntaxique.y"
+#line 64 "syntaxique.y"
     {printf("the dcr idf is :%s\n",(yyvsp[(2) - (2)].str));if(Declarer((yyvsp[(2) - (2)].str))){
 
         yyerror("Sementique error",(yyvsp[(2) - (2)].str),"est deja declare.");
@@ -1577,7 +1578,7 @@ yyreduce:
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 67 "syntaxique.y"
+#line 68 "syntaxique.y"
     {if(Declarer((yyvsp[(2) - (7)].str))){
         yyerror("Sementique error",(yyvsp[(2) - (7)].str),"est deja declare.");}
         rechercher((yyvsp[(2) - (7)].str),"IDF","TABLEAU",0,0,(yyvsp[(5) - (7)].str),0);
@@ -1588,21 +1589,21 @@ yyreduce:
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 73 "syntaxique.y"
+#line 74 "syntaxique.y"
     {(yyval.str)=(yyvsp[(2) - (2)].str);;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 73 "syntaxique.y"
+#line 74 "syntaxique.y"
     { (yyval.str)=" ";;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 75 "syntaxique.y"
+#line 76 "syntaxique.y"
     {
     if(Declarer((yyvsp[(3) - (4)].str))){
         yyerror("Sementique error",(yyvsp[(3) - (4)].str),"est deja declare.");
@@ -1615,7 +1616,7 @@ yyreduce:
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 82 "syntaxique.y"
+#line 83 "syntaxique.y"
     {
     
     if(Declarer((yyvsp[(1) - (2)].str))){
@@ -1628,7 +1629,7 @@ yyreduce:
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 90 "syntaxique.y"
+#line 91 "syntaxique.y"
     {  if((yyvsp[(3) - (3)].entier)<0){
                             yyerror("Sementique error","","taille negative");
                                     }
@@ -1643,13 +1644,14 @@ yyreduce:
                                 char* final_str = malloc(strlen((yyvsp[(1) - (3)].str)) + strlen(str_inti) + 4 + 1);
                                 sprintf(final_str, "%s,%s", (yyvsp[(1) - (3)].str), str_inti);
                                 (yyval.str)=final_str;
+                                strcpy(taille,(yyval.str));
     ;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 105 "syntaxique.y"
+#line 107 "syntaxique.y"
     {
                     if((yyvsp[(1) - (1)].entier)<0){
                             yyerror("Sementique error","","taille negative");
@@ -1667,7 +1669,7 @@ yyreduce:
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 121 "syntaxique.y"
+#line 123 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(ltEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
@@ -1678,7 +1680,7 @@ yyreduce:
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 126 "syntaxique.y"
+#line 128 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(gtEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
@@ -1689,7 +1691,7 @@ yyreduce:
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 131 "syntaxique.y"
+#line 133 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(geEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
@@ -1700,7 +1702,7 @@ yyreduce:
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 136 "syntaxique.y"
+#line 138 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(eqEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
@@ -1711,7 +1713,7 @@ yyreduce:
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 141 "syntaxique.y"
+#line 143 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(neEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
@@ -1722,7 +1724,7 @@ yyreduce:
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 146 "syntaxique.y"
+#line 148 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(leEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
@@ -1733,14 +1735,14 @@ yyreduce:
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 151 "syntaxique.y"
+#line 153 "syntaxique.y"
     {(yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 154 "syntaxique.y"
+#line 156 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
@@ -1751,7 +1753,7 @@ yyreduce:
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 159 "syntaxique.y"
+#line 161 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(subEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
@@ -1761,14 +1763,14 @@ yyreduce:
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 163 "syntaxique.y"
+#line 165 "syntaxique.y"
     {(yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 166 "syntaxique.y"
+#line 168 "syntaxique.y"
     {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(mulEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
@@ -1778,7 +1780,7 @@ yyreduce:
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 170 "syntaxique.y"
+#line 172 "syntaxique.y"
     {if(isEntityZero((yyvsp[(3) - (3)].str))){yyerror("Sementique error","","division sur zero.");}else {   if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   (yyval.str)=strdup(divEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
@@ -1788,28 +1790,28 @@ yyreduce:
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 174 "syntaxique.y"
+#line 176 "syntaxique.y"
     {(yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 178 "syntaxique.y"
+#line 180 "syntaxique.y"
     { (yyval.str)=(yyvsp[(2) - (3)].str);;}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 179 "syntaxique.y"
+#line 181 "syntaxique.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 184 "syntaxique.y"
+#line 186 "syntaxique.y"
     {
             if(!Declarer((yyvsp[(1) - (1)].str))){
                 yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");
@@ -1824,14 +1826,14 @@ yyreduce:
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 193 "syntaxique.y"
+#line 195 "syntaxique.y"
     { (yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 195 "syntaxique.y"
+#line 197 "syntaxique.y"
     {char backToStr[20];
             sprintf(backToStr, "%d", (yyvsp[(1) - (1)].entier));
             (yyval.str)=strdup(backToStr);;}
@@ -1840,7 +1842,7 @@ yyreduce:
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 199 "syntaxique.y"
+#line 201 "syntaxique.y"
     {char backToStr[20];
             sprintf(backToStr, "%g", (yyvsp[(1) - (1)].reel));
             (yyval.str)=strdup(backToStr);;}
@@ -1849,7 +1851,7 @@ yyreduce:
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 203 "syntaxique.y"
+#line 205 "syntaxique.y"
     {{if(!Declarer((yyvsp[(1) - (4)].str))){
         yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare.");      
     }}if(!verifier_in_out_table((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str)))yyerror("Sementique error","","out of rang");  (yyval.str)="1";;}
@@ -1858,56 +1860,56 @@ yyreduce:
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 207 "syntaxique.y"
+#line 209 "syntaxique.y"
     {if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {(yyval.str)="1";nb_argument=0;};}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 210 "syntaxique.y"
+#line 212 "syntaxique.y"
     {nb_argument++;;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 210 "syntaxique.y"
+#line 212 "syntaxique.y"
     {nb_argument++;;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 212 "syntaxique.y"
+#line 214 "syntaxique.y"
     {(yyval.str)=strdup("true");;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 213 "syntaxique.y"
+#line 215 "syntaxique.y"
     {(yyval.str)=strdup("false");;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 217 "syntaxique.y"
+#line 219 "syntaxique.y"
     {Declarer((yyvsp[(3) - (3)].str));nb_argument++;;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 217 "syntaxique.y"
+#line 219 "syntaxique.y"
     {Declarer((yyvsp[(1) - (1)].str));nb_argument++;;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 233 "syntaxique.y"
+#line 235 "syntaxique.y"
     {if(!Declarer((yyvsp[(1) - (1)].str))){
         yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");
         (yyval.str)=(yyvsp[(1) - (1)].str);
@@ -1917,7 +1919,7 @@ yyreduce:
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 237 "syntaxique.y"
+#line 239 "syntaxique.y"
     {if(!Declarer((yyvsp[(1) - (4)].str))){
             yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare."); 
      }
@@ -1929,7 +1931,7 @@ yyreduce:
   case 80:
 
 /* Line 1455 of yacc.c  */
-#line 248 "syntaxique.y"
+#line 250 "syntaxique.y"
     {   if (!areCompatible(GetTypeFromTS((yyvsp[(1) - (4)].str)), (yyvsp[(3) - (4)].str))) {
                                         yyerror("Sementique error","","incompatible type.");
                                     }
@@ -1937,27 +1939,30 @@ yyreduce:
                                     if (!SetValInTS((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str))){
                                         yyerror("Sementique error",(yyvsp[(1) - (4)].str),",affectation non accepte.");
                                     }
+                                    if(strstr(GetTypeFromTS((yyvsp[(1) - (4)].str)),"TABLEAU")!=NULL){
+                                        A_M_tab((yyvsp[(1) - (4)].str),taille,(yyvsp[(3) - (4)].str));
+                                    }
                                 ;}
     break;
 
   case 81:
 
 /* Line 1455 of yacc.c  */
-#line 257 "syntaxique.y"
+#line 262 "syntaxique.y"
     {(yyval.str)=strdup(GetValFromTS((yyvsp[(1) - (1)].str)));;}
     break;
 
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 258 "syntaxique.y"
+#line 263 "syntaxique.y"
     {(yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 90:
 
 /* Line 1455 of yacc.c  */
-#line 268 "syntaxique.y"
+#line 273 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (3)].str)) && isBoolean((yyvsp[(3) - (3)].str))) {
         bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
         bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
@@ -1974,7 +1979,7 @@ yyreduce:
   case 91:
 
 /* Line 1455 of yacc.c  */
-#line 279 "syntaxique.y"
+#line 284 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (3)].str)) && isBoolean((yyvsp[(3) - (3)].str))) {
         bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
         bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
@@ -1991,7 +1996,7 @@ yyreduce:
   case 92:
 
 /* Line 1455 of yacc.c  */
-#line 290 "syntaxique.y"
+#line 295 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (1)].str))) {
         (yyval.str)=(yyvsp[(1) - (1)].str);
     }
@@ -2003,7 +2008,7 @@ yyreduce:
   case 93:
 
 /* Line 1455 of yacc.c  */
-#line 297 "syntaxique.y"
+#line 302 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (1)].str))) {
         (yyval.str)=(yyvsp[(1) - (1)].str);
     }
@@ -2015,7 +2020,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 2019 "syntaxique.tab.c"
+#line 2024 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2227,7 +2232,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 305 "syntaxique.y"
+#line 310 "syntaxique.y"
 
 
 int main(int argc, char** argv)

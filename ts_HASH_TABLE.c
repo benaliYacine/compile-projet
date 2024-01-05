@@ -13,8 +13,10 @@ void A_M_tab(char name[],char taille1[],char val[])
   {
     i++;
   }
+  
   char *token;
-  char *taille;
+  char taille[20];
+  int integer;
   int tab[2];
   strcpy(taille, taille1);
   token = strtok(taille, ",");
@@ -26,16 +28,19 @@ void A_M_tab(char name[],char taille1[],char val[])
   while (token != NULL)
   {
     // Utilisation de atoi pour convertir le token en entier
-    tab[i] = atoi(token);
+    integer= atoi(token);
+    tab[i] =integer;
     i++;
     // Passage au token suivant
     token = strtok(NULL, ",");
   }
   if(Table_LES_TABLEAUX[i].dementions==1){
+    
     strcpy(Table_LES_TABLEAUX[i].dim1[tab[0]].entite,val);
   }else{
     strcpy(Table_LES_TABLEAUX[i].dim2[tab[0]][tab[1]].entite,val);
   }
+
 }
 int initiali_tab(char name[], char taille1[])
 {

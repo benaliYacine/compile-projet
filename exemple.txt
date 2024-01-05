@@ -1,4 +1,7 @@
 PROGRAM HelloAcad
 
-INTEGER tab DIMENSION(4,2);
+INTEGER tab DIMENSION(4);
+INTEGER tab2 DIMENSION(8,5);
+tab(1)=5;
+tab2(3,4)=8;
 END
