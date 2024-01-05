@@ -6,7 +6,84 @@
 #include "ts_HASH_TABLE.h"
 
 // TS fcts
-
+void A_M_tab(char name[],char taille1[],char val[])
+{
+  int i = 0;
+  while (Table_LES_TABLEAUX[i].state == 1 && strcmp(Table_LES_TABLEAUX[i].name, name) != 0)
+  {
+    i++;
+  }
+  char *token;
+  char *taille;
+  int tab[2];
+  strcpy(taille, taille1);
+  token = strtok(taille, ",");
+  for (i = 0; i < 2; i++)
+  {
+    tab[i] = 0;
+  }
+  i = 0;
+  while (token != NULL)
+  {
+    // Utilisation de atoi pour convertir le token en entier
+    tab[i] = atoi(token);
+    i++;
+    // Passage au token suivant
+    token = strtok(NULL, ",");
+  }
+  if(Table_LES_TABLEAUX[i].dementions==1){
+    strcpy(Table_LES_TABLEAUX[i].dim1[tab[0]].entite,val);
+  }else{
+    strcpy(Table_LES_TABLEAUX[i].dim2[tab[0]][tab[1]].entite,val);
+  }
+}
+int initiali_tab(char name[], char taille1[])
+{
+  int tab1[2], i = 0, j = 0, k = 0, l = 0;
+  int dimensions = 0;
+  char *token;
+  int integer;
+  char taille[20];
+  strcpy(taille, taille1);
+  token = strtok(taille, ",");
+  for (i = 0; i < 2; i++)
+  {
+    tab1[i] = 0;
+  }
+  i = 0;
+  while (token != NULL)
+  {
+    // Utilisation de atoi pour convertir le token en entier
+    integer = atoi(token);
+    tab1[i] = integer;
+    i++;
+    dimensions++;
+    // Passage au token suivant
+    token = strtok(NULL, ",");
+  }
+  if (dimensions == 1)
+  {
+    i = 0;
+    while (Table_LES_TABLEAUX[i].state == 1)
+      i++;
+    Table_LES_TABLEAUX[i].state = 1;
+    Table_LES_TABLEAUX[i].dementions = 1;
+    strcpy(Table_LES_TABLEAUX[i].name, name);
+    for (j = 0; j < tab1[0]; j++)
+      strcpy(Table_LES_TABLEAUX[i].dim1[j].entite, "");
+  }
+  if (dimensions == 2)
+  {
+    while (Table_LES_TABLEAUX[i].state == 1)
+      i++;
+    Table_LES_TABLEAUX[i].state = 1;
+    strcpy(Table_LES_TABLEAUX[i].name, name);
+    Table_LES_TABLEAUX[i].dementions = 2;
+    for (j = 0; j < tab1[0]; i++)
+      for (k = 0; k < tab1[1]; k++)
+        strcpy(Table_LES_TABLEAUX[i].dim2[j][k].entite, "");
+  }
+}
 void initialisation()
 {
   int i, j;
@@ -19,6 +96,7 @@ void initialisation()
   {
     TABLE_DES_FONCTION_NB_ARG[i].state = 0;
     LES_TABLES_IDF[i].state = 0;
+    Table_LES_TABLEAUX[i].state = 0;
   }
   for (j = 0; j < 300; j++)
   {

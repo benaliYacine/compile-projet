@@ -1,16 +1,4 @@
 PROGRAM HelloAcad
 
 INTEGER tab DIMENSION(4,2);
-LOGICAL D=TRUE;
-
-
-% Déclarations;
-INTEGER A=5;
-INTEGER B=5;
-LOGICAL C;
-REAL Y;
-Y=65.3+8;
-tab(1,1)=5+8;
-A=A+B+tab(1,1);
-C = 2.LT.6;
 END

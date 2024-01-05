@@ -66,7 +66,9 @@ DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declar
     }} mul inti pvg 
     | TYPE idf mc_dim po TAILLE pf pvg {if(Declarer($2)){
         yyerror("Sementique error",$2,"est deja declare.");}
-        rechercher($2,"IDF","TABLEAU",0,0,$5,0);}   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+        rechercher($2,"IDF","TABLEAU",0,0,$5,0);
+        initiali_tab($2,$5);
+        }   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
 ;
 partie_gauch_affectation: aff valeur {$$=$2;} | VIDE { $$=" ";}
 ;
@@ -314,6 +316,7 @@ int main(int argc, char** argv)
         }
         yyin = file;
     }
+    initialisation();
     yyparse();
     yylex();
     afficher();
