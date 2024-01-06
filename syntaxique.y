@@ -87,6 +87,15 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
     if(Declarer($3)){
         yyerror("Sementique error",$3,"est deja declare.");
     }
+    if(strcmp($4," ")!=0){
+    if (!areCompatible(GetTypeFromTS($3), $4)) {
+                                        yyerror("Sementique error","","incompatible type.");
+                                    }
+                                    printf("\n\n------------yes they are compatible for the assignment\n\n");
+                                    if (strstr(GetTypeFromTS($3),"TABLEAU")==NULL&&!SetValInTS($3,$4)){
+                                        yyerror("Sementique error",$3,",affectation non accepte.");
+                                    }
+    }
 
     rechercher($3,"IDF"," ",$4,0," ",0);
 }
@@ -94,6 +103,15 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
     
     if(Declarer($1)){
         yyerror("Sementique error",$1,"est deja declare.");
+    }
+    if(strcmp($2," ")!=0){
+    if (!areCompatible(GetTypeFromTS($1), $2)) {
+                                        yyerror("Sementique error","","incompatible type.");
+                                    }
+                                    printf("\n\n------------yes they are compatible for the assignment\n\n");
+                                    if (strstr(GetTypeFromTS($1),"TABLEAU")==NULL&&!SetValInTS($1,$2)){
+                                        yyerror("Sementique error",$1,",affectation non accepte.");
+                                    }
     }
     rechercher($1,"IDF"," ",$2,0," ",0);   
 }

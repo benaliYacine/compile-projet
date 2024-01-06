@@ -1,7 +1,10 @@
+INTEGER ROUTINE HAMID(A,B,C)
+HAMID=5;
+ENDR
 PROGRAM HelloAcad
 
 INTEGER tab DIMENSION(70,30);
-INTEGER tab2 DIMENSION(80,5);
+INTEGER tab2 DIMENSION(80);
 
 LOGICAL D=TRUE;
 
@@ -13,7 +16,7 @@ LOGICAL C;
 REAL Y;
 
 tab(0,2)=5;
-tab2(0,1)=8;
+tab2(0)=8;
 
 C = 2.LT.6;
 IF(C) THEN
@@ -35,6 +38,6 @@ DOWHILE (C)
         ENDDO
     ENDDO
 ENDDO
-Y=tab2(0,1);
+Y=tab2(0);
 
 END

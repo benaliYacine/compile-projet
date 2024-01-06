@@ -27,7 +27,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 
 
 "PROGRAM" {strcpy(type," ");rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);P_OU_F=1;return mc_prgrm;}
-"ROUTINE" {strcpy(type," ");rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);P_OU_F=1;return mc_rtin;}
+"ROUTINE" {strcat(type," FONCTION");rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);P_OU_F=1;return mc_rtin;}
 "ENDR" {rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_endr;}
 "CALL" {rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_call;}
 "DIMENSION" {rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dim;}
@@ -62,10 +62,12 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 
 
 {idf} {yylval.str=strdup(yytext);
-					rechercher(yytext,"IDF",type," ",0," ",P_OU_F);  
+					rechercher(yytext,"IDF",type," ",0," ",P_OU_F); 
 					if(P_OU_F==1){
 						P_OU_F=0;
+						strcpy(type,"ARGUMENT");
 					}
+					 
               Col= Col + strlen(yytext);
 			  if (yyleng>10) printf ("warning: IDF trop long a la ligne %d a la colonne %d \n ",nb_ligne, Col);
               printf (" L entite lexicale reconnue est %s \n", yytext); 
@@ -123,7 +125,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 
 
 [ \t] Col= Col + strlen(yytext);
-\n {Col= 1; nb_ligne++;}
+\n {Col= 1; nb_ligne++;strcpy(type," ");}
 
 . {yyerror("Lexical error",yytext,"est non accaptee.");return err;} 
 %%
