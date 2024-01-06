@@ -515,14 +515,14 @@ static const yytype_uint16 yyrline[] =
 {
        0,    46,    46,    48,    50,    50,    52,    54,    54,    56,
       56,    58,    58,    58,    58,    60,    60,    62,    62,    64,
-      64,    64,    68,    74,    74,    76,    83,    91,   107,   123,
+      64,    64,    68,    75,    75,    77,    84,    92,   107,   123,
      128,   133,   138,   143,   148,   153,   156,   161,   165,   168,
-     172,   176,   180,   181,   186,   195,   197,   201,   205,   209,
-     212,   212,   214,   215,   217,   217,   219,   219,   221,   221,
-     223,   223,   225,   225,   225,   225,   225,   225,   227,   229,
-     229,   231,   231,   233,   233,   235,   239,   246,   248,   248,
-     250,   262,   263,   265,   267,   269,   269,   269,   269,   271,
-     273,   284,   295,   302
+     172,   176,   180,   181,   186,   195,   197,   201,   205,   212,
+     215,   215,   217,   218,   220,   220,   222,   222,   224,   224,
+     226,   226,   228,   228,   228,   228,   228,   228,   230,   232,
+     232,   234,   234,   236,   236,   238,   242,   251,   253,   253,
+     255,   267,   268,   270,   272,   274,   274,   274,   274,   276,
+     278,   289,   300,   307
 };
 #endif
 
@@ -1583,27 +1583,28 @@ yyreduce:
         yyerror("Sementique error",(yyvsp[(2) - (7)].str),"est deja declare.");}
         rechercher((yyvsp[(2) - (7)].str),"IDF","TABLEAU",0,0,(yyvsp[(5) - (7)].str),0);
         initiali_tab((yyvsp[(2) - (7)].str),(yyvsp[(5) - (7)].str));
+          // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
         ;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 74 "syntaxique.y"
+#line 75 "syntaxique.y"
     {(yyval.str)=(yyvsp[(2) - (2)].str);;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 74 "syntaxique.y"
+#line 75 "syntaxique.y"
     { (yyval.str)=" ";;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 76 "syntaxique.y"
+#line 77 "syntaxique.y"
     {
     if(Declarer((yyvsp[(3) - (4)].str))){
         yyerror("Sementique error",(yyvsp[(3) - (4)].str),"est deja declare.");
@@ -1616,7 +1617,7 @@ yyreduce:
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 83 "syntaxique.y"
+#line 84 "syntaxique.y"
     {
     
     if(Declarer((yyvsp[(1) - (2)].str))){
@@ -1629,7 +1630,7 @@ yyreduce:
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 91 "syntaxique.y"
+#line 92 "syntaxique.y"
     {  if((yyvsp[(3) - (3)].entier)<0){
                             yyerror("Sementique error","","taille negative");
                                     }
@@ -1644,7 +1645,6 @@ yyreduce:
                                 char* final_str = malloc(strlen((yyvsp[(1) - (3)].str)) + strlen(str_inti) + 4 + 1);
                                 sprintf(final_str, "%s,%s", (yyvsp[(1) - (3)].str), str_inti);
                                 (yyval.str)=final_str;
-                                strcpy(taille,(yyval.str));
     ;}
     break;
 
@@ -1854,62 +1854,65 @@ yyreduce:
 #line 205 "syntaxique.y"
     {{if(!Declarer((yyvsp[(1) - (4)].str))){
         yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare.");      
-    }}if(!verifier_in_out_table((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str)))yyerror("Sementique error","","out of rang");  (yyval.str)="1";;}
+    }}if(!verifier_in_out_table((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str)))yyerror("Sementique error","","out of rang"); 
+    //strcpy(taille,$3);
+    
+     (yyval.str)=return_val_tab((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str));;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 209 "syntaxique.y"
+#line 212 "syntaxique.y"
     {if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {(yyval.str)="1";nb_argument=0;};}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 212 "syntaxique.y"
+#line 215 "syntaxique.y"
     {nb_argument++;;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 212 "syntaxique.y"
+#line 215 "syntaxique.y"
     {nb_argument++;;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 214 "syntaxique.y"
+#line 217 "syntaxique.y"
     {(yyval.str)=strdup("true");;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 215 "syntaxique.y"
+#line 218 "syntaxique.y"
     {(yyval.str)=strdup("false");;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 219 "syntaxique.y"
+#line 222 "syntaxique.y"
     {Declarer((yyvsp[(3) - (3)].str));nb_argument++;;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 219 "syntaxique.y"
+#line 222 "syntaxique.y"
     {Declarer((yyvsp[(1) - (1)].str));nb_argument++;;}
     break;
 
   case 75:
 
 /* Line 1455 of yacc.c  */
-#line 235 "syntaxique.y"
+#line 238 "syntaxique.y"
     {if(!Declarer((yyvsp[(1) - (1)].str))){
         yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");
         (yyval.str)=(yyvsp[(1) - (1)].str);
@@ -1919,28 +1922,30 @@ yyreduce:
   case 76:
 
 /* Line 1455 of yacc.c  */
-#line 239 "syntaxique.y"
-    {if(!Declarer((yyvsp[(1) - (4)].str))){
+#line 242 "syntaxique.y"
+    {
+        if(!Declarer((yyvsp[(1) - (4)].str))){
             yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare."); 
      }
             if(!verifier_in_out_table((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str)))yyerror("Sementique error","","out of rang"); 
         (yyval.str)=(yyvsp[(1) - (4)].str);
+        strcpy(taille,(yyvsp[(3) - (4)].str));
     ;}
     break;
 
   case 80:
 
 /* Line 1455 of yacc.c  */
-#line 250 "syntaxique.y"
+#line 255 "syntaxique.y"
     {   if (!areCompatible(GetTypeFromTS((yyvsp[(1) - (4)].str)), (yyvsp[(3) - (4)].str))) {
                                         yyerror("Sementique error","","incompatible type.");
                                     }
                                     printf("\n\n------------yes they are compatible for the assignment\n\n");
-                                    if (!SetValInTS((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str))){
+                                    if (strstr(GetTypeFromTS((yyvsp[(1) - (4)].str)),"TABLEAU")==NULL&&!SetValInTS((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str))){
                                         yyerror("Sementique error",(yyvsp[(1) - (4)].str),",affectation non accepte.");
                                     }
                                     if(strstr(GetTypeFromTS((yyvsp[(1) - (4)].str)),"TABLEAU")!=NULL){
-                                        A_M_tab((yyvsp[(1) - (4)].str),taille,(yyvsp[(3) - (4)].str));
+                                        A_M_tab((yyvsp[(1) - (4)].str), taille, (yyvsp[(3) - (4)].str));
                                     }
                                 ;}
     break;
@@ -1948,21 +1953,21 @@ yyreduce:
   case 81:
 
 /* Line 1455 of yacc.c  */
-#line 262 "syntaxique.y"
+#line 267 "syntaxique.y"
     {(yyval.str)=strdup(GetValFromTS((yyvsp[(1) - (1)].str)));;}
     break;
 
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 263 "syntaxique.y"
+#line 268 "syntaxique.y"
     {(yyval.str)=(yyvsp[(1) - (1)].str);;}
     break;
 
   case 90:
 
 /* Line 1455 of yacc.c  */
-#line 273 "syntaxique.y"
+#line 278 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (3)].str)) && isBoolean((yyvsp[(3) - (3)].str))) {
         bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
         bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
@@ -1979,7 +1984,7 @@ yyreduce:
   case 91:
 
 /* Line 1455 of yacc.c  */
-#line 284 "syntaxique.y"
+#line 289 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (3)].str)) && isBoolean((yyvsp[(3) - (3)].str))) {
         bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
         bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
@@ -1996,7 +2001,7 @@ yyreduce:
   case 92:
 
 /* Line 1455 of yacc.c  */
-#line 295 "syntaxique.y"
+#line 300 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (1)].str))) {
         (yyval.str)=(yyvsp[(1) - (1)].str);
     }
@@ -2008,7 +2013,7 @@ yyreduce:
   case 93:
 
 /* Line 1455 of yacc.c  */
-#line 302 "syntaxique.y"
+#line 307 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (1)].str))) {
         (yyval.str)=(yyvsp[(1) - (1)].str);
     }
@@ -2020,7 +2025,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 2024 "syntaxique.tab.c"
+#line 2029 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2232,7 +2237,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 310 "syntaxique.y"
+#line 315 "syntaxique.y"
 
 
 int main(int argc, char** argv)
@@ -2247,10 +2252,10 @@ int main(int argc, char** argv)
         }
         yyin = file;
     }
-    initialisation();
     yyparse();
     yylex();
     afficher();
+    afficher_tab();
     afficher_qdr();
     
     if (yyin != stdin) {
