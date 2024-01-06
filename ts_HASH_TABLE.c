@@ -6,7 +6,7 @@
 #include "ts_HASH_TABLE.h"
 
 // TS fcts
-void A_M_tab(char name[],char taille1[],char val[])
+void A_M_tab(char name[], char taille1[], char val[])
 {
   int i = 0;
   while (Table_LES_TABLEAUX[i].state == 1 && strcmp(Table_LES_TABLEAUX[i].name, name) != 0)
@@ -31,15 +31,18 @@ void A_M_tab(char name[],char taille1[],char val[])
     // Passage au token suivant
     token = strtok(NULL, ",");
   }
-  if(Table_LES_TABLEAUX[i].dementions==1){
-    strcpy(Table_LES_TABLEAUX[i].dim1[tab[0]].entite,val);
-  }else{
-    strcpy(Table_LES_TABLEAUX[i].dim2[tab[0]][tab[1]].entite,val);
+  if (Table_LES_TABLEAUX[i].dementions == 1)
+  {
+    strcpy(Table_LES_TABLEAUX[i].dim1[tab[0]].entite, val);
+  }
+  else
+  {
+    strcpy(Table_LES_TABLEAUX[i].dim2[tab[0]][tab[1]].entite, val);
   }
 }
 int initiali_tab(char name[], char taille1[])
 {
-  
+
   int tab1[2], i = 0, j = 0, k = 0, l = 0;
   int dimensions = 0;
   char *token;
@@ -98,7 +101,6 @@ void initialisation()
   {
     TABLE_DES_FONCTION_NB_ARG[i].state = 0;
     LES_TABLES_IDF[i].state = 0;
-   
   }
   for (i = 0; i < 50; i++)
   {
@@ -418,6 +420,10 @@ char *GetTypeFromVal(char entite[])
   else if (isBoolean(entite))
   {
     return "LOGICAL";
+  }
+  else if (isString(entite))
+  {
+    return "CHARACTER";
   }
   else
   {
@@ -822,6 +828,19 @@ bool isBoolean(const char *str)
   return strcmp(str, "true") == 0 || strcmp(str, "false") == 0;
 }
 
+bool isString(const char *str)
+{
+  // Check if the first character is a double quote
+  if (str[0] != '\"')
+    return false;
+
+  // Check if the last character is a double quote and it's not the same as the first character
+  if (str[strlen(str) - 1] != '\"' || strlen(str) == 1)
+    return false;
+
+  return true;
+}
+
 char *GetTypeFromTS(char entite[])
 {
   int i = 0;
@@ -929,5 +948,33 @@ int SetValInTS(char entite[], char val[])
   {
     printf("\n\n------------we could not put %s in %s\n\n", val, tab_idf_pointer);
     return 0;
+  }
+}
+
+char *Cree_temp()
+{
+  static int counter = 1;  // Static counter, retains its value between function calls
+  char *name = malloc(10); // Allocate memory for the string
+
+  if (name == NULL)
+  {
+    // Handle memory allocation failure
+    fprintf(stderr, "Memory allocation failed.\n");
+    exit(1);
+  }
+  sprintf(name, "T%d", counter); // Format the string
+  counter++;                     // Increment the counter
+
+  return name;
+}
+char *Calculer_type(char type1[], char type2[])
+{
+  if (strcmp(type1, "REAL") == 0 || strcmp(type2, "REAL") == 0)
+  {
+    return "REAL";
+  }
+  else
+  {
+    return "INTEGER";
   }
 }

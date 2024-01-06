@@ -70,6 +70,8 @@ bool isFloat(const char *str);
 
 bool isBoolean(const char *str);
 
+bool isString(const char *str);
+
 char *GetType(char entite[]);
 
 char *GetVal(char entite[]);

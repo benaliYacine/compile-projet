@@ -1,4 +1,34 @@
 PROGRAM HelloAcad
 
 INTEGER tab DIMENSION(4,2);
+LOGICAL D=TRUE;
+
+% Déclarations;
+INTEGER A=5;
+INTEGER B=5;
+CHARACTER E="this is a string";
+LOGICAL C;
+REAL Y;
+
+C = 2.LT.6;
+IF(C) THEN
+    Y=65.3+8+9*2/0.5;
+    IF(C) THEN
+        Y=65.3+8;
+        IF(C) THEN
+            Y=65.3+8;
+        ENDIF 
+    ENDIF 
+ENDIF
+
+DOWHILE (C)
+    Y=65.3+8;
+    DOWHILE (C)
+        Y=65.3+8;
+        DOWHILE (C)
+            Y=65.3+8;
+        ENDDO
+    ENDDO
+ENDDO
+
 END
