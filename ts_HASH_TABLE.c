@@ -500,7 +500,7 @@ bool areCompatible(char entite1[], char entite2[])
   char *type1, *type2;
 
   printf("\n\n------------we want to compare %s with %s\n\n", entite1, entite2);
-
+  
   if (isTypeString(entite1))
   {
     type1 = strdup(entite1); // Directly use the entity as its type
@@ -509,7 +509,8 @@ bool areCompatible(char entite1[], char entite2[])
   {
     type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
   }
-
+  
+  type1 = strdup(entite1);
   if (isTypeString(entite2))
   {
     type2 = strdup(entite2); // Directly use the entity as its type
@@ -520,8 +521,7 @@ bool areCompatible(char entite1[], char entite2[])
   }
 
   printf("\n\n------------now we want to compare %s with %s\n\n", type1, type2);
-
-  if (strstr(type1, type2) != NULL || strstr(type1, "FONCTION") != NULL || strstr(type1, "ARGUMENT") != NULL || strstr(type2, "ARGUMENT") != NULL)
+  if (strstr(type1, type2) != NULL || strstr(type1, "ARGUMENT") != NULL || strstr(type2, "ARGUMENT") != NULL)
   { // Same type
     return true;
   }
@@ -852,7 +852,9 @@ int verifier_nb_argument(char name_F[], int nb_argument)
     i++;
   if (TABLE_DES_FONCTION_NB_ARG[i].state == 1 && TABLE_DES_FONCTION_NB_ARG[i].nb_argument == nb_argument)
     return 0;
-  else
+  else if (TABLE_DES_FONCTION_NB_ARG[i].state == 0)
+    return -1;
+  else if (TABLE_DES_FONCTION_NB_ARG[i].nb_argument != nb_argument)
     return 1;
 }
 
