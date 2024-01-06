@@ -485,6 +485,7 @@ bool isTypeString(char *entity)
   if (strstr(entity, "INTEGER") != NULL ||
       strstr(entity, "REAL") != NULL ||
       strstr(entity, "CHARACTER") != NULL ||
+      strstr(entity, "ARGUMENT") != NULL ||
       strstr(entity, "LOGICAL") != NULL)
   {
     return true;
@@ -503,7 +504,6 @@ bool areCompatible(char entite1[], char entite2[])
   
   if (isTypeString(entite1))
   {
-    type1 = strdup(entite1); // Directly use the entity as its type
   }
   else
   {
