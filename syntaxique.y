@@ -449,7 +449,9 @@ OPERAND
         yyerror("Sementique error",$1,"est non declare.");      
     }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
     //strcpy(taille,$3);
-    
+    char table[100];
+    sprintf(table, "%s(%s)", $1, $3);
+    push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
      $$=return_val_tab($1,$3);}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
 
     | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)==1){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else if(verifier_nb_argument($2,nb_argument)==-1)yyerror("Sementique error",$2,"est non declare."); else{$$="1";nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
@@ -522,13 +524,21 @@ assignment: var aff valeur pvg  {   if (!areCompatible(GetTypeFromTS($1), $3)) {
                                     printf("\n\n------------yes they are compatible for the assignment\n\n");
                                     if(strstr(GetTypeFromTS($1),"TABLEAU")!=NULL){
                                         A_M_tab($1, taille, $3);
+                                        char table[100];
+
+                                        // Format and store the combined string in str3
+                                        sprintf(table, "%s(%s)", $1, taille);
+                                        StackNode* poppedElement = pop(&Operandes_pile);
+                                        quadr("=", poppedElement->operande_name,"vide", table);
                                     }else {
                                         if (!SetValInTS($1,$3)){
                                             yyerror("Sementique error",$1,",affectation non accepte.");
+                                        }else{
+                                            StackNode* poppedElement = pop(&Operandes_pile);
+                                            quadr("=", poppedElement->operande_name,"vide", $1);
                                         }
                                     }
-        StackNode* poppedElement = pop(&Operandes_pile);
-        quadr("=", poppedElement->operande_name,"vide", $1);
+        
     } //OGassi operande gauche d'afectation 
 ;
 valeur
