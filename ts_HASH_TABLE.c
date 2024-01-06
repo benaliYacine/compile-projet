@@ -6,15 +6,27 @@
 #include "ts_HASH_TABLE.h"
 
 // TS fcts
+void afficher_tab() //zyada virifit brk
+{
+  int i = 0, j = 0, k = 0;
+  int l = 0;
+  for(i=0;i<3;i++)
+  printf("%s\n", F_P_TABLE[1].Table_LES_TABLEAUX[1].dim2[0][1].entite);
+
+}
 void A_M_tab(char name[], char taille1[], char val[])
 {
   int i = 0;
-  while (Table_LES_TABLEAUX[i].state == 1 && strcmp(Table_LES_TABLEAUX[i].name, name) != 0)
+  int j = 0;
+  
+  while (F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].state == 1 && strcmp(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].name, name) != 0)
   {
-    i++;
+    j++;
   }
+
   char *token;
-  char *taille;
+  char taille[20];
+  int integer;
   int tab[2];
   strcpy(taille, taille1);
   token = strtok(taille, ",");
@@ -26,19 +38,23 @@ void A_M_tab(char name[], char taille1[], char val[])
   while (token != NULL)
   {
     // Utilisation de atoi pour convertir le token en entier
-    tab[i] = atoi(token);
+    integer = atoi(token);
+    tab[i] = integer;
     i++;
     // Passage au token suivant
     token = strtok(NULL, ",");
   }
-  if (Table_LES_TABLEAUX[i].dementions == 1)
+  i=0;
+  if (F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dementions == 1)
   {
-    strcpy(Table_LES_TABLEAUX[i].dim1[tab[0]].entite, val);
+
+    strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dim1[tab[0]].entite, val);
   }
   else
   {
-    strcpy(Table_LES_TABLEAUX[i].dim2[tab[0]][tab[1]].entite, val);
+    strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dim2[tab[0]][tab[1]].entite, val);
   }
+
 }
 int initiali_tab(char name[], char taille1[])
 {
@@ -67,31 +83,32 @@ int initiali_tab(char name[], char taille1[])
   }
   if (dimensions == 1)
   {
-    printf("***********ani hna\n");
     i = 0;
-    while (Table_LES_TABLEAUX[i].state == 1)
+    while (F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].state == 1)
       i++;
-    Table_LES_TABLEAUX[i].state = 1;
-    Table_LES_TABLEAUX[i].dementions = 1;
-    strcpy(Table_LES_TABLEAUX[i].name, name);
+    F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].state = 1;
+    F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].dementions = 1;
+    strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].name, name);
     for (j = 0; j < tab1[0]; j++)
-      strcpy(Table_LES_TABLEAUX[i].dim1[j].entite, "");
+      strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].dim1[j].entite, "");
   }
   if (dimensions == 2)
   {
-    while (Table_LES_TABLEAUX[i].state == 1)
+    i=0;
+    while (F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].state == 1)
       i++;
-    Table_LES_TABLEAUX[i].state = 1;
-    strcpy(Table_LES_TABLEAUX[i].name, name);
-    Table_LES_TABLEAUX[i].dementions = 2;
+    F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].state = 1;
+    strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].name, name);
+    F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].dementions = 2;
     for (j = 0; j < tab1[0]; j++)
       for (k = 0; k < tab1[1]; k++)
-        strcpy(Table_LES_TABLEAUX[i].dim2[j][k].entite, "");
+        strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].dim2[j][k].entite, "");
   }
 }
 void initialisation()
 {
   int i, j;
+
   for (i = 0; i < 300; i++)
   {
     tab_hachage_sepa[i] = NULL;
@@ -102,10 +119,11 @@ void initialisation()
     TABLE_DES_FONCTION_NB_ARG[i].state = 0;
     LES_TABLES_IDF[i].state = 0;
   }
-  for (i = 0; i < 50; i++)
-  {
-    Table_LES_TABLEAUX[i].state = 0;
-  }
+  for (i = 0; i < 20; i++)
+
+    for (j = 0; j < 50; j++)
+      F_P_TABLE[i].Table_LES_TABLEAUX[j].state = 0;
+
   for (j = 0; j < 300; j++)
   {
     LES_TABLES_IDF[i].tab_hachage_idf[j] = NULL;
@@ -114,7 +132,7 @@ void initialisation()
 
 int verifier_in_out_table(char entite[], char CAZER[])
 {
-  int tab[100], i = 0;
+  int tab[100], i = 0, j = 0;
   char *token;
   int integer;
   char taille[20];
@@ -124,9 +142,6 @@ int verifier_in_out_table(char entite[], char CAZER[])
   {
     tab_idf_pointer = tab_idf_pointer->svt;
   }
-  if (strlen(tab_idf_pointer->taille) != strlen(CAZER))
-    return 0;
-
   // Utilisation de strtok pour séparer la chaîne en tokens
   token = strtok(CAZER, ",");
   while (token != NULL)
@@ -141,6 +156,7 @@ int verifier_in_out_table(char entite[], char CAZER[])
   }
   strcpy(taille, tab_idf_pointer->taille);
   token = strtok(taille, ",");
+  j = i;
   i = 0;
   while (token != NULL)
   {
@@ -152,6 +168,8 @@ int verifier_in_out_table(char entite[], char CAZER[])
     // Passage au token suivant
     token = strtok(NULL, ",");
   }
+  if (j != i)
+    return 0;
   return 1;
 }
 
@@ -276,9 +294,11 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
     if (P_OU_F == 1)
     {
       POSITION_Tables_IDF++;
+      POSITION_F_P_tables++;
       LES_TABLES_IDF[POSITION_Tables_IDF].state = 1;
       strcpy(LES_TABLES_IDF[POSITION_Tables_IDF].name, entite);
     }
+    printf("/*//*/*/*/*/*/*%d", POSITION_F_P_tables);
     tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
 
     while (tab_idf_pointer != NULL && strcmp(entite, tab_idf_pointer->name) != 0)

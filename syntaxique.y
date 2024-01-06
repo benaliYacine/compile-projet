@@ -20,6 +20,7 @@
     char tmp [20];
     int nb_argument=0;
     extern char *type;
+    char taille[20];
 
 %}
 
@@ -110,6 +111,7 @@ TAILLE: TAILLE verg inti {  if($3<0){
                                 char* final_str = malloc(strlen($1) + strlen(str_inti) + 4 + 1);
                                 sprintf(final_str, "%s,%s", $1, str_inti);
                                 $$=final_str;
+                                strcpy(taille,$$);
     }
         | inti {
                     if($1<0){
@@ -434,6 +436,9 @@ assignment
         if (!SetValInTS($1,$3)){
             yyerror("Sementique error",$1,",affectation non accepte.");
         }
+                                    if(strstr(GetTypeFromTS($1),"TABLEAU")!=NULL){
+                                        A_M_tab($1,taille,$3);
+                                    }
         StackNode* poppedElement = pop(&Operandes_pile);
         quadr("=", poppedElement->operande_name,"vide", $1);
     } //OGassi operande gauche d'afectation 
