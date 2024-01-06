@@ -78,7 +78,8 @@ DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declar
         yyerror("Sementique error",$2,"est deja declare.");}
         rechercher($2,"IDF","TABLEAU",0,0,$5,0);
         initiali_tab($2,$5);
-        }   // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+          // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
+        } 
 ;
 partie_gauch_affectation: aff valeur {$$=$2;} | VIDE { $$=" ";}
 ;
@@ -111,7 +112,6 @@ TAILLE: TAILLE verg inti {  if($3<0){
                                 char* final_str = malloc(strlen($1) + strlen(str_inti) + 4 + 1);
                                 sprintf(final_str, "%s,%s", $1, str_inti);
                                 $$=final_str;
-                                strcpy(taille,$$);
     }
         | inti {
                     if($1<0){
@@ -360,7 +360,10 @@ OPERAND
 
     | idf po TAILLE pf {{if(!Declarer($1)){
         yyerror("Sementique error",$1,"est non declare.");      
-    }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang");  $$="1";}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+    }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
+    //strcpy(taille,$3);
+    
+     $$=return_val_tab($1,$3);}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
 
     | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {$$="1";nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
 ;
@@ -400,6 +403,7 @@ var: idf
     }
             if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
         $$=$1;
+        strcpy(taille,$3);
     } 
 ;
 if_statement: B_if else_clause mc_endif{
@@ -424,17 +428,15 @@ A_if:mc_if po CONDI pf{
 ;
 else_clause: mc_else ENSINST | VIDE
 ;
-assignment
-    : var aff valeur pvg  {   
-        if (!areCompatible(GetTypeFromTS($1), $3)) {
-            yyerror("Sementique error","","incompatible type.");
-        }
-        printf("\n\n------------yes they are compatible for the assignment\n\n");
-        if (!SetValInTS($1,$3)){
-            yyerror("Sementique error",$1,",affectation non accepte.");
-        }
+assignment: var aff valeur pvg  {   if (!areCompatible(GetTypeFromTS($1), $3)) {
+                                        yyerror("Sementique error","","incompatible type.");
+                                    }
+                                    printf("\n\n------------yes they are compatible for the assignment\n\n");
+                                    if (strstr(GetTypeFromTS($1),"TABLEAU")==NULL&&!SetValInTS($1,$3)){
+                                        yyerror("Sementique error",$1,",affectation non accepte.");
+                                    }
                                     if(strstr(GetTypeFromTS($1),"TABLEAU")!=NULL){
-                                        A_M_tab($1,taille,$3);
+                                        A_M_tab($1, taille, $3);
                                     }
         StackNode* poppedElement = pop(&Operandes_pile);
         quadr("=", poppedElement->operande_name,"vide", $1);
@@ -524,7 +526,6 @@ int main(int argc, char** argv)
         }
         yyin = file;
     }
-    initialisation();
     yyparse();
     yylex();
     afficher();
