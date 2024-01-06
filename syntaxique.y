@@ -132,23 +132,26 @@ EXPRE
     : EXPRE lt EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
-                            
-            
+
+
             StackNode* poppedOpernade2 = pop(&Operandes_pile);
             StackNode* poppedOpernade1 = pop(&Operandes_pile);
 
 
                             $$=strdup(ltEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities($1,$3));
-                        
-                        
+
                         } 
     | EXPRE gt EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
-                            }   $$=strdup(gtEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities($1,$3));
-                        
-                        
+                            }   
+                            
+
+
+            StackNode* poppedOpernade2 = pop(&Operandes_pile);
+            StackNode* poppedOpernade1 = pop(&Operandes_pile);
+                            
+                            $$=strdup(gtEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
+
                         } 
     | EXPRE ge EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
@@ -158,9 +161,7 @@ EXPRE
             StackNode* poppedOpernade1 = pop(&Operandes_pile);
                             
                             $$=strdup(geEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities($1,$3));
-                        
-                        
+
                         } 
     | EXPRE eq EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
@@ -170,21 +171,19 @@ EXPRE
             StackNode* poppedOpernade2 = pop(&Operandes_pile);
             StackNode* poppedOpernade1 = pop(&Operandes_pile);
                             $$=strdup(eqEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities($1,$3));
+
 
 
                         } 
     | EXPRE ne EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
-                            
+
             StackNode* poppedOpernade2 = pop(&Operandes_pile);
             StackNode* poppedOpernade1 = pop(&Operandes_pile);
                             
                             $$=strdup(neEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities($1,$3));
-                        
-                        
+
                         } 
     | EXPRE le EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
@@ -194,9 +193,7 @@ EXPRE
             StackNode* poppedOpernade1 = pop(&Operandes_pile);
                             
                             $$=strdup(leEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-                                printf("\n\n------------res= %s\n\n",addEntities($1,$3));
-                        
-                        
+
                         } 
     | EXPREt {
         StackNode* poppedElement = pop(&Operandes_pile);

@@ -7,8 +7,7 @@ PROGRAM HelloAcad
 
 INTEGER tab DIMENSION(70,30);
 INTEGER tab2 DIMENSION(80,5);
-tab(0,2)=5;
-tab2(0,1)=8;
+
 LOGICAL D=TRUE;
 
 % Déclarations;
@@ -17,6 +16,9 @@ INTEGER B=5;
 CHARACTER E="this is a string";
 LOGICAL C;
 REAL Y;
+
+tab(0,2)=5;
+tab2(0,1)=8;
 
 C = 2.LT.6;
 IF(C) THEN
