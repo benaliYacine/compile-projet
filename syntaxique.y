@@ -450,11 +450,12 @@ assignment: var aff valeur pvg  {   if (!areCompatible(GetTypeFromTS($1), $3)) {
                                         yyerror("Sementique error","","incompatible type.");
                                     }
                                     printf("\n\n------------yes they are compatible for the assignment\n\n");
-                                    if (strstr(GetTypeFromTS($1),"TABLEAU")==NULL&&!SetValInTS($1,$3)){
-                                        yyerror("Sementique error",$1,",affectation non accepte.");
-                                    }
                                     if(strstr(GetTypeFromTS($1),"TABLEAU")!=NULL){
                                         A_M_tab($1, taille, $3);
+                                    }else {
+                                        if (!SetValInTS($1,$3)){
+                                            yyerror("Sementique error",$1,",affectation non accepte.");
+                                        }
                                     }
         StackNode* poppedElement = pop(&Operandes_pile);
         quadr("=", poppedElement->operande_name,"vide", $1);
