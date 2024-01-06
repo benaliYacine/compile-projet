@@ -529,11 +529,11 @@ static const yytype_uint16 yyrline[] =
       74,    74,    78,    85,    85,    87,   103,   120,   135,   151,
      169,   187,   194,   210,   226,   240,   255,   270,   285,   292,
      316,   339,   346,   367,   393,   401,   406,   416,   429,   434,
-     441,   448,   455,   458,   458,   460,   461,   463,   463,   465,
-     465,   467,   467,   469,   469,   471,   471,   471,   471,   471,
-     471,   473,   475,   475,   477,   477,   479,   479,   481,   488,
-     496,   502,   510,   517,   517,   519,   535,   539,   545,   547,
-     549,   549,   549,   549,   551,   558,   564,   568
+     441,   448,   457,   460,   460,   462,   463,   465,   465,   467,
+     467,   469,   469,   471,   471,   473,   473,   473,   473,   473,
+     473,   475,   477,   477,   479,   479,   481,   481,   483,   490,
+     498,   504,   512,   519,   519,   521,   545,   549,   555,   557,
+     559,   559,   559,   559,   561,   568,   574,   578
 };
 #endif
 
@@ -2115,63 +2115,65 @@ yyreduce:
         yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare.");      
     }}if(!verifier_in_out_table((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str)))yyerror("Sementique error","","out of rang"); 
     //strcpy(taille,$3);
-    
+    char table[100];
+    sprintf(table, "%s(%s)", (yyvsp[(1) - (4)].str), (yyvsp[(3) - (4)].str));
+    push(&Operandes_pile, "OPERAND", table, GetTypeFromTS((yyvsp[(1) - (4)].str)));
      (yyval.str)=return_val_tab((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str));;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 455 "syntaxique.y"
+#line 457 "syntaxique.y"
     {if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {(yyval.str)="1";nb_argument=0;};}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 458 "syntaxique.y"
+#line 460 "syntaxique.y"
     {nb_argument++;;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 458 "syntaxique.y"
+#line 460 "syntaxique.y"
     {nb_argument++;;}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 460 "syntaxique.y"
+#line 462 "syntaxique.y"
     {(yyval.str)=strdup("true");;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 461 "syntaxique.y"
+#line 463 "syntaxique.y"
     {(yyval.str)=strdup("false");;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 465 "syntaxique.y"
+#line 467 "syntaxique.y"
     {Declarer((yyvsp[(3) - (3)].str));nb_argument++;;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 465 "syntaxique.y"
+#line 467 "syntaxique.y"
     {Declarer((yyvsp[(1) - (1)].str));nb_argument++;;}
     break;
 
   case 78:
 
 /* Line 1455 of yacc.c  */
-#line 482 "syntaxique.y"
+#line 484 "syntaxique.y"
     {
         if(!Declarer((yyvsp[(1) - (1)].str))){
             yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");
@@ -2183,7 +2185,7 @@ yyreduce:
   case 79:
 
 /* Line 1455 of yacc.c  */
-#line 488 "syntaxique.y"
+#line 490 "syntaxique.y"
     {if(!Declarer((yyvsp[(1) - (4)].str))){
             yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare."); 
     }
@@ -2196,7 +2198,7 @@ yyreduce:
   case 80:
 
 /* Line 1455 of yacc.c  */
-#line 496 "syntaxique.y"
+#line 498 "syntaxique.y"
     {
     sprintf(tmp,"%d",qc);
     ajour_quad(pop_int(&Fin_if),1,tmp);
@@ -2207,7 +2209,7 @@ yyreduce:
   case 81:
 
 /* Line 1455 of yacc.c  */
-#line 502 "syntaxique.y"
+#line 504 "syntaxique.y"
     {
     // Fin_if=qc;
     push_int(&Fin_if, qc);
@@ -2220,7 +2222,7 @@ yyreduce:
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 510 "syntaxique.y"
+#line 512 "syntaxique.y"
     {
     // deb_else=qc; // J'ai laisser le champs 2 vide. Je dois le remplir apres
     push_int(&deb_else, qc);
@@ -2232,27 +2234,35 @@ yyreduce:
   case 85:
 
 /* Line 1455 of yacc.c  */
-#line 519 "syntaxique.y"
+#line 521 "syntaxique.y"
     {   if (!areCompatible(GetTypeFromTS((yyvsp[(1) - (4)].str)), (yyvsp[(3) - (4)].str))) {
                                         yyerror("Sementique error","","incompatible type.");
                                     }
                                     printf("\n\n------------yes they are compatible for the assignment\n\n");
                                     if(strstr(GetTypeFromTS((yyvsp[(1) - (4)].str)),"TABLEAU")!=NULL){
                                         A_M_tab((yyvsp[(1) - (4)].str), taille, (yyvsp[(3) - (4)].str));
+                                        char table[100];
+
+                                        // Format and store the combined string in str3
+                                        sprintf(table, "%s(%s)", (yyvsp[(1) - (4)].str), taille);
+                                        StackNode* poppedElement = pop(&Operandes_pile);
+                                        quadr("=", poppedElement->operande_name,"vide", table);
                                     }else {
                                         if (!SetValInTS((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str))){
                                             yyerror("Sementique error",(yyvsp[(1) - (4)].str),",affectation non accepte.");
+                                        }else{
+                                            StackNode* poppedElement = pop(&Operandes_pile);
+                                            quadr("=", poppedElement->operande_name,"vide", (yyvsp[(1) - (4)].str));
                                         }
                                     }
-        StackNode* poppedElement = pop(&Operandes_pile);
-        quadr("=", poppedElement->operande_name,"vide", (yyvsp[(1) - (4)].str));
+        
     ;}
     break;
 
   case 86:
 
 /* Line 1455 of yacc.c  */
-#line 535 "syntaxique.y"
+#line 545 "syntaxique.y"
     {
         push(&Operandes_pile, "valeur", (yyvsp[(1) - (1)].str), "CHARACTER");
         (yyval.str)=strdup(GetValFromTS((yyvsp[(1) - (1)].str)));
@@ -2262,7 +2272,7 @@ yyreduce:
   case 87:
 
 /* Line 1455 of yacc.c  */
-#line 539 "syntaxique.y"
+#line 549 "syntaxique.y"
     {
         StackNode* poppedElement = pop(&Operandes_pile);
         push(&Operandes_pile, "valeur", poppedElement->operande_name, poppedElement->operande_type);
@@ -2273,7 +2283,7 @@ yyreduce:
   case 94:
 
 /* Line 1455 of yacc.c  */
-#line 551 "syntaxique.y"
+#line 561 "syntaxique.y"
     {
     sprintf(tmp,"%d",pop_int(&deb_while));
     quadr("BR", tmp,"vide", "vide");
@@ -2285,7 +2295,7 @@ yyreduce:
   case 95:
 
 /* Line 1455 of yacc.c  */
-#line 558 "syntaxique.y"
+#line 568 "syntaxique.y"
     {
     push_int(&Fin_while, qc);
     StackNode* operande_tmp = pop(&Operandes_pile);
@@ -2296,7 +2306,7 @@ yyreduce:
   case 96:
 
 /* Line 1455 of yacc.c  */
-#line 564 "syntaxique.y"
+#line 574 "syntaxique.y"
     {
     push_int(&deb_while, qc);
 ;}
@@ -2305,7 +2315,7 @@ yyreduce:
   case 97:
 
 /* Line 1455 of yacc.c  */
-#line 568 "syntaxique.y"
+#line 578 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (1)].str))) {
         (yyval.str)=(yyvsp[(1) - (1)].str);
     }
@@ -2317,7 +2327,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 2321 "syntaxique.tab.c"
+#line 2331 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2529,7 +2539,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 576 "syntaxique.y"
+#line 586 "syntaxique.y"
 
 
 int main(int argc, char** argv)

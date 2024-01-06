@@ -18,9 +18,7 @@ REAL Y;
 tab(0,2)=5;
 tab2(0)=8;
 
-IF(2.LT.6) THEN
-    Y=65.3+8+9*2/0.5;
-ENDIF
+
 
 Y=tab2(0);
 
