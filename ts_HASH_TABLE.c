@@ -504,13 +504,13 @@ bool areCompatible(char entite1[], char entite2[])
   
   if (isTypeString(entite1))
   {
+    type1 = strdup(entite1); // Directly use the entity as its type
   }
   else
   {
     type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
   }
-  
-  type1 = strdup(entite1);
+
   if (isTypeString(entite2))
   {
     type2 = strdup(entite2); // Directly use the entity as its type
