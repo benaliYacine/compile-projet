@@ -147,7 +147,36 @@ TAILLE: TAILLE verg inti {  if($3<0){
 //ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
 //;
 EXPRE
-    : EXPRE lt EXPREt{   if (!canPerformArithmetic($1, $3)) {
+    :EXPRE mc_or CONDIT {if (isBoolean($1) && isBoolean($3)) {
+        bool val1 = strcmp($1, "true") == 0;
+        bool val2 = strcmp($3, "true") == 0;
+        bool res = val1 | val2;
+        // Conversion back to string is trivial here
+        char *backToStr = res ? "true" : "false";
+        $$=backToStr;
+    }
+    else {
+        yyerror("Sementique error","","cannot use or with non boolean operands");
+    }}
+    | EXPRE mc_and CONDIT{if (isBoolean($1) && isBoolean($3)) {
+        bool val1 = strcmp($1, "true") == 0;
+        bool val2 = strcmp($3, "true") == 0;
+        bool res = val1 & val2;
+        // Conversion back to string is trivial here
+        char *backToStr = res ? "true" : "false";
+        $$=backToStr;
+    }
+    else {
+        yyerror("Sementique error","","cannot use or with non boolean operands");
+    }} 
+    | CONDIT {
+        StackNode* poppedElement = pop(&Operandes_pile);
+        push(&Operandes_pile, "EXPRE", poppedElement->operande_name, poppedElement->operande_type);
+        $$=$1;
+    }
+;
+CONDIT
+    : CONDIT lt EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
 
@@ -159,7 +188,7 @@ EXPRE
                             $$=strdup(ltEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
-    | EXPRE gt EXPREt{   if (!canPerformArithmetic($1, $3)) {
+    | CONDIT gt EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
                             
@@ -171,7 +200,7 @@ EXPRE
                             $$=strdup(gtEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
-    | EXPRE ge EXPREt{   if (!canPerformArithmetic($1, $3)) {
+    | CONDIT ge EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
                             
@@ -181,7 +210,7 @@ EXPRE
                             $$=strdup(geEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
-    | EXPRE eq EXPREt{   if (!canPerformArithmetic($1, $3)) {
+    | CONDIT eq EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
                             
@@ -193,7 +222,7 @@ EXPRE
 
 
                         } 
-    | EXPRE ne EXPREt{   if (!canPerformArithmetic($1, $3)) {
+    | CONDIT ne EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
 
@@ -203,7 +232,7 @@ EXPRE
                             $$=strdup(neEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
-    | EXPRE le EXPREt{   if (!canPerformArithmetic($1, $3)) {
+    | CONDIT le EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
                             
@@ -215,7 +244,7 @@ EXPRE
                         } 
     | EXPREt {
         StackNode* poppedElement = pop(&Operandes_pile);
-        push(&Operandes_pile, "EXPRE", poppedElement->operande_name, poppedElement->operande_type);
+        push(&Operandes_pile, "CONDIT", poppedElement->operande_name, poppedElement->operande_type);
         $$=$1;
         }
 ;
@@ -494,36 +523,7 @@ A_while: mc_dowhile{
     push_int(&deb_while, qc);
 }
 ;
-CONDI: CONDI mc_or CONDI {if (isBoolean($1) && isBoolean($3)) {
-        bool val1 = strcmp($1, "true") == 0;
-        bool val2 = strcmp($3, "true") == 0;
-        bool res = val1 | val2;
-        // Conversion back to string is trivial here
-        char *backToStr = res ? "true" : "false";
-        $$=backToStr;
-    }
-    else {
-        yyerror("Sementique error","","cannot use or with non boolean operands");
-    }}
-    | CONDI mc_and CONDIT{if (isBoolean($1) && isBoolean($3)) {
-        bool val1 = strcmp($1, "true") == 0;
-        bool val2 = strcmp($3, "true") == 0;
-        bool res = val1 & val2;
-        // Conversion back to string is trivial here
-        char *backToStr = res ? "true" : "false";
-        $$=backToStr;
-    }
-    else {
-        yyerror("Sementique error","","cannot use or with non boolean operands");
-    }} 
-    | CONDIT {if (isBoolean($1)) {
-        $$=$1;
-    }
-    else {
-        yyerror("Sementique error",$1,"is not boolean");
-    }}
-;
-CONDIT: EXPRE {if (isBoolean($1)) {
+CONDI: EXPRE {if (isBoolean($1)) {
         $$=$1;
     }
     else {
