@@ -38,6 +38,7 @@ char *return_val_tab(char name[], char taille1[])
   else if (F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dementions == 2)
     return F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dim2[tab[0]][tab[1]].entite;
 }
+/*
 void afficher_tab() //zyada virifit brk
 {
   int i = 0, j = 0, k = 0;
@@ -46,6 +47,7 @@ void afficher_tab() //zyada virifit brk
   printf("%s\n", F_P_TABLE[0].Table_LES_TABLEAUX[0].dim2[1][1].entite);
 
 }
+*/
 void A_M_tab(char name[], char taille1[], char val[])
 {
   int i = 0;

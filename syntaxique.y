@@ -329,7 +329,6 @@ int main(int argc, char** argv)
     yyparse();
     yylex();
     afficher();
-    afficher_tab();
     afficher_qdr();
     
     if (yyin != stdin) {
