@@ -2124,8 +2124,8 @@ yyreduce:
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 455 "syntaxique.y"
-    {if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else {(yyval.str)="1";nb_argument=0;};}
+#line 457 "syntaxique.y"
+    {if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)==1){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)==-1)yyerror("Sementique error",(yyvsp[(2) - (5)].str),"est non declare.");(yyval.str)=return_val_fonction((yyvsp[(2) - (5)].str));nb_argument=0;;}
     break;
 
   case 53:

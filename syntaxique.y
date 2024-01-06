@@ -454,7 +454,7 @@ OPERAND
     push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
      $$=return_val_tab($1,$3);}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
 
-    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)==1){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else if(verifier_nb_argument($2,nb_argument)==-1)yyerror("Sementique error",$2,"est non declare."); else{$$="1";nb_argument=0;}} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)==1){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else if(verifier_nb_argument($2,nb_argument)==-1)yyerror("Sementique error",$2,"est non declare.");$$=return_val_fonction($2);nb_argument=0;} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
 ;
 
 ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}

@@ -6,6 +6,18 @@
 #include "ts_HASH_TABLE.h"
 
 // TS fcts
+char *return_val_fonction(char name[])
+{
+  int i = 0;
+  int hash_index = fonction_de_hachage(name);
+  while (LES_TABLES_IDF[i].state == 1 && strcmp(LES_TABLES_IDF[i].name, name) != 0)
+    i++;
+  pointer_element1 P_hash=NULL;
+  P_hash=LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
+  while (strcmp(P_hash->name, name) != 0)
+    P_hash = P_hash->svt;
+    return P_hash->val;
+}
 char *return_val_tab(char name[], char taille1[])
 {
   int j = 0, i = 0;
@@ -501,7 +513,7 @@ bool areCompatible(char entite1[], char entite2[])
   char *type1, *type2;
 
   printf("\n\n------------we want to compare %s with %s\n\n", entite1, entite2);
-  
+
   if (isTypeString(entite1))
   {
     type1 = strdup(entite1); // Directly use the entity as its type
