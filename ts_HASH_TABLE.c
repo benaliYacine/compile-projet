@@ -997,6 +997,23 @@ char *Cree_temp()
 
   return name;
 }
+
+char *Cree_temp_cond()
+{
+  static int counter = 1;  // Static counter, retains its value between function calls
+  char *name = malloc(10); // Allocate memory for the string
+
+  if (name == NULL)
+  {
+    // Handle memory allocation failure
+    fprintf(stderr, "Memory allocation failed.\n");
+    exit(1);
+  }
+  sprintf(name, "temp_cond%d", counter); // Format the string
+  counter++;                             // Increment the counter
+
+  return name;
+}
 char *Calculer_type(char type1[], char type2[])
 {
   if (strcmp(type1, "REAL") == 0 || strcmp(type2, "REAL") == 0)

@@ -18,26 +18,10 @@ REAL Y;
 tab(0,2)=5;
 tab2(0)=8;
 
-C = 2.LT.6;
-IF(C) THEN
+IF(2.LT.6) THEN
     Y=65.3+8+9*2/0.5;
-    IF(C) THEN
-        Y=65.3+8;
-        IF(C) THEN
-            Y=65.3+8;
-        ENDIF 
-    ENDIF 
 ENDIF
 
-DOWHILE (C)
-    Y=65.3+8;
-    DOWHILE (C)
-        Y=65.3+8;
-        DOWHILE (C)
-            Y=65.3+8;
-        ENDDO
-    ENDDO
-ENDDO
 Y=tab2(0);
 
 END

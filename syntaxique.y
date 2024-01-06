@@ -4,6 +4,7 @@
     char* file_name;
     #include "ts_HASH_TABLE.c"
     #include "int_pile.c"
+    #include "str_pile.c"
     #include "expre_pile.c"
     #include "pgm.c"
     #include <stdlib.h>
@@ -153,6 +154,13 @@ EXPRE
         bool res = val1 | val2;
         // Conversion back to string is trivial here
         char *backToStr = res ? "true" : "false";
+
+
+        StackNode* operande_tmp2 = pop(&Operandes_pile);
+        StackNode* operande_tmp1 = pop(&Operandes_pile);
+        char *res_tmp = strdup(Cree_temp_cond());
+        push(&Operandes_pile, "EXPRE", res_tmp, "LOGICAL");
+        createQuadLogic (2,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
         $$=backToStr;
     }
     else {
@@ -164,10 +172,17 @@ EXPRE
         bool res = val1 & val2;
         // Conversion back to string is trivial here
         char *backToStr = res ? "true" : "false";
+        
+        
+        StackNode* operande_tmp2 = pop(&Operandes_pile);
+        StackNode* operande_tmp1 = pop(&Operandes_pile);
+        char *res_tmp = strdup(Cree_temp_cond());
+        push(&Operandes_pile, "EXPRE", res_tmp, "LOGICAL");
+        createQuadLogic (3,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
         $$=backToStr;
     }
     else {
-        yyerror("Sementique error","","cannot use or with non boolean operands");
+        yyerror("Sementique error","","cannot use and with non boolean operands");
     }} 
     | CONDIT {
         StackNode* poppedElement = pop(&Operandes_pile);
@@ -176,16 +191,20 @@ EXPRE
     }
 ;
 CONDIT
-    : CONDIT lt EXPREt{   if (!canPerformArithmetic($1, $3)) {
-                                yyerror("Sementique error","","incompatible type.");
-                            }   
+    : CONDIT lt EXPREt{   
+        if (!canPerformArithmetic($1, $3)) {
+            yyerror("Sementique error","","incompatible type.");
+        }   
 
 
-            StackNode* poppedOpernade2 = pop(&Operandes_pile);
-            StackNode* poppedOpernade1 = pop(&Operandes_pile);
+        
+        StackNode* operande_tmp2 = pop(&Operandes_pile);
+        StackNode* operande_tmp1 = pop(&Operandes_pile);
+        char *res_tmp = strdup(Cree_temp_cond());
+        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
+        createQuadCompare (5,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
 
-
-                            $$=strdup(ltEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
+        $$=strdup(ltEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
     | CONDIT gt EXPREt{   if (!canPerformArithmetic($1, $3)) {
@@ -194,30 +213,41 @@ CONDIT
                             
 
 
-            StackNode* poppedOpernade2 = pop(&Operandes_pile);
-            StackNode* poppedOpernade1 = pop(&Operandes_pile);
-                            
+        
+        StackNode* operande_tmp2 = pop(&Operandes_pile);
+        StackNode* operande_tmp1 = pop(&Operandes_pile);
+        char *res_tmp = strdup(Cree_temp_cond());
+        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
+        createQuadCompare (6,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
+
                             $$=strdup(gtEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
     | CONDIT ge EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
-                            
-            StackNode* poppedOpernade2 = pop(&Operandes_pile);
-            StackNode* poppedOpernade1 = pop(&Operandes_pile);
-                            
+
+
+        StackNode* operande_tmp2 = pop(&Operandes_pile);
+        StackNode* operande_tmp1 = pop(&Operandes_pile);
+        char *res_tmp = strdup(Cree_temp_cond());
+        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
+        createQuadCompare (3,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
+                
                             $$=strdup(geEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
     | CONDIT eq EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
-                            
-                            
-            StackNode* poppedOpernade2 = pop(&Operandes_pile);
-            StackNode* poppedOpernade1 = pop(&Operandes_pile);
-                            $$=strdup(eqEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
+
+        
+        StackNode* operande_tmp2 = pop(&Operandes_pile);
+        StackNode* operande_tmp1 = pop(&Operandes_pile);
+        char *res_tmp = strdup(Cree_temp_cond());
+        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
+        createQuadCompare (1,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
+                $$=strdup(eqEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
 
 
@@ -226,9 +256,14 @@ CONDIT
                                 yyerror("Sementique error","","incompatible type.");
                             }   
 
-            StackNode* poppedOpernade2 = pop(&Operandes_pile);
-            StackNode* poppedOpernade1 = pop(&Operandes_pile);
-                            
+            
+        
+        StackNode* operande_tmp2 = pop(&Operandes_pile);
+        StackNode* operande_tmp1 = pop(&Operandes_pile);
+        char *res_tmp = strdup(Cree_temp_cond());
+        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
+        createQuadCompare (2,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
+                
                             $$=strdup(neEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
@@ -236,9 +271,14 @@ CONDIT
                                 yyerror("Sementique error","","incompatible type.");
                             }   
                             
-            StackNode* poppedOpernade2 = pop(&Operandes_pile);
-            StackNode* poppedOpernade1 = pop(&Operandes_pile);
-                            
+            
+        
+        StackNode* operande_tmp2 = pop(&Operandes_pile);
+        StackNode* operande_tmp1 = pop(&Operandes_pile);
+        char *res_tmp = strdup(Cree_temp_cond());
+        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
+        createQuadCompare (4,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
+                
                             $$=strdup(leEntities($1,$3));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
 
                         } 
@@ -382,7 +422,7 @@ OPERAND
                 yyerror("Sementique error",$1,"n'a pas d'une valeur");
             } else{
                 char *type=strdup(GetTypeFromTS($1));// wela 9ader tejbed e type mel val b GetTypeFromVal mais ana seyiit nkhali koulech kima derna fel cour
-                push(&Operandes_pile, "OPERAND", $1, type);
+                push(&Operandes_pile, "OPERAND", strdup($1), type);
                 $$=strdup(res);
             }
         }
@@ -470,7 +510,8 @@ B_if: A_if mc_then ENSINST{
 A_if:mc_if po CONDI pf{
     // deb_else=qc; // J'ai laisser le champs 2 vide. Je dois le remplir apres
     push_int(&deb_else, qc);
-    quadr("BZ", "","temp_cond", "vide");
+    StackNode* operande_tmp = pop(&Operandes_pile);
+    quadr("BZ", "",strdup(operande_tmp->operande_name), "vide");
 }
 ;
 else_clause: mc_else ENSINST | VIDE
@@ -516,7 +557,8 @@ dowhile_statement: B_while ENSINST mc_enddo{
 ;
 B_while: A_while po CONDI pf{
     push_int(&Fin_while, qc);
-    quadr("BZ", "","temp_cond", "vide");
+    StackNode* operande_tmp = pop(&Operandes_pile);
+    quadr("BZ", "",strdup(operande_tmp->operande_name), "vide");
 }
 ;
 A_while: mc_dowhile{
