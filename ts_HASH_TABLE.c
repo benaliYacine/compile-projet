@@ -171,7 +171,7 @@ int verifier_in_out_table(char entite[], char CAZER[])
     tab_idf_pointer = tab_idf_pointer->svt;
   }
   // Utilisation de strtok pour séparer la chaîne en tokens
-  strcpy(taille2,CAZER);
+  strcpy(taille2, CAZER);
   token = strtok(taille2, ",");
   while (token != NULL)
   {
@@ -521,7 +521,7 @@ bool areCompatible(char entite1[], char entite2[])
 
   printf("\n\n------------now we want to compare %s with %s\n\n", type1, type2);
 
-  if (strstr(type1, type2) != NULL)
+  if (strstr(type1, type2) != NULL || strstr(type1, "FONCTION") != NULL || strstr(type1, "ARGUMENT") != NULL || strstr(type2, "ARGUMENT") != NULL)
   { // Same type
     return true;
   }
