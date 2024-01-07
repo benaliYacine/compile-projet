@@ -1872,34 +1872,3 @@ int main()
 	}
 #endif
 #line 131 "lexical.l"
-
-
-
-/* 
-int main(int argc, char** argv){
- 	if (argc > 1) {
-        file_name = argv[1];
-        FILE* file = fopen(argv[1], "r");
-        if (!file) {
-            // Handle error
-            return 1;
-        }
-        yyin = file;
-    }
-    yylex();
-
-    if (yyin != stdin) {
-        fclose(yyin);
-    }
-
-    return 0;
-} */
-
-
-
-/*9bel mandir yyin
-int main(){
-yylex();
-return 0;
-}
-*/

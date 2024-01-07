@@ -6,6 +6,260 @@
 #include "ts_HASH_TABLE.h"
 
 // TS fcts
+
+int fonction_de_hachage(char name[20])
+{
+  int i;
+  int hashValue = 281;
+  for (i = 0; name[i] != '\0'; i++)
+  {
+    hashValue = hashValue + name[i];
+  }
+  // printf("---hash index: %d\n", hashValue % 300);
+  return hashValue % 300;
+}
+
+void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[], int P_OU_F)
+{
+  switch (y)
+  {
+
+  case 0: /*insertion dans la table des IDF et CONST*/
+
+    tab_idf_pointer = malloc(sizeof(element_type1));
+    if (tab_idf_pointer == NULL)
+      printf("memoire plein\n");
+    else
+    {
+
+      strcpy(tab_idf_pointer->name, entite);
+      strcpy(tab_idf_pointer->code, code);
+      strcpy(tab_idf_pointer->type, type);
+      strcpy(tab_idf_pointer->val, val);
+      tab_idf_pointer->declarer = 0;
+      if (P_OU_F)
+        tab_idf_pointer->declarer = 1;
+      tab_idf_pointer->svt = NULL;
+      if (taille == NULL)
+      {
+        strcpy(tab_idf_pointer->taille, " ");
+      }
+      else
+        strcpy(tab_idf_pointer->taille, taille);
+      if (LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index] == NULL)
+      {
+        LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index] = tab_idf_pointer;
+      }
+      else
+      {
+        prd = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+        while (prd->svt != NULL)
+          prd = prd->svt;
+        prd->svt = tab_idf_pointer;
+      }
+    }
+    break;
+
+  case 1: /*insertion dans la table des mots clÃ©s*/
+    tab_mot_cle_pointer = malloc(sizeof(element_type2));
+    if (tab_mot_cle_pointer == NULL)
+      printf("memoire plein\n");
+    else
+    {
+      strcpy(tab_mot_cle_pointer->name, entite);
+      strcpy(tab_mot_cle_pointer->type, code);
+      tab_mot_cle_pointer->svt = NULL;
+      if (tab_hachage_mot_cle[hash_index] == NULL)
+      {
+        tab_hachage_mot_cle[hash_index] = tab_mot_cle_pointer;
+      }
+      else
+      {
+        prdm = tab_hachage_mot_cle[hash_index];
+        while (prdm->svt != NULL)
+          prdm = prdm->svt;
+        prdm->svt = tab_mot_cle_pointer;
+      }
+    }
+    break;
+
+  case 2: /*insertion dans la table des sepa*/
+    tab_sepa_pointer = malloc(sizeof(element_type2));
+
+    if (tab_sepa_pointer == NULL)
+      printf("memoire plein\n");
+    else
+    {
+      strcpy(tab_sepa_pointer->name, entite);
+      strcpy(tab_sepa_pointer->type, code);
+      tab_sepa_pointer->svt = NULL;
+      if (tab_hachage_sepa[hash_index] == NULL)
+      {
+        tab_hachage_sepa[hash_index] = tab_sepa_pointer;
+      }
+      else
+      {
+        prdm = tab_hachage_sepa[hash_index];
+        while (prds->svt != NULL)
+          prds = prds->svt;
+        prds->svt = tab_sepa_pointer;
+      }
+      break;
+    }
+  }
+}
+
+int rechercher(char entite[], char code[], char type[], char val[], int y, char taille[], int P_OU_F)
+{
+  // printf("we have entered rechercher for: %s\n",entite);
+  // printf("---valeur here is: %s\n", val);
+
+  int hash_index = fonction_de_hachage(entite);
+  // if(y>2){
+  //   val= strtod(entite, NULL);
+  //   y=0;
+  // }
+  switch (y)
+  {
+  case 0: /*verifier si la case dans la tables des IDF et CONST est libre*/
+
+    // printf("---we have entered case 0:\n");
+    // printf("---valeur here is: %s\n", val);
+    if (P_OU_F == 1)
+    {
+      POSITION_Tables_IDF++;
+      POSITION_F_P_tables++;
+      LES_TABLES_IDF[POSITION_Tables_IDF].state = 1;
+      strcpy(LES_TABLES_IDF[POSITION_Tables_IDF].name, entite);
+    }
+    tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+
+    while (tab_idf_pointer != NULL && strcmp(entite, tab_idf_pointer->name) != 0)
+    {
+      // printf("---tab_idf_pointer: %d\n", tab_idf_pointer);
+      tab_idf_pointer = tab_idf_pointer->svt;
+    }
+    if (tab_idf_pointer == NULL)
+    {
+
+      // printf("---jddiiid\n");
+      inserer(entite, code, type, val, 0, hash_index, taille, P_OU_F);
+    }
+    else
+    {
+      if (strcmp(type, " ") != 0)
+      { // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+        if (strcmp(type, "TABLEAU") == 0)
+        {
+          strcat(tab_idf_pointer->type, " ");
+          strcat(tab_idf_pointer->type, "TABLEAU");
+        }
+        else
+          strcpy(tab_idf_pointer->type, type);
+      } // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+      if (taille != NULL && strcmp(taille, " ") != 0)
+      { // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+        strcpy(tab_idf_pointer->taille, taille);
+
+      } // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+
+      if (val != NULL && strcmp(val, " ") != 0)
+      {
+        // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
+        strcpy(tab_idf_pointer->val, val);
+      }
+      printf("entite existe deja\n");
+      return 1;
+    }
+    break;
+
+  case 1: /*verifier si la case dans la tables des mots clÃ©s est libre*/
+    tab_mot_cle_pointer = tab_hachage_mot_cle[hash_index];
+
+    while (tab_mot_cle_pointer != NULL && strcmp(entite, tab_mot_cle_pointer->name) != 0)
+    {
+      tab_mot_cle_pointer = tab_mot_cle_pointer->svt;
+    }
+    if (tab_mot_cle_pointer == NULL)
+      inserer(entite, code, type, val, 1, hash_index, taille, P_OU_F);
+    else
+      printf("entite existe deja\n");
+    break;
+
+  case 2: /*verifier si la case dans la tables des sÃ©parateurs est libre*/
+    tab_sepa_pointer = tab_hachage_sepa[hash_index];
+
+    while (tab_sepa_pointer != NULL && strcmp(entite, tab_sepa_pointer->name) != 0)
+    {
+      tab_sepa_pointer = tab_sepa_pointer->svt;
+    }
+    if (tab_sepa_pointer == NULL)
+      inserer(entite, code, type, val, 2, hash_index, taille, P_OU_F);
+    else
+      printf("entite existe deja\n");
+    break;
+  }
+}
+
+void afficher()
+{
+
+  int hash_index, i = 0;
+
+  while (i < 100 && LES_TABLES_IDF[i].state == 1)
+  {
+    printf("/******************Table des symboles IDF De %s****************/ \n", LES_TABLES_IDF[i].name);
+    printf("_______________________________________________________________________________________\n");
+    printf("\t| Nom_Entite |  Code_Entite   |  Type_Entite     | Val_Entite   |    Taille    |\n");
+    printf("_______________________________________________________________________________________\n");
+    for (hash_index = 0; hash_index < 300; hash_index++)
+    {
+      tab_idf_pointer = LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
+      while (tab_idf_pointer != NULL)
+      {
+        printf("\t|%11s |%15s | %16s | %12s | %12s |\n", tab_idf_pointer->name, tab_idf_pointer->code, tab_idf_pointer->type, tab_idf_pointer->val, tab_idf_pointer->taille);
+        tab_idf_pointer = tab_idf_pointer->svt;
+      }
+    }
+    printf("\n");
+    i++;
+  }
+
+  printf("\n/***************Table des symboles mots cles*************/\n");
+
+  printf("_____________________________________\n");
+  printf("\t| NomEntite |  CodeEntite | \n");
+  printf("_____________________________________\n");
+  for (hash_index = 0; hash_index < 300; hash_index++)
+  {
+    tab_mot_cle_pointer = tab_hachage_mot_cle[hash_index];
+    while (tab_mot_cle_pointer != NULL)
+    {
+      printf("\t|%10s |%12s | \n", tab_mot_cle_pointer->name, tab_mot_cle_pointer->type);
+
+      tab_mot_cle_pointer = tab_mot_cle_pointer->svt;
+    }
+  }
+
+  printf("\n/***************Table des symboles sepa*************/\n");
+
+  printf("_____________________________________\n");
+  printf("\t| NomEntite |  CodeEntite | \n");
+  printf("_____________________________________\n");
+  for (hash_index = 0; hash_index < 300; hash_index++)
+  {
+    tab_sepa_pointer = tab_hachage_sepa[hash_index];
+    while (tab_sepa_pointer != NULL)
+    {
+      printf("\t|%10s |%12s | \n", tab_sepa_pointer->name, tab_sepa_pointer->type);
+
+      tab_sepa_pointer = tab_sepa_pointer->svt;
+    }
+  }
+}
+
+//  semantique fcts
+
 char *return_val_fonction(char name[])
 {
   int i = 0;
@@ -16,11 +270,11 @@ char *return_val_fonction(char name[])
   P_hash = LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
   while (strcmp(P_hash->name, name) != 0)
     P_hash = P_hash->svt;
-  pointer_element1 P_table_idf=LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+  pointer_element1 P_table_idf = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
   while (strcmp(P_table_idf->name, name) != 0)
-    P_table_idf=P_table_idf->svt;
-    strcpy(P_table_idf->type,P_hash->type);
-    strcpy(P_table_idf->val,P_hash->val);
+    P_table_idf = P_table_idf->svt;
+  strcpy(P_table_idf->type, P_hash->type);
+  strcpy(P_table_idf->val, P_hash->val);
   return P_hash->val;
 }
 char *return_val_tab(char name[], char taille1[])
@@ -218,258 +472,6 @@ int verifier_in_out_table(char entite[], char CAZER[])
     return 0;
   return 1;
 }
-int fonction_de_hachage(char name[20])
-{
-  int i;
-  int hashValue = 281;
-  for (i = 0; name[i] != '\0'; i++)
-  {
-    hashValue = hashValue + name[i];
-  }
-  printf("---hash index: %d\n", hashValue % 300);
-  return hashValue % 300;
-}
-
-void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[], int P_OU_F)
-{
-  switch (y)
-  {
-
-  case 0: /*insertion dans la table des IDF et CONST*/
-
-    tab_idf_pointer = malloc(sizeof(element_type1));
-    if (tab_idf_pointer == NULL)
-      printf("memoire plein\n");
-    else
-    {
-
-      strcpy(tab_idf_pointer->name, entite);
-      strcpy(tab_idf_pointer->code, code);
-      strcpy(tab_idf_pointer->type, type);
-      strcpy(tab_idf_pointer->val, val);
-      tab_idf_pointer->declarer = 0;
-      if (P_OU_F)
-        tab_idf_pointer->declarer = 1;
-      tab_idf_pointer->svt = NULL;
-      if (taille == NULL)
-      {
-        strcpy(tab_idf_pointer->taille, " ");
-      }
-      else
-        strcpy(tab_idf_pointer->taille, taille);
-      if (LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index] == NULL)
-      {
-        LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index] = tab_idf_pointer;
-      }
-      else
-      {
-        prd = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
-        while (prd->svt != NULL)
-          prd = prd->svt;
-        prd->svt = tab_idf_pointer;
-      }
-    }
-    break;
-
-  case 1: /*insertion dans la table des mots clÃ©s*/
-    tab_mot_cle_pointer = malloc(sizeof(element_type2));
-    if (tab_mot_cle_pointer == NULL)
-      printf("memoire plein\n");
-    else
-    {
-      strcpy(tab_mot_cle_pointer->name, entite);
-      strcpy(tab_mot_cle_pointer->type, code);
-      tab_mot_cle_pointer->svt = NULL;
-      if (tab_hachage_mot_cle[hash_index] == NULL)
-      {
-        tab_hachage_mot_cle[hash_index] = tab_mot_cle_pointer;
-      }
-      else
-      {
-        prdm = tab_hachage_mot_cle[hash_index];
-        while (prdm->svt != NULL)
-          prdm = prdm->svt;
-        prdm->svt = tab_mot_cle_pointer;
-      }
-    }
-    break;
-
-  case 2: /*insertion dans la table des sepa*/
-    tab_sepa_pointer = malloc(sizeof(element_type2));
-
-    if (tab_sepa_pointer == NULL)
-      printf("memoire plein\n");
-    else
-    {
-      strcpy(tab_sepa_pointer->name, entite);
-      strcpy(tab_sepa_pointer->type, code);
-      tab_sepa_pointer->svt = NULL;
-      if (tab_hachage_sepa[hash_index] == NULL)
-      {
-        tab_hachage_sepa[hash_index] = tab_sepa_pointer;
-      }
-      else
-      {
-        prdm = tab_hachage_sepa[hash_index];
-        while (prds->svt != NULL)
-          prds = prds->svt;
-        prds->svt = tab_sepa_pointer;
-      }
-      break;
-    }
-  }
-}
-
-int rechercher(char entite[], char code[], char type[], char val[], int y, char taille[], int P_OU_F)
-{
-  printf("we have entered rechercher for: %s\n",entite);
-  printf("---valeur here is: %s\n", val);
-
-  int hash_index = fonction_de_hachage(entite);
-  // if(y>2){
-  //   val= strtod(entite, NULL);
-  //   y=0;
-  // }
-  switch (y)
-  {
-  case 0: /*verifier si la case dans la tables des IDF et CONST est libre*/
-
-    printf("---we have entered case 0:\n");
-    printf("---valeur here is: %s\n", val);
-    if (P_OU_F == 1)
-    {
-      POSITION_Tables_IDF++;
-      POSITION_F_P_tables++;
-      LES_TABLES_IDF[POSITION_Tables_IDF].state = 1;
-      strcpy(LES_TABLES_IDF[POSITION_Tables_IDF].name, entite);
-    }
-    tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
-
-    while (tab_idf_pointer != NULL && strcmp(entite, tab_idf_pointer->name) != 0)
-    {
-      printf("---tab_idf_pointer: %d\n", tab_idf_pointer);
-      tab_idf_pointer = tab_idf_pointer->svt;
-    }
-    if (tab_idf_pointer == NULL)
-    {
-
-      printf("---jddiiid\n");
-      inserer(entite, code, type, val, 0, hash_index, taille, P_OU_F);
-    }
-    else
-    {
-      if (strcmp(type, " ") != 0)
-      { // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
-        if (strcmp(type, "TABLEAU") == 0)
-        {
-          strcat(tab_idf_pointer->type, " ");
-          strcat(tab_idf_pointer->type, "TABLEAU");
-        }
-        else
-          strcpy(tab_idf_pointer->type, type);
-      } // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
-      if (taille != NULL && strcmp(taille, " ") != 0)
-      { // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
-        strcpy(tab_idf_pointer->taille, taille);
-
-      } // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
-
-      if (val != NULL && strcmp(val, " ") != 0)
-      {
-        // hadi bah ki ya9a beli declarina tableau ybadal type ta3o yraj3o tableau
-        strcpy(tab_idf_pointer->val, val);
-      }
-      printf("entite existe deja\n");
-      return 1;
-    }
-    break;
-
-  case 1: /*verifier si la case dans la tables des mots clÃ©s est libre*/
-    tab_mot_cle_pointer = tab_hachage_mot_cle[hash_index];
-
-    while (tab_mot_cle_pointer != NULL && strcmp(entite, tab_mot_cle_pointer->name) != 0)
-    {
-      tab_mot_cle_pointer = tab_mot_cle_pointer->svt;
-    }
-    if (tab_mot_cle_pointer == NULL)
-      inserer(entite, code, type, val, 1, hash_index, taille, P_OU_F);
-    else
-      printf("entite existe deja\n");
-    break;
-
-  case 2: /*verifier si la case dans la tables des sÃ©parateurs est libre*/
-    tab_sepa_pointer = tab_hachage_sepa[hash_index];
-
-    while (tab_sepa_pointer != NULL && strcmp(entite, tab_sepa_pointer->name) != 0)
-    {
-      tab_sepa_pointer = tab_sepa_pointer->svt;
-    }
-    if (tab_sepa_pointer == NULL)
-      inserer(entite, code, type, val, 2, hash_index, taille, P_OU_F);
-    else
-      printf("entite existe deja\n");
-    break;
-  }
-}
-
-void afficher()
-{
-
-  int hash_index, i = 0;
-
-  while (i < 100 && LES_TABLES_IDF[i].state == 1)
-  {
-    printf("/******************Table des symboles IDF De %s****************/ \n", LES_TABLES_IDF[i].name);
-    printf("_______________________________________________________________________________________\n");
-    printf("\t| Nom_Entite |  Code_Entite   |  Type_Entite     | Val_Entite   |    Taille    |\n");
-    printf("_______________________________________________________________________________________\n");
-    for (hash_index = 0; hash_index < 300; hash_index++)
-    {
-      tab_idf_pointer = LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
-      while (tab_idf_pointer != NULL)
-      {
-        printf("\t|%11s |%15s | %16s | %12s | %12s |\n", tab_idf_pointer->name, tab_idf_pointer->code, tab_idf_pointer->type, tab_idf_pointer->val, tab_idf_pointer->taille);
-        tab_idf_pointer = tab_idf_pointer->svt;
-      }
-    }
-    printf("\n");
-    i++;
-  }
-
-  printf("\n/***************Table des symboles mots cles*************/\n");
-
-  printf("_____________________________________\n");
-  printf("\t| NomEntite |  CodeEntite | \n");
-  printf("_____________________________________\n");
-  for (hash_index = 0; hash_index < 300; hash_index++)
-  {
-    tab_mot_cle_pointer = tab_hachage_mot_cle[hash_index];
-    while (tab_mot_cle_pointer != NULL)
-    {
-      printf("\t|%10s |%12s | \n", tab_mot_cle_pointer->name, tab_mot_cle_pointer->type);
-
-      tab_mot_cle_pointer = tab_mot_cle_pointer->svt;
-    }
-  }
-
-  printf("\n/***************Table des symboles sepa*************/\n");
-
-  printf("_____________________________________\n");
-  printf("\t| NomEntite |  CodeEntite | \n");
-  printf("_____________________________________\n");
-  for (hash_index = 0; hash_index < 300; hash_index++)
-  {
-    tab_sepa_pointer = tab_hachage_sepa[hash_index];
-    while (tab_sepa_pointer != NULL)
-    {
-      printf("\t|%10s |%12s | \n", tab_sepa_pointer->name, tab_sepa_pointer->type);
-
-      tab_sepa_pointer = tab_sepa_pointer->svt;
-    }
-  }
-}
-
-//  semantique fcts
 
 char *GetTypeFromVal(char entite[])
 {
@@ -498,7 +500,7 @@ char *GetTypeFromVal(char entite[])
 // Helper function to determine if an entity is a type string
 bool isTypeString(char *entity)
 {
-  printf("type entite: %s\n", entity);
+  // printf("type entite: %s\n", entity);
   if (strstr(entity, "INTEGER") != NULL ||
       strstr(entity, "REAL") != NULL ||
       strstr(entity, "CHARACTER") != NULL ||
@@ -517,7 +519,7 @@ bool areCompatible(char entite1[], char entite2[])
 
   char *type1, *type2;
 
-  printf("\n\n------------we want to compare %s with %s\n\n", entite1, entite2);
+  // printf("\n\n------------we want to compare %s with %s\n\n", entite1, entite2);
 
   if (isTypeString(entite1))
   {
@@ -537,7 +539,7 @@ bool areCompatible(char entite1[], char entite2[])
     type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
   }
 
-  printf("\n\n------------now we want to compare %s with %s\n\n", type1, type2);
+  // printf("\n\n------------now we want to compare %s with %s\n\n", type1, type2);
   if (strstr(type1, type2) != NULL || strstr(type1, "ARGUMENT") != NULL || strstr(type2, "ARGUMENT") != NULL)
   { // Same type
     return true;
@@ -555,16 +557,16 @@ bool canPerformArithmetic(char entite1[], char entite2[])
 {
   char *type1;
   char *type2;
-  
+
   type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
   type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
-  if (strcmp(type1," ")==0 || strcmp(type2," ")==0){
+  if (strcmp(type1, " ") == 0 || strcmp(type2, " ") == 0)
+  {
     return true;
   }
 
-
-  printf("\n\n------------entities are= %s,%s\n\n", entite1, entite2);
-  printf("\n\n------------types are= %s,%s\n\n", type1, type2);
+  // printf("\n\n------------entities are= %s,%s\n\n", entite1, entite2);
+  // printf("\n\n------------types are= %s,%s\n\n", type1, type2);
   // Check if both types are either INTEGER or FLOAT
   bool isType1Numeric = (strstr(type1, "INTEGER") != NULL || strstr(type1, "REAL") != NULL || strstr(type1, "ARGUMENT") != NULL);
   bool isType2Numeric = (strstr(type2, "INTEGER") != NULL || strstr(type2, "REAL") != NULL || strstr(type2, "ARGUMENT") != NULL);
@@ -672,7 +674,7 @@ char *ltEntities(char entite1[], char entite2[])
   {
     int val1 = strtol(entite1, NULL, 10);
     int val2 = strtol(entite2, NULL, 10);
-    printf("\n\n------------here is the two ints we want to compare %d,%d\n\n", val1, val2);
+    // printf("\n\n------------here is the two ints we want to compare %d,%d\n\n", val1, val2);
     return (val1 < val2) ? "true" : "false";
   }
   else
@@ -809,7 +811,7 @@ bool isEntityZero(char *entite)
 int Operation(char op1[], char op2[])
 {
 
-  printf("%s\n", op1);
+  // printf("%s\n", op1);
   int hash_index = fonction_de_hachage(op1);
   pointer_element1 tab_idf_pointer_1 = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
   while (tab_idf_pointer_1 != NULL && strcmp(op1, tab_idf_pointer_1->name) != 0)
@@ -925,7 +927,7 @@ char *GetTypeFromTS(char entite[])
   {
     if (!strcmp(tab_idf_pointer->name, entite))
     {
-      printf("\n\n------------we have %s with type %s\n\n", tab_idf_pointer->name, tab_idf_pointer->type);
+      // printf("\n\n------------we have %s with type %s\n\n", tab_idf_pointer->name, tab_idf_pointer->type);
       return tab_idf_pointer->type;
     }
     else
@@ -982,7 +984,7 @@ char *GetFctFromTS(char entite[])
 
 int SetValInTS(char entite[], char val[])
 {
-  printf("\n\n------------we want to put %s in %s\n\n", val, entite);
+  // printf("\n\n------------we want to put %s in %s\n\n", val, entite);
   int hash_index = fonction_de_hachage(entite);
   // LES_TABLES_IDF[i].name;
   tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
@@ -990,7 +992,7 @@ int SetValInTS(char entite[], char val[])
   {
     if (!strcmp(tab_idf_pointer->name, entite))
     {
-      printf("\n\n------------we have put %s in %s\n\n", val, tab_idf_pointer->name);
+      // printf("\n\n------------we have put %s in %s\n\n", val, tab_idf_pointer->name);
       strcpy(tab_idf_pointer->val, val);
       return 1;
     }
@@ -1003,7 +1005,7 @@ int SetValInTS(char entite[], char val[])
 
   if (tab_idf_pointer == NULL)
   {
-    printf("\n\n------------we could not put %s in %s\n\n", val, tab_idf_pointer);
+    // printf("\n\n------------we could not put %s in %s\n\n", val, tab_idf_pointer);
     return 0;
   }
 }

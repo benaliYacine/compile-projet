@@ -19,7 +19,7 @@ bool isBoolean(const char *str) {
     return strcmp(str, "true") == 0 || strcmp(str, "false") == 0;
 }
 
-int main() {
+int main12() {
     char str[] = "5.4226"; // Example input
 
     if (isInteger(str)) {

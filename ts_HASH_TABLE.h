@@ -5,7 +5,7 @@ typedef struct element_type1 *pointer_element1;
 
 typedef struct element_type1
 {
-  char name[500];//bah ida str twiil yekfi
+  char name[500]; // bah ida str twiil yekfi
   char code[20];
   char type[20];
   char val[500];
@@ -37,19 +37,22 @@ typedef struct Table_Arguments_Fonction
   int nb_argument;
 } Table_Arguments_Fonction;
 
-typedef struct table_string{
+typedef struct table_string
+{
   char entite[20];
-}table_string;
-typedef struct table_les_tableaux{
+} table_string;
+typedef struct table_les_tableaux
+{
   char name[20];
   int state;
   int dementions;
   table_string dim1[200];
   table_string dim2[200][200];
-}table_les_tableaux;
-typedef struct F_P_tables{
+} table_les_tableaux;
+typedef struct F_P_tables
+{
   table_les_tableaux Table_LES_TABLEAUX[50];
-}F_P_tables;
+} F_P_tables;
 
 F_P_tables F_P_TABLE[20];
 
@@ -62,9 +65,61 @@ pointer_element2 tab_hachage_mot_cle[300], tab_hachage_sepa[300];
 pointer_element1 tab_idf_pointer = NULL, prd = NULL;
 pointer_element2 tab_mot_cle_pointer = NULL, tab_sepa_pointer = NULL, prdm = NULL, prds = NULL;
 
-int Declarer(char entite[]);
+int fonction_de_hachage(char name[20]);
 
-int verifier_in_out_table(char entite[],char CAZER[]);
+void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[], int P_OU_F);
+
+int rechercher(char entite[], char code[], char type[], char val[], int y, char taille[], int P_OU_F);
+
+void afficher();
+
+char *return_val_fonction(char name[]);
+
+char *return_val_tab(char name[], char taille1[]);
+
+void A_M_tab(char name[], char taille1[], char val[]);
+
+int initiali_tab(char name[], char taille1[]);
+
+void initialisation();
+
+int verifier_in_out_table(char entite[], char CAZER[]);
+
+char *GetTypeFromVal(char entite[]);
+
+bool isTypeString(char *entity);
+
+bool areCompatible(char entite1[], char entite2[]);
+
+bool canPerformArithmetic(char entite1[], char entite2[]);
+
+char *addEntities(char entite1[], char entite2[]);
+
+char *subEntities(char entite1[], char entite2[]);
+
+char *mulEntities(char entite1[], char entite2[]);
+
+char *divEntities(char entite1[], char entite2[]);
+
+char *ltEntities(char entite1[], char entite2[]);
+
+char *gtEntities(char entite1[], char entite2[]);
+
+char *geEntities(char entite1[], char entite2[]);
+
+char *eqEntities(char entite1[], char entite2[]);
+
+char *neEntities(char entite1[], char entite2[]);
+
+char *leEntities(char entite1[], char entite2[]);
+
+float convertStrToFloat(char *entite);
+
+bool isEntityZero(char *entite);
+
+int Operation(char op1[], char op2[]);
+
+int Declarer(char entite[]);
 
 void inserer_fonction(char name_F[], int nb_argument);
 
@@ -78,25 +133,18 @@ bool isBoolean(const char *str);
 
 bool isString(const char *str);
 
-bool isString(const char *str);
-
 char *GetTypeFromTS(char entite[]);
 
-char* GetVal(char entite[]);
+char *GetValFromTS(char entite[]);
 
-char* GetFct(char entite[]);
+char *GetFctFromTS(char entite[]);
 
-void initialisation();
+int SetValInTS(char entite[], char val[]);
 
-int fonction_de_hachage(char name[20]);
+char *Cree_temp();
 
-void inserer(char entite[], char code[], char type[], char val[], int y, int hash_index, char taille[],int P_OU_F);
+char *Cree_temp_cond();
 
-int rechercher(char entite[], char code[], char type[], char val[], int y, char taille[], int P_OU_F);
-
-void afficher();
-
-bool areCompatible(char entite1[], char entite2[]);
+char *Calculer_type(char type1[], char type2[]);
 
 #endif // ts_HASH_TABLE_H
-

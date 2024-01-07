@@ -30,7 +30,7 @@ void push_str(StackNode_str **root, char *data)
     StackNode_str *stackNode = newNode_str(data);
     stackNode->next = *root;
     *root = stackNode;
-    printf("%s pushed to stack\n", data);
+    // printf("%s pushed to stack\n", data);
 }
 
 // Pop a string from the stack
