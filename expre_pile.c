@@ -30,7 +30,7 @@ void push(StackNode **root, const char *non_terminal, const char *operande_name,
     StackNode *stackNode = newNode(non_terminal, operande_name, operande_type);
     stackNode->next = *root;
     *root = stackNode;
-    printf("Item pushed to stack\n");
+    printf("Item pushed to stack: %S\n",operande_name);
 }
 
 StackNode *pop(StackNode **root)
@@ -40,6 +40,17 @@ StackNode *pop(StackNode **root)
     StackNode *temp = *root;
     *root = (*root)->next;
     return temp;
+}
+
+void afficher_pile(StackNode *root) {
+    StackNode *current = root;
+    printf("| Non-terminal: | Operande: | Type: |\n");
+
+    while (current != NULL) {
+        printf("Non-terminal: %s, Operande: %s, Type: %s\n", 
+               current->non_terminal_name, current->operande_name, current->operande_type);
+        current = current->next;
+    }
 }
 
 int main6()

@@ -322,7 +322,7 @@ void inserer(char entite[], char code[], char type[], char val[], int y, int has
 
 int rechercher(char entite[], char code[], char type[], char val[], int y, char taille[], int P_OU_F)
 {
-  printf("we have entered rechercher\n");
+  printf("we have entered rechercher for: %s\n",entite);
   printf("---valeur here is: %s\n", val);
 
   int hash_index = fonction_de_hachage(entite);

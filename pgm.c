@@ -17,6 +17,15 @@ char* FloatToSTR(int i){
 	return strdup(s);
 }
 
+void quadr(char opr[], char op1[], char op2[], char res[])
+{
+    strcpy(quad[qc].oper, opr);
+    strcpy(quad[qc].op1, op1);
+    strcpy(quad[qc].op2, op2);
+    strcpy(quad[qc].res, res);
+    qc++;
+}
+
 //creation d'1 quad arithmeitque
 void createQuadCompare(int type, char *cond1, char *cond2, char *res){
 	char *TypeBR;
@@ -81,15 +90,6 @@ void createQuadLogic(int type, char *cond1, char *cond2, char *res){
 	}
 }  
 
-void quadr(char opr[], char op1[], char op2[], char res[])
-{
-    strcpy(quad[qc].oper, opr);
-    strcpy(quad[qc].op1, op1);
-    strcpy(quad[qc].op2, op2);
-    strcpy(quad[qc].res, res);
-    qc++;
-}
-
 void ajour_quad(int num_quad, int colon_quad, char val[])
 {
     if (colon_quad == 0)
@@ -112,3 +112,5 @@ void afficher_qdr()
         printf("\n---------------------------------------------------\n");
     }
 }
+
+

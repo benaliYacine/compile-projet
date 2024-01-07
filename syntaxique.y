@@ -33,7 +33,7 @@
          float reel;
 }
 
-%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str><str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
+%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
 %left lt gt ge eq ne le
 %left add sub
 %left mul divi
@@ -135,6 +135,18 @@ DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declar
         yyerror("Sementique error",$2,"est deja declare.");}
         rechercher($2,"IDF","TABLEAU",0,0,$5,0);
         initiali_tab($2,$5);
+
+        char *tab_taille =strdup($5);
+        char *tab_name=$2;
+
+
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
+            StackNode* operande_tmp = pop(&Operandes_pile);
+            quadr("Bounds", "0", strdup(operande_tmp->operande_name), "vide");
+            token = strtok(NULL, ",");
+        }
+        quadr("ADEC", tab_name, "vide", "vide");
           // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
         } 
 ;
@@ -145,13 +157,17 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
         yyerror("Sementique error",$3,"est deja declare.");
     }
     if(strcmp($4," ")!=0){
-    if (!areCompatible(GetTypeFromTS($3), $4)) {
-                                        yyerror("Sementique error","","incompatible type.");
-                                    }
-                                    printf("\n\n------------yes they are compatible for the assignment\n\n");
-                                    if (strstr(GetTypeFromTS($3),"TABLEAU")==NULL&&!SetValInTS($3,$4)){
-                                        yyerror("Sementique error",$3,",affectation non accepte.");
-                                    }
+        if (!areCompatible(GetTypeFromTS($3), $4)) {
+        yyerror("Sementique error","","incompatible type.");
+    }
+    printf("\n\n------------yes they are compatible for the assignment\n\n");
+
+        if (strstr(GetTypeFromTS($3),"TABLEAU")==NULL && !SetValInTS($3,$4)){
+            yyerror("Sementique error",$3,",affectation non accepte.");
+        }else{
+            StackNode* poppedElement = pop(&Operandes_pile);
+            quadr("=", poppedElement->operande_name,"vide", $3);
+        }
     }
 
     rechercher($3,"IDF"," ",$4,0," ",0);
@@ -161,14 +177,19 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
     if(Declarer($1)){
         yyerror("Sementique error",$1,"est deja declare.");
     }
+
     if(strcmp($2," ")!=0){
-    if (!areCompatible(GetTypeFromTS($1), $2)) {
-                                        yyerror("Sementique error","","incompatible type.");
-                                    }
-                                    printf("\n\n------------yes they are compatible for the assignment\n\n");
-                                    if (strstr(GetTypeFromTS($1),"TABLEAU")==NULL&&!SetValInTS($1,$2)){
-                                        yyerror("Sementique error",$1,",affectation non accepte.");
-                                    }
+        if (!areCompatible(GetTypeFromTS($1), $2)) {
+        yyerror("Sementique error","","incompatible type.");
+    }
+    printf("\n\n------------yes they are compatible for the assignment\n\n");
+
+        if (strstr(GetTypeFromTS($1),"TABLEAU")==NULL && !SetValInTS($1,$2)){
+            yyerror("Sementique error",$1,",affectation non accepte.");
+        }else{
+            StackNode* poppedElement = pop(&Operandes_pile);
+            quadr("=", poppedElement->operande_name,"vide", $1);
+        }
     }
     rechercher($1,"IDF"," ",$2,0," ",0);   
 }
@@ -369,7 +390,7 @@ EXPREt
         push(&Operandes_pile, "EXPREt", poppedElement->operande_name, poppedElement->operande_type);
         $$=$1;
     }
-    ;
+;
 TERM
     : TERM mul FACTOR {   
         if (!canPerformArithmetic($1, $3)) {
@@ -451,7 +472,6 @@ OPERAND
             if ((res==NULL || strcmp(res," ")==0) && (strstr(type, "ARGUMENT") == NULL)){
                 yyerror("Sementique error",$1,"n'a pas d'une valeur");
             } else{
-                
                 push(&Operandes_pile, "OPERAND", strdup($1), type);
                 $$=strdup(res);
             }
@@ -464,7 +484,8 @@ OPERAND
     | inti {
             char backToStr[20];
             sprintf(backToStr, "%d", $1);
-            push(&Operandes_pile, "OPERAND", backToStr, "INTEGER");
+            printf("\npushed inti: %s \n", backToStr);
+            push(&Operandes_pile, "OPERAND", strdup(backToStr), "INTEGER");
             $$=strdup(backToStr);
 }
 
@@ -477,12 +498,37 @@ OPERAND
 
     | idf po TAILLE pf {{if(!Declarer($1)){
         yyerror("Sementique error",$1,"est non declare.");      
-    }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
-    //strcpy(taille,$3);
-    char table[100];
-    sprintf(table, "%s(%s)", $1, $3);
-    push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
-     $$=return_val_tab($1,$3);}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
+        }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
+        //strcpy(taille,$3);
+        char table[100];
+        char *tab_taille =strdup($3);
+        printf("\n-----------------------------------------taille:%s\n",tab_taille);
+        
+
+
+        char final_str[1024] = "";
+        char temp[1024];
+        int firstElement = 1;
+
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
+
+            StackNode* operande_tmp = pop(&Operandes_pile);
+            if (firstElement) {
+                // For the first element, directly copy it to final_str
+                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
+                firstElement = 0; // Set the flag to 0 as the first element is added
+            } else {
+                // For subsequent elements, add a comma before the element
+                snprintf(temp, sizeof(temp), "%s,%s", final_str, operande_tmp->operande_name);
+                strcpy(final_str, temp); // Copy the temporary string back to final_str
+            }
+            token = strtok(NULL, ",");
+        }
+
+        sprintf(table, "%s(%s)", $1, final_str);
+        push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
+        $$=return_val_tab($1,$3);}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
 
     | mc_call idf po ENSpara pf {
         //R2
@@ -508,9 +554,34 @@ OPERAND
             yyerror("Sementique error","","le nombre d'argument est uncorrect.");
         }else if(verifier_nb_argument($2,nb_argument)==-1)
             yyerror("Sementique error",$2,"est non declare.");
+        char *tab_taille =strdup($4);
+        printf("\n-----------------------------------------taille:%s\n",tab_taille);
+        
+        
+        char final_str[1024] = "";
+        char temp[1024];
+        int firstElement = 1;
+
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
+
+            StackNode* operande_tmp = pop(&Operandes_pile);
+            if (firstElement) {
+                // For the first element, directly copy it to final_str
+                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
+                firstElement = 0; // Set the flag to 0 as the first element is added
+            } else {
+                // For subsequent elements, add a comma before the element
+                snprintf(temp, sizeof(temp), "%s,%s", final_str, operande_tmp->operande_name);
+                strcpy(final_str, temp); // Copy the temporary string back to final_str
+            }
+            token = strtok(NULL, ",");
+        }
+
         char fonct[100];
-        sprintf(fonct, "%s(%s)", $2, $4);
+        sprintf(fonct, "%s(%s)", $2, final_str);
         push(&Operandes_pile, "OPERAND", fonct, GetTypeFromTS($2));
+
         $$=return_val_fonction($2);nb_argument=0;
     } // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
 ;
@@ -519,11 +590,11 @@ ENSpara
     : ENSpara verg valeur {
         char* final_str = malloc(strlen($1) + strlen($3) + 4 + 1);
         sprintf(final_str, "%s,%s", $1, $3);
-        $$=final_str;
+        $$=strdup(final_str);
         nb_argument++;
     } 
     | valeur {
-        $$=$1;
+        $$=strdup($1);
         nb_argument++;}
 ;
 TAILLE
@@ -534,10 +605,12 @@ TAILLE
         if(strtol($3, NULL, 10)<0){
             yyerror("Sementique error",$3,"est negative");
         }
-
+        
         char* final_str = malloc(strlen($1) + strlen($3) + 4 + 1);
         sprintf(final_str, "%s,%s", $1, $3);
-        $$=final_str;
+        printf("\n-----------------------------------------final str ta3 TAILLE MOR SPRINTF:%s\n",final_str);
+        $$=strdup(final_str);
+        printf("\n-----------------------------------------str ta3 $$ TAILLE:%s\n",$$);
     } 
     | valeur {
         if(!isInteger($1)){
@@ -546,7 +619,8 @@ TAILLE
         if(strtol($1, NULL, 10)<0){
             yyerror("Sementique error",$1,"est negative");
         }
-        $$=$1;
+        
+        $$=strdup($1);
     }
 ;
 LOGI: mc_true {$$=strdup("true");}
@@ -570,19 +644,55 @@ ens_list_var: ens_list_var verg po list_var pf | po list_var pf
 ;
 list_var: list_var verg var | var
 ;
-var: idf 
+var
+    : idf 
     {
         if(!Declarer($1)){
             yyerror("Sementique error",$1,"est non declare.");
-            $$=$1;
         }
+        char *type=strdup(GetTypeFromTS($1));
+        push(&Operandes_pile, "OPERAND", strdup($1), type);
+        $$=strdup($1);
     }
-    | idf po TAILLE pf {if(!Declarer($1)){
+    | idf po TAILLE pf {
+        printf("\n-----------------------------------------taille ta3 $3 1:%s\n",$3);
+        if(!Declarer($1)){
             yyerror("Sementique error",$1,"est non declare."); 
-    }
-            if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
+        }
+        if(!verifier_in_out_table($1,$3)){
+            yyerror("Sementique error","","out of rang"); 
+        }
+
+        char table[100];
+        char *tab_taille =strdup($3);
+        char final_str[1024] = "";
+        char temp[1024];
+        int firstElement = 1;
+
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
+
+            StackNode* operande_tmp = pop(&Operandes_pile);
+            if (firstElement) {
+                // For the first element, directly copy it to final_str
+                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
+                firstElement = 0; // Set the flag to 0 as the first element is added
+            } else {
+                // For subsequent elements, add a comma before the element
+                snprintf(temp, sizeof(temp), "%s,%s", final_str, operande_tmp->operande_name);
+                strcpy(final_str, temp); // Copy the temporary string back to final_str
+            }
+            token = strtok(NULL, ",");
+        }
+
+        sprintf(table, "%s(%s)", $1, final_str);
+        push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
+
+
         $$=$1;
+        
         strcpy(taille,$3);
+        printf("\n-----------------------------------------taille ta3 $3 2:%s\n",taille);
     }
 ;
 if_statement: B_if else_clause mc_endif{
@@ -616,25 +726,23 @@ assignment: var aff valeur pvg  {   if (!areCompatible(GetTypeFromTS($1), $3)) {
                                         A_M_tab($1, taille, $3);
                                         char table[100];
 
-                                        // Format and store the combined string in str3
-                                        sprintf(table, "%s(%s)", $1, taille);
-                                        StackNode* poppedElement = pop(&Operandes_pile);
-                                        quadr("=", poppedElement->operande_name,"vide", table);
                                     }else {
                                         if (!SetValInTS($1,$3)){
                                             yyerror("Sementique error",$1,",affectation non accepte.");
-                                        }else{
-                                            StackNode* poppedElement = pop(&Operandes_pile);
-                                            quadr("=", poppedElement->operande_name,"vide", $1);
                                         }
                                     }
-        $$=$1;
+
+                                    StackNode* operande_tmp = pop(&Operandes_pile);
+                                    StackNode* poppedElement_var = pop(&Operandes_pile);
+                                    
+                                    quadr("=", operande_tmp->operande_name,"vide", poppedElement_var->operande_name);
+                                    $$=$1;
     } //OGassi operande gauche d'afectation 
 ;
 valeur
     : str {
         push(&Operandes_pile, "valeur", $1, "CHARACTER");
-        $$=strdup(GetValFromTS($1));
+        $$=strdup($1);
     } //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
     | EXPRE {
         StackNode* poppedElement = pop(&Operandes_pile);
@@ -712,5 +820,3 @@ int yyerror ( char*  msg, char* entite, char* description)
     printf("File \"%s\", line %d, character %d: %s, %s %s\n", file_name, nb_ligne, Col, msg, entite, description);
     exit(EXIT_FAILURE);
   }
-
-
