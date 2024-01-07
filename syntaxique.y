@@ -460,9 +460,10 @@ OPERAND
     idf {
             if(!Declarer($1)){
                 yyerror("Sementique error",$1,"est non declare.");
-            }char *res=GetValFromTS($1);
+            }
+            char *res=GetValFromTS($1);
             printf("\n\n------------val ta3 idf= %s\n\n",res);
-            if (res==NULL || res==" "){
+            if (res==NULL || strcmp(res," ")==0){
                 yyerror("Sementique error",$1,"n'a pas d'une valeur");
             } else{
                 char *type=strdup(GetTypeFromTS($1));// wela 9ader tejbed e type mel val b GetTypeFromVal mais ana seyiit nkhali koulech kima derna fel cour
