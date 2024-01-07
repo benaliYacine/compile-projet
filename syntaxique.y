@@ -18,6 +18,7 @@
     // int Fin_if=0;
      StackNode_int *Fin_if = NULL;
      StackNode_int *Fin_while = NULL;
+     StackNode_int *fin_routine = NULL;
      StackNode* Operandes_pile = NULL;
     char tmp [20];
     int nb_argument=0;
@@ -72,36 +73,36 @@ FCT
 debut_fct
     : TYPE mc_rtin idf po IDFS pf DECS {
         //R1
-        int p = lookup($3);
-        printf("r1 look up p:%d\n",p);
+        // int p = lookup($3);
+        // printf("r1 look up p:%d\n",p);
         
-        if (p==-1){
-            p=inserer_fct($3,false,0);
-            printf("r1 inserer_fct p:%d\n",p);
-            show_table();
-        }else{
-            yyerror("Sementique error",$3,"est deja declare.");
-        }
+        // if (p==-1){
+        //     p=inserer_fct($3,false,0);
+        //     printf("r1 inserer_fct p:%d\n",p);
+        //     show_table();
+        // }else{
+        //     yyerror("Sementique error",$3,"est deja declare.");
+        // }
         //R3
-        int p2 = lookup($3);
-        printf("r3 look up p:%d\n",p2);
-        int a,b;
-        if (p2==-1){
-            yyerror("Sementique error",$3,"est non declare.1");
-        }else{
-            if(table_fct[p2].util){
-                yyerror("Sementique error",$3,"est deja declare.");
-            }else{
-                a = table_fct[p2].address;
-                while(a!=0){
-                    b= strtol(quad[a].op1, NULL, 10);
-                    sprintf(tmp,"%d",qc);
-                    ajour_quad(a,1,tmp);
-                    a=b;
-                }
-                table_fct[p2].address=qc;
-            }
-        }
+        // int p2 = lookup($3);
+        // printf("r3 look up p:%d\n",p2);
+        // int a,b;
+        // if (p2==-1){
+        //     yyerror("Sementique error",$3,"est non declare.1");
+        // }else{
+        //     if(table_fct[p2].util){
+        //         yyerror("Sementique error",$3,"est deja declare.");
+        //     }else{
+        //         a = table_fct[p2].address;
+        //         while(a!=0){
+        //             b= strtol(quad[a].op1, NULL, 10);
+        //             sprintf(tmp,"%d",qc);
+        //             ajour_quad(a,1,tmp);
+        //             a=b;
+        //         }
+        //         table_fct[p2].address=qc;
+        //     }
+        // }
         //R3 fin
         Declarer($3);
         inserer_fonction($3,nb_argument);
@@ -499,21 +500,22 @@ OPERAND
 
     | mc_call idf po ENSpara pf {
         //R2
-        show_table();
-        int p = lookup($2);
-        printf("r2 look up p:%d\n",p);
-        if (p==-1){
-            yyerror("Sementique error",$3,"est non declare.2");
-        }else{
-            if(table_fct[p].util){
-                sprintf(tmp,"%d",table_fct[p].address);
-                quadr("BR---",tmp,"vide","vide");
-            }else{
-                sprintf(tmp,"%d",table_fct[p].address);
-                quadr("BR---",tmp,"vide","vide");
-                table_fct[p].address=qc;
-            }
-        }
+        // show_table();
+        // int p = lookup($2);
+        // printf("r2 look up p:%d\n",p);
+        // if (p==-1){
+        //     yyerror("Sementique error",$3,"est non declare.2");
+        // }else{
+        //     if(table_fct[p].util){
+        //         sprintf(tmp,"%d",table_fct[p].address);
+        //         quadr("BR---",tmp,"vide","vide");
+        //     }else{
+        //         sprintf(tmp,"%d",table_fct[p].address);
+        //         quadr("BR---",tmp,"vide","vide");
+        //         table_fct[p].address=qc;
+        //     }
+        //     push_int(&fin_routine, qc);
+        // }
 
         //R2 fin 
         if(verifier_nb_argument($2,nb_argument)==1){
