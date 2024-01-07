@@ -534,8 +534,8 @@ static const yytype_uint16 yyrline[] =
      506,   531,   579,   586,   592,   604,   615,   616,   618,   618,
      620,   620,   622,   622,   624,   624,   626,   626,   626,   626,
      626,   626,   628,   630,   630,   632,   632,   634,   634,   636,
-     643,   666,   672,   680,   687,   687,   689,   739,   743,   749,
-     751,   753,   753,   753,   753,   755,   762,   768,   772
+     643,   667,   673,   681,   688,   688,   690,   740,   744,   750,
+     752,   754,   754,   754,   754,   756,   763,   769,   773
 };
 #endif
 
@@ -2134,8 +2134,8 @@ yyreduce:
             char backToStr[20];
             sprintf(backToStr, "%d", (yyvsp[(1) - (1)].entier));
             printf("\npushed inti: %s \n", backToStr);
-            push(&Operandes_pile, "OPERAND", backToStr, "INTEGER");
-            push(&Operandes_pile, "OPERAND", backToStr, "INTEGER");
+            push(&Operandes_pile, "OPERAND", strdup(backToStr), "INTEGER");
+            push(&Operandes_pile, "OPERAND", strdup(backToStr), "INTEGER");
             (yyval.str)=strdup(backToStr);
 ;}
     break;
@@ -2355,13 +2355,14 @@ yyreduce:
 
         (yyval.str)=(yyvsp[(1) - (4)].str);
         strcpy(taille,(yyvsp[(3) - (4)].str));
+        printf("\n-----------------------------------------taille ta3 $3:%s\n",(yyvsp[(3) - (4)].str));
     ;}
     break;
 
   case 81:
 
 /* Line 1455 of yacc.c  */
-#line 666 "syntaxique.y"
+#line 667 "syntaxique.y"
     {
     sprintf(tmp,"%d",qc);
     ajour_quad(pop_int(&Fin_if),1,tmp);
@@ -2372,7 +2373,7 @@ yyreduce:
   case 82:
 
 /* Line 1455 of yacc.c  */
-#line 672 "syntaxique.y"
+#line 673 "syntaxique.y"
     {
     // Fin_if=qc;
     push_int(&Fin_if, qc);
@@ -2385,7 +2386,7 @@ yyreduce:
   case 83:
 
 /* Line 1455 of yacc.c  */
-#line 680 "syntaxique.y"
+#line 681 "syntaxique.y"
     {
     // deb_else=qc; // J'ai laisser le champs 2 vide. Je dois le remplir apres
     push_int(&deb_else, qc);
@@ -2397,7 +2398,7 @@ yyreduce:
   case 86:
 
 /* Line 1455 of yacc.c  */
-#line 689 "syntaxique.y"
+#line 690 "syntaxique.y"
     {   if (!areCompatible(GetTypeFromTS((yyvsp[(1) - (4)].str)), (yyvsp[(3) - (4)].str))) {
                                         yyerror("Sementique error","","incompatible type.");
                                     }
@@ -2451,7 +2452,7 @@ yyreduce:
   case 87:
 
 /* Line 1455 of yacc.c  */
-#line 739 "syntaxique.y"
+#line 740 "syntaxique.y"
     {
         push(&Operandes_pile, "valeur", (yyvsp[(1) - (1)].str), "CHARACTER");
         (yyval.str)=strdup(GetValFromTS((yyvsp[(1) - (1)].str)));
@@ -2461,7 +2462,7 @@ yyreduce:
   case 88:
 
 /* Line 1455 of yacc.c  */
-#line 743 "syntaxique.y"
+#line 744 "syntaxique.y"
     {
         StackNode* poppedElement = pop(&Operandes_pile);
         push(&Operandes_pile, "valeur", poppedElement->operande_name, poppedElement->operande_type);
@@ -2472,7 +2473,7 @@ yyreduce:
   case 95:
 
 /* Line 1455 of yacc.c  */
-#line 755 "syntaxique.y"
+#line 756 "syntaxique.y"
     {
     sprintf(tmp,"%d",pop_int(&deb_while));
     quadr("BR", tmp,"vide", "vide");
@@ -2484,7 +2485,7 @@ yyreduce:
   case 96:
 
 /* Line 1455 of yacc.c  */
-#line 762 "syntaxique.y"
+#line 763 "syntaxique.y"
     {
     push_int(&Fin_while, qc);
     StackNode* operande_tmp = pop(&Operandes_pile);
@@ -2495,7 +2496,7 @@ yyreduce:
   case 97:
 
 /* Line 1455 of yacc.c  */
-#line 768 "syntaxique.y"
+#line 769 "syntaxique.y"
     {
     push_int(&deb_while, qc);
 ;}
@@ -2504,7 +2505,7 @@ yyreduce:
   case 98:
 
 /* Line 1455 of yacc.c  */
-#line 772 "syntaxique.y"
+#line 773 "syntaxique.y"
     {if (isBoolean((yyvsp[(1) - (1)].str))) {
         (yyval.str)=(yyvsp[(1) - (1)].str);
     }
@@ -2516,7 +2517,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 2520 "syntaxique.tab.c"
+#line 2521 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2728,7 +2729,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 780 "syntaxique.y"
+#line 781 "syntaxique.y"
 
 
 int main(int argc, char** argv)

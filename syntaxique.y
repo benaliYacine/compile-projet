@@ -491,8 +491,8 @@ OPERAND
             char backToStr[20];
             sprintf(backToStr, "%d", $1);
             printf("\npushed inti: %s \n", backToStr);
-            push(&Operandes_pile, "OPERAND", backToStr, "INTEGER");
-            push(&Operandes_pile, "OPERAND", backToStr, "INTEGER");
+            push(&Operandes_pile, "OPERAND", strdup(backToStr), "INTEGER");
+            push(&Operandes_pile, "OPERAND", strdup(backToStr), "INTEGER");
             $$=strdup(backToStr);
 }
 
@@ -661,6 +661,7 @@ var: idf
 
         $$=$1;
         strcpy(taille,$3);
+        printf("\n-----------------------------------------taille ta3 $3:%s\n",$3);
     }
 ;
 if_statement: B_if else_clause mc_endif{
