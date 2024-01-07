@@ -6,6 +6,7 @@
 #include "ts_HASH_TABLE.h"
 
 // TS fcts
+
 int fonction_de_hachage(char name[20])
 {
   int i;
