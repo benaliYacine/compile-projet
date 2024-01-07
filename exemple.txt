@@ -1,13 +1,13 @@
 PROGRAM HelloAcad
 INTEGER A=5;
-INTEGER tab DIMENSION(A+2,30);
+INTEGER tab DIMENSION(A+9,30);
 INTEGER tab2 DIMENSION(80);
 INTEGER B=5;
-REAL Y;
-tab(0,2)=5;
+INTEGER Y;
+tab(1,2)=5;
 tab2(0)=8;
 Y=tab2(0);
-Y=tab(A,B);
+Y=tab(A+B,B);
 
 
 END

@@ -33,7 +33,7 @@
          float reel;
 }
 
-%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str><str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
+%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
 %left lt gt ge eq ne le
 %left add sub
 %left mul divi
@@ -136,21 +136,16 @@ DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declar
         rechercher($2,"IDF","TABLEAU",0,0,$5,0);
         initiali_tab($2,$5);
 
-        char *tab_taille =$5;
+        char *tab_taille =strdup($5);
         char *tab_name=$2;
 
-        if (strstr(tab_taille,",")!=NULL){
-            char *token = strtok(tab_taille, ",");
-            while (token != NULL) {
-                StackNode* operande_tmp = pop(&Operandes_pile);
-                quadr("Bounds", "0", strdup(operande_tmp->operande_name), "vide");
-                token = strtok(NULL, ",");
-            }
-        }else{
+
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
             StackNode* operande_tmp = pop(&Operandes_pile);
             quadr("Bounds", "0", strdup(operande_tmp->operande_name), "vide");
+            token = strtok(NULL, ",");
         }
-
         quadr("ADEC", tab_name, "vide", "vide");
           // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
         } 
@@ -477,7 +472,6 @@ OPERAND
             if ((res==NULL || strcmp(res," ")==0) && (strstr(type, "ARGUMENT") == NULL)){
                 yyerror("Sementique error",$1,"n'a pas d'une valeur");
             } else{
-                
                 push(&Operandes_pile, "OPERAND", strdup($1), type);
                 $$=strdup(res);
             }
@@ -491,7 +485,6 @@ OPERAND
             char backToStr[20];
             sprintf(backToStr, "%d", $1);
             printf("\npushed inti: %s \n", backToStr);
-            push(&Operandes_pile, "OPERAND", strdup(backToStr), "INTEGER");
             push(&Operandes_pile, "OPERAND", strdup(backToStr), "INTEGER");
             $$=strdup(backToStr);
 }
@@ -508,22 +501,31 @@ OPERAND
         }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
         //strcpy(taille,$3);
         char table[100];
-
-        char *tab_taille =$3;
+        char *tab_taille =strdup($3);
         printf("\n-----------------------------------------taille:%s\n",tab_taille);
         
-        char final_str[40] = "" ;
-        if (strstr(tab_taille,",")!=NULL){
-            char *token = strtok(tab_taille, ",");
-            while (token != NULL) {
-                StackNode* operande_tmp = pop(&Operandes_pile);
-                sprintf(final_str, "%s,%s",  operande_tmp->operande_name,final_str);
-                token = strtok(NULL, ",");
-            }
-        }else{
+
+
+        char final_str[1024] = "";
+        char temp[1024];
+        int firstElement = 1;
+
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
+
             StackNode* operande_tmp = pop(&Operandes_pile);
-            strcpy(final_str,operande_tmp->operande_name);
+            if (firstElement) {
+                // For the first element, directly copy it to final_str
+                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
+                firstElement = 0; // Set the flag to 0 as the first element is added
+            } else {
+                // For subsequent elements, add a comma before the element
+                snprintf(temp, sizeof(temp), "%s,%s", final_str, operande_tmp->operande_name);
+                strcpy(final_str, temp); // Copy the temporary string back to final_str
+            }
+            token = strtok(NULL, ",");
         }
+
         sprintf(table, "%s(%s)", $1, final_str);
         push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
         $$=return_val_tab($1,$3);}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
@@ -552,21 +554,30 @@ OPERAND
             yyerror("Sementique error","","le nombre d'argument est uncorrect.");
         }else if(verifier_nb_argument($2,nb_argument)==-1)
             yyerror("Sementique error",$2,"est non declare.");
-        char *tab_taille =$4;
+        char *tab_taille =strdup($4);
         printf("\n-----------------------------------------taille:%s\n",tab_taille);
         
-        char final_str[40] = "" ;
-        if (strstr(tab_taille,",")!=NULL){
-            char *token = strtok(tab_taille, ",");
-            while (token != NULL) {
-                StackNode* operande_tmp = pop(&Operandes_pile);
-                sprintf(final_str, "%s,%s",  operande_tmp->operande_name,final_str);
-                token = strtok(NULL, ",");
-            }
-        }else{
+        
+        char final_str[1024] = "";
+        char temp[1024];
+        int firstElement = 1;
+
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
+
             StackNode* operande_tmp = pop(&Operandes_pile);
-            strcpy(final_str,operande_tmp->operande_name);
+            if (firstElement) {
+                // For the first element, directly copy it to final_str
+                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
+                firstElement = 0; // Set the flag to 0 as the first element is added
+            } else {
+                // For subsequent elements, add a comma before the element
+                snprintf(temp, sizeof(temp), "%s,%s", final_str, operande_tmp->operande_name);
+                strcpy(final_str, temp); // Copy the temporary string back to final_str
+            }
+            token = strtok(NULL, ",");
         }
+
         char fonct[100];
         sprintf(fonct, "%s(%s)", $2, final_str);
         push(&Operandes_pile, "OPERAND", fonct, GetTypeFromTS($2));
@@ -577,15 +588,13 @@ OPERAND
 
 ENSpara
     : ENSpara verg valeur {
-        StackNode* operande_tmp = pop(&Operandes_pile);
         char* final_str = malloc(strlen($1) + strlen($3) + 4 + 1);
         sprintf(final_str, "%s,%s", $1, $3);
-        $$=final_str;
+        $$=strdup(final_str);
         nb_argument++;
     } 
     | valeur {
-        StackNode* operande_tmp = pop(&Operandes_pile);
-        $$=$1;
+        $$=strdup($1);
         nb_argument++;}
 ;
 TAILLE
@@ -599,7 +608,9 @@ TAILLE
         
         char* final_str = malloc(strlen($1) + strlen($3) + 4 + 1);
         sprintf(final_str, "%s,%s", $1, $3);
-        $$=final_str;
+        printf("\n-----------------------------------------final str ta3 TAILLE MOR SPRINTF:%s\n",final_str);
+        $$=strdup(final_str);
+        printf("\n-----------------------------------------str ta3 $$ TAILLE:%s\n",$$);
     } 
     | valeur {
         if(!isInteger($1)){
@@ -609,7 +620,7 @@ TAILLE
             yyerror("Sementique error",$1,"est negative");
         }
         
-        $$=$1;
+        $$=strdup($1);
     }
 ;
 LOGI: mc_true {$$=strdup("true");}
@@ -633,35 +644,55 @@ ens_list_var: ens_list_var verg po list_var pf | po list_var pf
 ;
 list_var: list_var verg var | var
 ;
-var: idf 
+var
+    : idf 
     {
         if(!Declarer($1)){
             yyerror("Sementique error",$1,"est non declare.");
-            $$=$1;
         }
+        char *type=strdup(GetTypeFromTS($1));
+        push(&Operandes_pile, "OPERAND", strdup($1), type);
+        $$=strdup($1);
     }
-    | idf po TAILLE pf {if(!Declarer($1)){
+    | idf po TAILLE pf {
+        printf("\n-----------------------------------------taille ta3 $3 1:%s\n",$3);
+        if(!Declarer($1)){
             yyerror("Sementique error",$1,"est non declare."); 
         }
-        if(!verifier_in_out_table($1,$3))
+        if(!verifier_in_out_table($1,$3)){
             yyerror("Sementique error","","out of rang"); 
-
-        char *tab_taille =$3;
-
-        if (strstr(tab_taille,",")!=NULL){
-            char *token = strtok(tab_taille, ",");
-            while (token != NULL) {
-                StackNode* operande_tmp = pop(&Operandes_pile);
-                token = strtok(NULL, ",");
-            }
-        }else{
-            StackNode* operande_tmp = pop(&Operandes_pile);
         }
-        
+
+        char table[100];
+        char *tab_taille =strdup($3);
+        char final_str[1024] = "";
+        char temp[1024];
+        int firstElement = 1;
+
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
+
+            StackNode* operande_tmp = pop(&Operandes_pile);
+            if (firstElement) {
+                // For the first element, directly copy it to final_str
+                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
+                firstElement = 0; // Set the flag to 0 as the first element is added
+            } else {
+                // For subsequent elements, add a comma before the element
+                snprintf(temp, sizeof(temp), "%s,%s", final_str, operande_tmp->operande_name);
+                strcpy(final_str, temp); // Copy the temporary string back to final_str
+            }
+            token = strtok(NULL, ",");
+        }
+
+        sprintf(table, "%s(%s)", $1, final_str);
+        push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
+
 
         $$=$1;
+        
         strcpy(taille,$3);
-        printf("\n-----------------------------------------taille ta3 $3:%s\n",$3);
+        printf("\n-----------------------------------------taille ta3 $3 2:%s\n",taille);
     }
 ;
 if_statement: B_if else_clause mc_endif{
@@ -691,55 +722,27 @@ assignment: var aff valeur pvg  {   if (!areCompatible(GetTypeFromTS($1), $3)) {
                                         yyerror("Sementique error","","incompatible type.");
                                     }
                                     printf("\n\n------------yes they are compatible for the assignment\n\n");
-                                    
-                                    StackNode* poppedElement ;
-                                    char* final_str;
                                     if(strstr(GetTypeFromTS($1),"TABLEAU")!=NULL){
                                         A_M_tab($1, taille, $3);
                                         char table[100];
 
-                                        StackNode* poppedElement_var = pop(&Operandes_pile);
-                                        printf("\n-----------------------------------------taille0:%s\n",taille);
-                                        char *tab_taille =strdup(taille);
-                                        printf("\n-----------------------------------------taille1:%s\n",tab_taille);
-                                        
-                                        // Format and store the combined string in str3
-                                        if (strstr(tab_taille,",")!=NULL){
-                                            printf("\ndkhalna l if lazen taille fiha virgul: %s \n", tab_taille);
-                                            char *token = strtok(tab_taille, ",");
-                                            while (token != NULL) {
-                
-                                                StackNode* operande_tmp = pop(&Operandes_pile);
-                                                sprintf(final_str, "%s,%s",operande_tmp->operande_name,final_str);
-                                                token = strtok(NULL, ",");
-                                            }
-                                        }else{
-                                            printf("\ndkhalna l else lazen taille mafihach virgul: %s \n", taille);
-                                            StackNode* operande_tmp = pop(&Operandes_pile);
-                                            printf("\npoped str2: %s \n",operande_tmp->operande_name);
-                                            printf("\nbefore strdup\n");
-                                            final_str=strdup(operande_tmp->operande_name);
-                                            printf("\nfinal str2: %s \n", final_str);
-                                        }
-                                        printf("\nfinal str3: %s \n", final_str);
-                                        sprintf(table, "%s(%s)", $1, final_str);
-                                        printf("\nfinal str2: %s \n", final_str);
-                                        quadr("=", poppedElement_var->operande_name,"vide", table);
                                     }else {
                                         if (!SetValInTS($1,$3)){
                                             yyerror("Sementique error",$1,",affectation non accepte.");
-                                        }else{
-                                            poppedElement = pop(&Operandes_pile);
-                                            quadr("=", poppedElement->operande_name,"vide", $1);
                                         }
                                     }
-        $$=$1;
+
+                                    StackNode* operande_tmp = pop(&Operandes_pile);
+                                    StackNode* poppedElement_var = pop(&Operandes_pile);
+                                    
+                                    quadr("=", operande_tmp->operande_name,"vide", poppedElement_var->operande_name);
+                                    $$=$1;
     } //OGassi operande gauche d'afectation 
 ;
 valeur
     : str {
         push(&Operandes_pile, "valeur", $1, "CHARACTER");
-        $$=strdup(GetValFromTS($1));
+        $$=strdup($1);
     } //valeur ay haja 3andha valeur true false 5 4 7 "dfsakl" max(5)
     | EXPRE {
         StackNode* poppedElement = pop(&Operandes_pile);
