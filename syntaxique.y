@@ -135,6 +135,7 @@ DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declar
         yyerror("Sementique error",$2,"est deja declare.");}
         rechercher($2,"IDF","TABLEAU",0,0,$5,0);
         initiali_tab($2,$5);
+        createQuadTabDec($5,$2);
           // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
         } 
 ;
@@ -145,13 +146,17 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
         yyerror("Sementique error",$3,"est deja declare.");
     }
     if(strcmp($4," ")!=0){
-    if (!areCompatible(GetTypeFromTS($3), $4)) {
-                                        yyerror("Sementique error","","incompatible type.");
-                                    }
-                                    printf("\n\n------------yes they are compatible for the assignment\n\n");
-                                    if (strstr(GetTypeFromTS($3),"TABLEAU")==NULL&&!SetValInTS($3,$4)){
-                                        yyerror("Sementique error",$3,",affectation non accepte.");
-                                    }
+        if (!areCompatible(GetTypeFromTS($3), $4)) {
+        yyerror("Sementique error","","incompatible type.");
+    }
+    printf("\n\n------------yes they are compatible for the assignment\n\n");
+
+        if (strstr(GetTypeFromTS($3),"TABLEAU")==NULL && !SetValInTS($3,$4)){
+            yyerror("Sementique error",$3,",affectation non accepte.");
+        }else{
+            StackNode* poppedElement = pop(&Operandes_pile);
+            quadr("=", poppedElement->operande_name,"vide", $3);
+        }
     }
 
     rechercher($3,"IDF"," ",$4,0," ",0);
@@ -161,14 +166,19 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
     if(Declarer($1)){
         yyerror("Sementique error",$1,"est deja declare.");
     }
+
     if(strcmp($2," ")!=0){
-    if (!areCompatible(GetTypeFromTS($1), $2)) {
-                                        yyerror("Sementique error","","incompatible type.");
-                                    }
-                                    printf("\n\n------------yes they are compatible for the assignment\n\n");
-                                    if (strstr(GetTypeFromTS($1),"TABLEAU")==NULL&&!SetValInTS($1,$2)){
-                                        yyerror("Sementique error",$1,",affectation non accepte.");
-                                    }
+        if (!areCompatible(GetTypeFromTS($1), $2)) {
+        yyerror("Sementique error","","incompatible type.");
+    }
+    printf("\n\n------------yes they are compatible for the assignment\n\n");
+
+        if (strstr(GetTypeFromTS($1),"TABLEAU")==NULL && !SetValInTS($1,$2)){
+            yyerror("Sementique error",$1,",affectation non accepte.");
+        }else{
+            StackNode* poppedElement = pop(&Operandes_pile);
+            quadr("=", poppedElement->operande_name,"vide", $1);
+        }
     }
     rechercher($1,"IDF"," ",$2,0," ",0);   
 }
@@ -517,12 +527,14 @@ OPERAND
 
 ENSpara
     : ENSpara verg valeur {
+        StackNode* operande_tmp = pop(&Operandes_pile);
         char* final_str = malloc(strlen($1) + strlen($3) + 4 + 1);
         sprintf(final_str, "%s,%s", $1, $3);
         $$=final_str;
         nb_argument++;
     } 
     | valeur {
+        StackNode* operande_tmp = pop(&Operandes_pile);
         $$=$1;
         nb_argument++;}
 ;
@@ -534,7 +546,7 @@ TAILLE
         if(strtol($3, NULL, 10)<0){
             yyerror("Sementique error",$3,"est negative");
         }
-
+        
         char* final_str = malloc(strlen($1) + strlen($3) + 4 + 1);
         sprintf(final_str, "%s,%s", $1, $3);
         $$=final_str;
@@ -546,6 +558,7 @@ TAILLE
         if(strtol($1, NULL, 10)<0){
             yyerror("Sementique error",$1,"est negative");
         }
+        
         $$=$1;
     }
 ;
@@ -714,3 +727,12 @@ int yyerror ( char*  msg, char* entite, char* description)
   }
 
 
+void createQuadTabDec(char *taille, char *tab) {
+    char *token = strtok(taille, ",");
+    while (token != NULL) {
+        StackNode* operande_tmp = pop(&Operandes_pile);
+        quadr("Bounds", "0", strdup(operande_tmp->operande_name), "vide");
+        token = strtok(NULL, ",");
+    }
+    quadr("ADEC", tab, "vide", "vide");
+}

@@ -15,6 +15,7 @@ extern int qc;
 void quadr(char opr[], char op1[], char op2[], char res[]);
 
 void ajour_quad(int num_quad, int colon_quad, char val[]);
+void createQuadTabDec(char *taille, char *tab);
 
 void afficher_qdr();
 
