@@ -17,7 +17,6 @@ char* FloatToSTR(int i){
 	return strdup(s);
 }
 
-
 //creation d'1 quad arithmeitque
 void createQuadCompare(int type, char *cond1, char *cond2, char *res){
 	char *TypeBR;
@@ -53,7 +52,6 @@ void createQuadCompare(int type, char *cond1, char *cond2, char *res){
 	quadr("=","0","vide",res);
 }
 
-
 //creation d'1 quad logique
 void createQuadLogic(int type, char *cond1, char *cond2, char *res){
 	switch(type){
@@ -82,7 +80,6 @@ void createQuadLogic(int type, char *cond1, char *cond2, char *res){
 		break;
 	}
 }  
-
 
 void quadr(char opr[], char op1[], char op2[], char res[])
 {

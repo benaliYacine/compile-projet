@@ -12,11 +12,11 @@ char *return_val_fonction(char name[])
   int hash_index = fonction_de_hachage(name);
   while (LES_TABLES_IDF[i].state == 1 && strcmp(LES_TABLES_IDF[i].name, name) != 0)
     i++;
-  pointer_element1 P_hash=NULL;
-  P_hash=LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
+  pointer_element1 P_hash = NULL;
+  P_hash = LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
   while (strcmp(P_hash->name, name) != 0)
     P_hash = P_hash->svt;
-    return P_hash->val;
+  return P_hash->val;
 }
 char *return_val_tab(char name[], char taille1[])
 {
@@ -548,8 +548,25 @@ bool areCompatible(char entite1[], char entite2[])
 // Function to check if arithmetic operations can be performed on two entities
 bool canPerformArithmetic(char entite1[], char entite2[])
 {
-  char *type1 = strdup(GetTypeFromVal(entite1));
-  char *type2 = strdup(GetTypeFromVal(entite2));
+  char *type1;
+  char *type2;
+  if (isTypeString(entite1))
+  {
+    type1 = strdup(entite1); // Directly use the entity as its type
+  }
+  else
+  {
+    type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
+  }
+  if (isTypeString(entite2))
+  {
+    type2 = strdup(entite2); // Directly use the entity as its type
+  }
+  else
+  {
+    type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
+  }
+
   printf("\n\n------------entities are= %s,%s\n\n", entite1, entite2);
   printf("\n\n------------types are= %s,%s\n\n", type1, type2);
   // Check if both types are either INTEGER or FLOAT

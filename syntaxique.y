@@ -6,6 +6,7 @@
     #include "int_pile.c"
     #include "str_pile.c"
     #include "expre_pile.c"
+    #include "fct_etiq.c"
     #include "pgm.c"
     #include <stdlib.h>
     #include <string.h>
@@ -63,7 +64,49 @@ VIDE:
 ;
 ENSFCT: ENSFCT FCT | FCT
 ;
-FCT: TYPE mc_rtin idf po IDFS pf DECS ENSINST assignment mc_endr {Declarer($3);inserer_fonction($3,nb_argument);nb_argument=0;}  | TYPE mc_rtin idf po IDFS pf  DECS assignment mc_endr {inserer_fonction($3,nb_argument);nb_argument=0;}
+FCT
+    : debut_fct ENSINST assignment mc_endr 
+    | debut_fct assignment mc_endr 
+
+;
+debut_fct
+    : TYPE mc_rtin idf po IDFS pf DECS {
+        //R1
+        int p = lookup($3);
+        printf("r1 look up p:%d\n",p);
+        
+        if (p==-1){
+            p=inserer_fct($3,false,0);
+            printf("r1 inserer_fct p:%d\n",p);
+            show_table();
+        }else{
+            yyerror("Sementique error",$3,"est deja declare.");
+        }
+        //R3
+        int p2 = lookup($3);
+        printf("r3 look up p:%d\n",p2);
+        int a,b;
+        if (p2==-1){
+            yyerror("Sementique error",$3,"est non declare.1");
+        }else{
+            if(table_fct[p2].util){
+                yyerror("Sementique error",$3,"est deja declare.");
+            }else{
+                a = table_fct[p2].address;
+                while(a!=0){
+                    b= strtol(quad[a].op1, NULL, 10);
+                    sprintf(tmp,"%d",qc);
+                    ajour_quad(a,1,tmp);
+                    a=b;
+                }
+                table_fct[p2].address=qc;
+            }
+        }
+        //R3 fin
+        Declarer($3);
+        inserer_fonction($3,nb_argument);
+        nb_argument=0;
+}
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
 ;
@@ -454,7 +497,31 @@ OPERAND
     push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
      $$=return_val_tab($1,$3);}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
 
-    | mc_call idf po ENSpara pf {if(verifier_nb_argument($2,nb_argument)==1){yyerror("Sementique error","","le nombre d'argument est uncorrect.");}else if(verifier_nb_argument($2,nb_argument)==-1)yyerror("Sementique error",$2,"est non declare.");$$=return_val_fonction($2);nb_argument=0;} // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+    | mc_call idf po ENSpara pf {
+        //R2
+        show_table();
+        int p = lookup($2);
+        printf("r2 look up p:%d\n",p);
+        if (p==-1){
+            yyerror("Sementique error",$3,"est non declare.2");
+        }else{
+            if(table_fct[p].util){
+                sprintf(tmp,"%d",table_fct[p].address);
+                quadr("BR---",tmp,"vide","vide");
+            }else{
+                sprintf(tmp,"%d",table_fct[p].address);
+                quadr("BR---",tmp,"vide","vide");
+                table_fct[p].address=qc;
+            }
+        }
+
+        //R2 fin 
+        if(verifier_nb_argument($2,nb_argument)==1){
+            yyerror("Sementique error","","le nombre d'argument est uncorrect.");
+        }else if(verifier_nb_argument($2,nb_argument)==-1)
+            yyerror("Sementique error",$2,"est non declare.");
+        $$=return_val_fonction($2);nb_argument=0;
+    } // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
 ;
 
 ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}
