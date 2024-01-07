@@ -16,6 +16,11 @@ char *return_val_fonction(char name[])
   P_hash = LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
   while (strcmp(P_hash->name, name) != 0)
     P_hash = P_hash->svt;
+  pointer_element1 P_table_idf=LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+  while (strcmp(P_table_idf->name, name) != 0)
+    P_table_idf=P_table_idf->svt;
+    strcpy(P_table_idf->type,P_hash->type);
+    strcpy(P_table_idf->val,P_hash->val);
   return P_hash->val;
 }
 char *return_val_tab(char name[], char taille1[])
@@ -415,15 +420,15 @@ void afficher()
   while (i < 100 && LES_TABLES_IDF[i].state == 1)
   {
     printf("/******************Table des symboles IDF De %s****************/ \n", LES_TABLES_IDF[i].name);
-    printf("______________________________________________________________________________________\n");
-    printf("\t| Nom_Entite |  Code_Entite   |  Type_Entite    | Val_Entite   |    Taille    |\n");
+    printf("_______________________________________________________________________________________\n");
+    printf("\t| Nom_Entite |  Code_Entite   |  Type_Entite     | Val_Entite   |    Taille    |\n");
     printf("_______________________________________________________________________________________\n");
     for (hash_index = 0; hash_index < 300; hash_index++)
     {
       tab_idf_pointer = LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
       while (tab_idf_pointer != NULL)
       {
-        printf("\t|%11s |%15s | %15s | %12s | %12s |\n", tab_idf_pointer->name, tab_idf_pointer->code, tab_idf_pointer->type, tab_idf_pointer->val, tab_idf_pointer->taille);
+        printf("\t|%11s |%15s | %16s | %12s | %12s |\n", tab_idf_pointer->name, tab_idf_pointer->code, tab_idf_pointer->type, tab_idf_pointer->val, tab_idf_pointer->taille);
         tab_idf_pointer = tab_idf_pointer->svt;
       }
     }
