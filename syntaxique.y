@@ -135,7 +135,16 @@ DEC: TYPE ENSIDF_dec pvg | TYPE idf {printf("the dcr idf is :%s\n",$2);if(Declar
         yyerror("Sementique error",$2,"est deja declare.");}
         rechercher($2,"IDF","TABLEAU",0,0,$5,0);
         initiali_tab($2,$5);
-        createQuadTabDec($5,$2);
+
+        char *tab_taille =$5;
+        char *tab_name=$2;
+        char *token = strtok(tab_taille, ",");
+        while (token != NULL) {
+            StackNode* operande_tmp = pop(&Operandes_pile);
+            quadr("Bounds", "0", strdup(operande_tmp->operande_name), "vide");
+            token = strtok(NULL, ",");
+        }
+        quadr("ADEC", tab_name, "vide", "vide");
           // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
         } 
 ;
@@ -490,7 +499,23 @@ OPERAND
     }}if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
     //strcpy(taille,$3);
     char table[100];
-    sprintf(table, "%s(%s)", $1, $3);
+
+        char *tab_taille =$3;
+        printf("\n-----------------------------------------taille:%s\n",tab_taille);
+        
+        char final_str[40] = "" ;
+        if (strstr(tab_taille,",")!=NULL){
+            char *token = strtok(tab_taille, ",");
+            while (token != NULL) {
+                StackNode* operande_tmp = pop(&Operandes_pile);
+                sprintf(final_str, "%s,%s",  operande_tmp->operande_name,final_str);
+                token = strtok(NULL, ",");
+            }
+        }else{
+            StackNode* operande_tmp = pop(&Operandes_pile);
+            strcpy(final_str,operande_tmp->operande_name);
+        }
+    sprintf(table, "%s(%s)", $1, final_str);
     push(&Operandes_pile, "OPERAND", table, GetTypeFromTS($1));
      $$=return_val_tab($1,$3);}  //9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur
 
@@ -629,10 +654,25 @@ assignment: var aff valeur pvg  {   if (!areCompatible(GetTypeFromTS($1), $3)) {
                                         A_M_tab($1, taille, $3);
                                         char table[100];
 
+                                        StackNode* poppedElement_var = pop(&Operandes_pile);
+                                        char *tab_taille =taille;
+                                        printf("\n-----------------------------------------taille:%s\n",tab_taille);
+                                        char final_str[40] = "" ;
                                         // Format and store the combined string in str3
-                                        sprintf(table, "%s(%s)", $1, taille);
-                                        StackNode* poppedElement = pop(&Operandes_pile);
-                                        quadr("=", poppedElement->operande_name,"vide", table);
+                                        if (strstr(tab_taille,",")!=NULL){
+                                            char *token = strtok(tab_taille, ",");
+                                            while (token != NULL) {
+                                                StackNode* operande_tmp = pop(&Operandes_pile);
+                                                sprintf(final_str, "%s,%s",  operande_tmp->operande_name,final_str);
+                                                token = strtok(NULL, ",");
+                                            }
+                                        }else{
+                                            StackNode* operande_tmp = pop(&Operandes_pile);
+                                            strcpy(final_str,operande_tmp->operande_name);
+                                        }
+                                        sprintf(table, "%s(%s)", $1, final_str);
+                                        
+                                        quadr("=", poppedElement_var->operande_name,"vide", table);
                                     }else {
                                         if (!SetValInTS($1,$3)){
                                             yyerror("Sementique error",$1,",affectation non accepte.");
@@ -725,14 +765,3 @@ int yyerror ( char*  msg, char* entite, char* description)
     printf("File \"%s\", line %d, character %d: %s, %s %s\n", file_name, nb_ligne, Col, msg, entite, description);
     exit(EXIT_FAILURE);
   }
-
-
-void createQuadTabDec(char *taille, char *tab) {
-    char *token = strtok(taille, ",");
-    while (token != NULL) {
-        StackNode* operande_tmp = pop(&Operandes_pile);
-        quadr("Bounds", "0", strdup(operande_tmp->operande_name), "vide");
-        token = strtok(NULL, ",");
-    }
-    quadr("ADEC", tab, "vide", "vide");
-}
