@@ -550,28 +550,19 @@ bool canPerformArithmetic(char entite1[], char entite2[])
 {
   char *type1;
   char *type2;
-  if (isTypeString(entite1))
-  {
-    type1 = strdup(entite1); // Directly use the entity as its type
+  
+  type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
+  type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
+  if (strcmp(type1," ")==0 || strcmp(type2," ")==0){
+    return true;
   }
-  else
-  {
-    type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
-  }
-  if (isTypeString(entite2))
-  {
-    type2 = strdup(entite2); // Directly use the entity as its type
-  }
-  else
-  {
-    type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
-  }
+
 
   printf("\n\n------------entities are= %s,%s\n\n", entite1, entite2);
   printf("\n\n------------types are= %s,%s\n\n", type1, type2);
   // Check if both types are either INTEGER or FLOAT
-  bool isType1Numeric = (strcmp(type1, "INTEGER") == 0 || strcmp(type1, "REAL") == 0);
-  bool isType2Numeric = (strcmp(type2, "INTEGER") == 0 || strcmp(type2, "REAL") == 0);
+  bool isType1Numeric = (strstr(type1, "INTEGER") != NULL || strstr(type1, "REAL") != NULL || strstr(type1, "ARGUMENT") != NULL);
+  bool isType2Numeric = (strstr(type2, "INTEGER") != NULL || strstr(type2, "REAL") != NULL || strstr(type2, "ARGUMENT") != NULL);
 
   return isType1Numeric && isType2Numeric;
 }
@@ -1047,7 +1038,7 @@ char *Cree_temp_cond()
 }
 char *Calculer_type(char type1[], char type2[])
 {
-  if (strcmp(type1, "REAL") == 0 || strcmp(type2, "REAL") == 0)
+  if (strstr(type1, "REAL") != NULL || strstr(type2, "REAL") != NULL)
   {
     return "REAL";
   }

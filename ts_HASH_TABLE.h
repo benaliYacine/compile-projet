@@ -80,7 +80,7 @@ bool isString(const char *str);
 
 bool isString(const char *str);
 
-char* GetType(char entite[]);
+char *GetTypeFromTS(char entite[]);
 
 char* GetVal(char entite[]);
 

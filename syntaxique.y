@@ -52,6 +52,9 @@
 %type <str> CONDIT
 %type <str> LOGI
 %type <str> var
+%type <str> ENSpara
+%type <str> assignment
+%type <str> debut_fct
 
 
 %%
@@ -66,8 +69,16 @@ VIDE:
 ENSFCT: ENSFCT FCT | FCT
 ;
 FCT
-    : debut_fct ENSINST assignment mc_endr 
-    | debut_fct assignment mc_endr 
+    : debut_fct ENSINST assignment mc_endr {
+        if(strcmp($1,$3)!=0){
+            yyerror("Sementique error",$3,"est different du nom de la fonction.");
+        }
+    }
+    | debut_fct assignment mc_endr {
+        if(strcmp($1,$2)!=0){
+            yyerror("Sementique error",$2,"est different du nom de la fonction.");
+        }
+    }
 
 ;
 debut_fct
@@ -107,6 +118,7 @@ debut_fct
         Declarer($3);
         inserer_fonction($3,nb_argument);
         nb_argument=0;
+        $$=$3;
 }
 ;
 TYPE: mc_int | mc_real | mc_char | mc_logi
@@ -161,34 +173,7 @@ ENSIDF_dec: ENSIDF_dec verg idf partie_gauch_affectation {
     rechercher($1,"IDF"," ",$2,0," ",0);   
 }
 ; 
-TAILLE: TAILLE verg inti {  if($3<0){
-                            yyerror("Sementique error","","taille negative");
-                                    }
-                                char* str_inti;
-                                // Allocate memory for str_inti
-                                str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
 
-                                sprintf(str_inti, "%d", $3);
-                                // printf("----------------%s\n", str_inti);
-                                
-                                
-                                char* final_str = malloc(strlen($1) + strlen(str_inti) + 4 + 1);
-                                sprintf(final_str, "%s,%s", $1, str_inti);
-                                $$=final_str;
-    }
-        | inti {
-                    if($1<0){
-                            yyerror("Sementique error","","taille negative");
-                                    }
-                                char* str_inti;
-                                // Allocate memory for str_inti
-                                str_inti = malloc(12 * sizeof(char)); // 12 is an example size, adjust as needed
-
-                                sprintf(str_inti, "%d", $1);
-                                // printf("----------------%s\n", str_inti);
-
-                                $$=str_inti;}     //kouna nekhedmou biha hna <==* fi blaset ENSpara w raja3naha w manb3d na7oha
-;
 //ENSpara_arith: ENSpara_arith verg EXPRE | EXPRE // dert ENSpara_arith mechi dirakt sta3melt enspara parceque malazemch te9der dir parexemple true (logi) wla str tema dert hadi tmedlek ens des para arithme tema ghi les expr
 //;
 EXPRE
@@ -254,7 +239,6 @@ CONDIT
     | CONDIT gt EXPREt{   if (!canPerformArithmetic($1, $3)) {
                                 yyerror("Sementique error","","incompatible type.");
                             }   
-                            
 
 
         
@@ -461,12 +445,13 @@ OPERAND
             if(!Declarer($1)){
                 yyerror("Sementique error",$1,"est non declare.");
             }
-            char *res=GetValFromTS($1);
+            char *res=strdup(GetValFromTS($1));
+            char *type=strdup(GetTypeFromTS($1));// wela 9ader tejbed e type mel val b GetTypeFromVal mais ana seyiit nkhali koulech kima derna fel cour
             printf("\n\n------------val ta3 idf= %s\n\n",res);
-            if (res==NULL || strcmp(res," ")==0){
+            if ((res==NULL || strcmp(res," ")==0) && (strstr(type, "ARGUMENT") == NULL)){
                 yyerror("Sementique error",$1,"n'a pas d'une valeur");
             } else{
-                char *type=strdup(GetTypeFromTS($1));// wela 9ader tejbed e type mel val b GetTypeFromVal mais ana seyiit nkhali koulech kima derna fel cour
+                
                 push(&Operandes_pile, "OPERAND", strdup($1), type);
                 $$=strdup(res);
             }
@@ -523,11 +508,46 @@ OPERAND
             yyerror("Sementique error","","le nombre d'argument est uncorrect.");
         }else if(verifier_nb_argument($2,nb_argument)==-1)
             yyerror("Sementique error",$2,"est non declare.");
+        char fonct[100];
+        sprintf(fonct, "%s(%s)", $2, $4);
+        push(&Operandes_pile, "OPERAND", fonct, GetTypeFromTS($2));
         $$=return_val_fonction($2);nb_argument=0;
     } // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
 ;
 
-ENSpara: ENSpara verg valeur {nb_argument++;} | valeur {nb_argument++;}
+ENSpara
+    : ENSpara verg valeur {
+        char* final_str = malloc(strlen($1) + strlen($3) + 4 + 1);
+        sprintf(final_str, "%s,%s", $1, $3);
+        $$=final_str;
+        nb_argument++;
+    } 
+    | valeur {
+        $$=$1;
+        nb_argument++;}
+;
+TAILLE
+    : TAILLE verg valeur {
+        if(!isInteger($3)){
+            yyerror("Sementique error",$3,"n'est pas un entier");
+        }
+        if(strtol($3, NULL, 10)<0){
+            yyerror("Sementique error",$3,"est negative");
+        }
+
+        char* final_str = malloc(strlen($1) + strlen($3) + 4 + 1);
+        sprintf(final_str, "%s,%s", $1, $3);
+        $$=final_str;
+    } 
+    | valeur {
+        if(!isInteger($1)){
+            yyerror("Sementique error",$1,"n'est pas un entier");
+        }
+        if(strtol($1, NULL, 10)<0){
+            yyerror("Sementique error",$1,"est negative");
+        }
+        $$=$1;
+    }
 ;
 LOGI: mc_true {$$=strdup("true");}
     | mc_false {$$=strdup("false");}
@@ -563,7 +583,7 @@ var: idf
             if(!verifier_in_out_table($1,$3))yyerror("Sementique error","","out of rang"); 
         $$=$1;
         strcpy(taille,$3);
-    } 
+    }
 ;
 if_statement: B_if else_clause mc_endif{
     sprintf(tmp,"%d",qc);
@@ -608,7 +628,7 @@ assignment: var aff valeur pvg  {   if (!areCompatible(GetTypeFromTS($1), $3)) {
                                             quadr("=", poppedElement->operande_name,"vide", $1);
                                         }
                                     }
-        
+        $$=$1;
     } //OGassi operande gauche d'afectation 
 ;
 valeur
