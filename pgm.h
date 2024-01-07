@@ -19,4 +19,3 @@ void ajour_quad(int num_quad, int colon_quad, char val[]);
 void afficher_qdr();
 
 #endif // pgm_H
-
