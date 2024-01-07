@@ -29,7 +29,7 @@ void push_int(StackNode_int **root, int data)
     StackNode_int *stackNode = newNode_int(data);
     stackNode->next = *root;
     *root = stackNode;
-    printf("%d pushed to stack\n", data);
+    // printf("%d pushed to stack\n", data);
 }
 
 // Pop an item from the stack
