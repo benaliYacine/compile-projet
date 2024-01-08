@@ -597,6 +597,38 @@ OPERAND
 
         $$=return_val_fonction($2);nb_argument=0;
     } // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
+
+    | mc_call idf po pf {
+        //R2
+        // show_table();
+        // int p = lookup($2);
+        // printf("r2 look up p:%d\n",p);
+        // if (p==-1){
+        //     yyerror("Sementique error",$3,"est non declare.2");
+        // }else{
+        //     if(table_fct[p].util){
+        //         sprintf(tmp,"%d",table_fct[p].address);
+        //         quadr("BR---",tmp,"vide","vide");
+        //     }else{
+        //         sprintf(tmp,"%d",table_fct[p].address);
+        //         quadr("BR---",tmp,"vide","vide");
+        //         table_fct[p].address=qc;
+        //     }
+        //     push_int(&fin_routine, qc);
+        // }
+
+        //R2 fin 
+        if(verifier_nb_argument($2,nb_argument)==1){
+            yyerror("Sementique error","","le nombre d'argument est uncorrect.");
+        }else if(verifier_nb_argument($2,nb_argument)==-1)
+            yyerror("Sementique error",$2,"est non declare.");
+
+        char fonct[100];
+        sprintf(fonct, "%s()", $2);
+        push(&Operandes_pile, "OPERAND", fonct, GetTypeFromTS($2));
+
+        $$=return_val_fonction($2);nb_argument=0;
+    } // enspara parceque te9der t3ayat l fct b ay haja mouhim treja3 valeur 
 ;
 
 ENSpara

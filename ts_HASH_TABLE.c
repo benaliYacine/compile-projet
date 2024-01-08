@@ -7,6 +7,25 @@
 
 // TS fcts
 
+void initialisation()
+{
+  int i, j;
+  for (i = 0; i < 300; i++)
+  {
+    tab_hachage_sepa[i] = NULL;
+    tab_hachage_mot_cle[i] = NULL;
+  }
+  for (i = 0; i < 100; i++)
+  {
+    TABLE_DES_FONCTION_NB_ARG[i].state = 0;
+    LES_TABLES_IDF[i].state = 0;
+  }
+  for (j = 0; j < 300; j++)
+  {
+    LES_TABLES_IDF[i].tab_hachage_idf[j] = NULL;
+  }
+}
+
 int fonction_de_hachage(char name[20])
 {
   int i;
@@ -409,23 +428,38 @@ int initiali_tab(char name[], char taille1[])
         strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].dim2[j][k].entite, "");
   }
 }
-void initialisation()
+int Declarer(char entite[])
 {
-  int i, j;
-  for (i = 0; i < 300; i++)
+  int hash_index = fonction_de_hachage(entite);
+  tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
+  while (tab_idf_pointer != NULL && strcmp(entite, tab_idf_pointer->name) != 0)
   {
-    tab_hachage_sepa[i] = NULL;
-    tab_hachage_mot_cle[i] = NULL;
+    tab_idf_pointer = tab_idf_pointer->svt;
   }
-  for (i = 0; i < 100; i++)
-  {
-    TABLE_DES_FONCTION_NB_ARG[i].state = 0;
-    LES_TABLES_IDF[i].state = 0;
-  }
-  for (j = 0; j < 300; j++)
-  {
-    LES_TABLES_IDF[i].tab_hachage_idf[j] = NULL;
-  }
+  // printf("----------------%s\n", tab_idf_pointer->name);
+  if (tab_idf_pointer != NULL)
+    if (tab_idf_pointer->declarer == 1)
+    {
+      return 1;
+    }
+    else
+    {
+      tab_idf_pointer->declarer = 1;
+      return 0;
+    }
+}
+
+int verifier_nb_argument(char name_F[], int nb_argument)
+{
+  int i = 0;
+  while (TABLE_DES_FONCTION_NB_ARG[i].state == 1 && strcmp(TABLE_DES_FONCTION_NB_ARG[i].name, name_F) != 0)
+    i++;
+  if (TABLE_DES_FONCTION_NB_ARG[i].state == 1 && TABLE_DES_FONCTION_NB_ARG[i].nb_argument == nb_argument)
+    return 0;
+  else if (TABLE_DES_FONCTION_NB_ARG[i].state == 0)
+    return -1;
+  else if (TABLE_DES_FONCTION_NB_ARG[i].nb_argument != nb_argument)
+    return 1;
 }
 
 int verifier_in_out_table(char entite[], char CAZER[])
@@ -472,6 +506,8 @@ int verifier_in_out_table(char entite[], char CAZER[])
     return 0;
   return 1;
 }
+
+//-------------------------------------------------------------------------
 
 char *GetTypeFromVal(char entite[])
 {
@@ -839,27 +875,6 @@ int Operation(char op1[], char op2[])
     return 0;
 }
 
-int Declarer(char entite[])
-{
-  int hash_index = fonction_de_hachage(entite);
-  tab_idf_pointer = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
-  while (tab_idf_pointer != NULL && strcmp(entite, tab_idf_pointer->name) != 0)
-  {
-    tab_idf_pointer = tab_idf_pointer->svt;
-  }
-  // printf("----------------%s\n", tab_idf_pointer->name);
-  if (tab_idf_pointer != NULL)
-    if (tab_idf_pointer->declarer == 1)
-    {
-      return 1;
-    }
-    else
-    {
-      tab_idf_pointer->declarer = 1;
-      return 0;
-    }
-}
-
 void inserer_fonction(char name_F[], int nb_argument)
 {
   int i = 0;
@@ -870,19 +885,6 @@ void inserer_fonction(char name_F[], int nb_argument)
   TABLE_DES_FONCTION_NB_ARG[i].state = 1;
   TABLE_DES_FONCTION_NB_ARG[i].nb_argument = nb_argument;
   strcpy(TABLE_DES_FONCTION_NB_ARG[i].name, name_F);
-}
-
-int verifier_nb_argument(char name_F[], int nb_argument)
-{
-  int i = 0;
-  while (TABLE_DES_FONCTION_NB_ARG[i].state == 1 && strcmp(TABLE_DES_FONCTION_NB_ARG[i].name, name_F) != 0)
-    i++;
-  if (TABLE_DES_FONCTION_NB_ARG[i].state == 1 && TABLE_DES_FONCTION_NB_ARG[i].nb_argument == nb_argument)
-    return 0;
-  else if (TABLE_DES_FONCTION_NB_ARG[i].state == 0)
-    return -1;
-  else if (TABLE_DES_FONCTION_NB_ARG[i].nb_argument != nb_argument)
-    return 1;
 }
 
 bool isInteger(const char *str)
@@ -1043,6 +1045,7 @@ char *Cree_temp_cond()
 
   return name;
 }
+
 char *Calculer_type(char type1[], char type2[])
 {
   if (strstr(type1, "REAL") != NULL || strstr(type2, "REAL") != NULL)
