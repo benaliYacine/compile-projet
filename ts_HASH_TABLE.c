@@ -327,6 +327,7 @@ char *return_val_tab(char name[], char taille1[])
     return F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dim1[tab[0]].entite;
   else if (F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dementions == 2)
     return F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dim2[tab[0]][tab[1]].entite;
+  else return "0";
 }
 /*
 void afficher_tab() //zyada virifit brk

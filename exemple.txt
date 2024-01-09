@@ -4,7 +4,7 @@ ENDR
 
 INTEGER ROUTINE FARID(A,B) %tous les erreur dans cette fonction;
 INTEGER k=5; 
-INTEGER tab DIMENSION(3,1);
+INTEGER tab DIMENSION(3,1,5);
 %INTEGER tab DIMENSION(-1); %taille negative;
 REAL F;
 LOGICAL C=TRUE;
