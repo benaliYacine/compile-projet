@@ -607,7 +607,7 @@ bool canPerformArithmetic(char entite1[], char entite2[])
   // Check if both types are either INTEGER or FLOAT
   bool isType1Numeric = (strstr(type1, "INTEGER") != NULL || strstr(type1, "REAL") != NULL || strstr(type1, "ARGUMENT") != NULL);
   bool isType2Numeric = (strstr(type2, "INTEGER") != NULL || strstr(type2, "REAL") != NULL || strstr(type2, "ARGUMENT") != NULL);
-
+//strstr pour INTEGER FOCTION ...
   return isType1Numeric && isType2Numeric;
 }
 
@@ -842,7 +842,7 @@ bool isEntityZero(char *entite)
   float value = convertStrToFloat(entite);
   const float epsilon = 1e-6; // Small threshold for floating point comparison
 
-  return fabs(value) < epsilon;
+  return fabs(value) < epsilon; // 10^-6
 }
 
 int Operation(char op1[], char op2[])

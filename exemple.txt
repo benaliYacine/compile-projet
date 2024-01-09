@@ -4,21 +4,23 @@ ENDR
 
 INTEGER ROUTINE FARID(A,B) %tous les erreur dans cette fonction;
 INTEGER k=5; 
-INTEGER tab DIMENSION(3,1,5);
+INTEGER tab DIMENSION(3,1);
 %INTEGER tab DIMENSION(-1); %taille negative;
 REAL F;
 LOGICAL C=TRUE;
 %INTEGER k; %Double declaration;
 %B=8/0; %division sur 0;
 %k=8.2; %incompatible type;
+F=F+1; %var n'a pas d'une valeur;
 F=8; %march normale;
-%F=C; %incompatible type;
+%F=C; %incompatible type; real<--true!
 A=9;
 %D=8; %variable non declarer;
-%FARID=C; %incompatible type;
 %tab(4,0)=7; % out of rang;
 %F=CALL ADD(k,k,B); % le nombre d'argument est uncorrect;
+%tab(0)=7; % out of range;
 FARID= A+B;
+%FARID=C; %incompatible type; INTEGER FONCTION <-- TRUE
 ENDR
 
 INTEGER ROUTINE HAMID(A,B)
