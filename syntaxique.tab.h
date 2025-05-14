@@ -40,48 +40,50 @@
       know about them.  */
    enum yytokentype {
      idf = 258,
-     aff = 259,
-     mc_prgrm = 260,
-     mc_rtin = 261,
-     inti = 262,
-     real = 263,
-     mc_endr = 264,
-     mc_call = 265,
-     mc_dim = 266,
-     mc_logi = 267,
+     eq = 259,
+     mc_data = 260,
+     mc_code = 261,
+     mc_end = 262,
+     mc_vector = 263,
+     inti = 264,
+     real = 265,
+     mc_integer = 266,
+     mc_float = 267,
      mc_char = 268,
-     mc_true = 269,
-     mc_false = 270,
+     mc_string = 269,
+     mc_const = 270,
      mc_read = 271,
-     mc_write = 272,
+     mc_display = 272,
      pvg = 273,
      str = 274,
-     mc_int = 275,
-     mc_real = 276,
-     mc_end = 277,
-     mc_if = 278,
-     mc_then = 279,
-     mc_else = 280,
-     mc_dowhile = 281,
-     mc_enddo = 282,
-     mc_equival = 283,
-     mc_or = 284,
-     ge = 285,
-     eq = 286,
-     ne = 287,
-     le = 288,
-     add = 289,
-     sub = 290,
-     mul = 291,
-     divi = 292,
+     ch = 275,
+     mc_if = 276,
+     mc_else = 277,
+     mc_for = 278,
+     mc_not = 279,
+     deux_points = 280,
+     crochet_ouv = 281,
+     crochet_ferm = 282,
+     par_ouv = 283,
+     par_ferm = 284,
+     virgule = 285,
+     barre = 286,
+     arobase = 287,
+     plus = 288,
+     minus = 289,
+     mul = 290,
+     divi = 291,
+     err = 292,
      mc_and = 293,
-     mc_endif = 294,
-     lt = 295,
-     gt = 296,
-     po = 297,
-     pf = 298,
-     verg = 299,
-     err = 300
+     mc_or = 294,
+     mc_g = 295,
+     mc_l = 296,
+     mc_ge = 297,
+     mc_le = 298,
+     mc_eq = 299,
+     mc_di = 300,
+     mc_true = 301,
+     mc_false = 302
    };
 #endif
 
@@ -92,16 +94,16 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 30 "syntaxique.y"
+#line 28 "syntaxique.y"
 
-         int     entier;
-         char*   str;
-         float reel;
+    int entier;
+    char* str;
+    float reel;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 105 "syntaxique.tab.h"
+#line 107 "syntaxique.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -147,4 +147,6 @@ char *Cree_temp_cond();
 
 char *Calculer_type(char type1[], char type2[]);
 
+bool canBeBoolean(char *entite);
+
 #endif // ts_HASH_TABLE_H

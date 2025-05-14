@@ -327,7 +327,8 @@ char *return_val_tab(char name[], char taille1[])
     return F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dim1[tab[0]].entite;
   else if (F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dementions == 2)
     return F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dim2[tab[0]][tab[1]].entite;
-  else return "0";
+  else
+    return "0";
 }
 /*
 void afficher_tab() //zyada virifit brk
@@ -607,7 +608,7 @@ bool canPerformArithmetic(char entite1[], char entite2[])
   // Check if both types are either INTEGER or FLOAT
   bool isType1Numeric = (strstr(type1, "INTEGER") != NULL || strstr(type1, "REAL") != NULL || strstr(type1, "ARGUMENT") != NULL);
   bool isType2Numeric = (strstr(type2, "INTEGER") != NULL || strstr(type2, "REAL") != NULL || strstr(type2, "ARGUMENT") != NULL);
-//strstr pour INTEGER FOCTION ...
+  // strstr pour INTEGER FOCTION ...
   return isType1Numeric && isType2Numeric;
 }
 
@@ -1057,4 +1058,33 @@ char *Calculer_type(char type1[], char type2[])
   {
     return "INTEGER";
   }
+}
+
+// Function to check if an entity can be interpreted as a boolean value
+bool canBeBoolean(char *entite)
+{
+  // Direct boolean values
+  if (isBoolean(entite))
+    return true;
+
+  // Check if it's a numeric value that can be interpreted as boolean
+  // (0 is false, anything else is true)
+  if (isInteger(entite) || isFloat(entite))
+  {
+    float value = convertStrToFloat(entite);
+    // Numeric values can be interpreted as boolean (0 is false, non-zero is true)
+    return true;
+  }
+
+  // If it's a string representation that might represent a boolean
+  if (entite != NULL && (strcmp(entite, "0") == 0 ||
+                         strcmp(entite, "1") == 0 ||
+                         strcasecmp(entite, "true") == 0 ||
+                         strcasecmp(entite, "false") == 0))
+  {
+    return true;
+  }
+
+  // Not a value that can be interpreted as boolean
+  return false;
 }

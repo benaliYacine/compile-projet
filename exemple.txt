@@ -11,6 +11,7 @@ LOGICAL C=TRUE;
 %INTEGER k; %Double declaration;
 %B=8/0; %division sur 0;
 %k=8.2; %incompatible type;
+F=5;
 F=F+1; %var n'a pas d'une valeur;
 F=8; %march normale;
 %F=C; %incompatible type; real<--true!

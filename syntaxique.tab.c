@@ -82,24 +82,22 @@
     #include <stdlib.h>
     #include <string.h>
     extern FILE *yyin;
-    // int deb_else=0;
-     StackNode_int *deb_else = NULL;
-     StackNode_int *deb_while = NULL;
+    
+    StackNode_int *deb_else = NULL;
+    StackNode_int *deb_for = NULL;
     int qc=0;
-    // int Fin_if=0;
-     StackNode_int *Fin_if = NULL;
-     StackNode_int *Fin_while = NULL;
-     StackNode_int *fin_routine = NULL;
-     StackNode* Operandes_pile = NULL;
-    char tmp [20];
+    StackNode_int *Fin_if = NULL;
+    StackNode_int *Fin_for = NULL;
+    StackNode_int *fin_routine = NULL;
+    StackNode* Operandes_pile = NULL;
+    char tmp[20];
     int nb_argument=0;
     extern char *type;
     char taille[20];
 
 
-
 /* Line 189 of yacc.c  */
-#line 103 "syntaxique.tab.c"
+#line 101 "syntaxique.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -127,48 +125,50 @@
       know about them.  */
    enum yytokentype {
      idf = 258,
-     aff = 259,
-     mc_prgrm = 260,
-     mc_rtin = 261,
-     inti = 262,
-     real = 263,
-     mc_endr = 264,
-     mc_call = 265,
-     mc_dim = 266,
-     mc_logi = 267,
+     eq = 259,
+     mc_data = 260,
+     mc_code = 261,
+     mc_end = 262,
+     mc_vector = 263,
+     inti = 264,
+     real = 265,
+     mc_integer = 266,
+     mc_float = 267,
      mc_char = 268,
-     mc_true = 269,
-     mc_false = 270,
+     mc_string = 269,
+     mc_const = 270,
      mc_read = 271,
-     mc_write = 272,
+     mc_display = 272,
      pvg = 273,
      str = 274,
-     mc_int = 275,
-     mc_real = 276,
-     mc_end = 277,
-     mc_if = 278,
-     mc_then = 279,
-     mc_else = 280,
-     mc_dowhile = 281,
-     mc_enddo = 282,
-     mc_equival = 283,
-     mc_or = 284,
-     ge = 285,
-     eq = 286,
-     ne = 287,
-     le = 288,
-     add = 289,
-     sub = 290,
-     mul = 291,
-     divi = 292,
+     ch = 275,
+     mc_if = 276,
+     mc_else = 277,
+     mc_for = 278,
+     mc_not = 279,
+     deux_points = 280,
+     crochet_ouv = 281,
+     crochet_ferm = 282,
+     par_ouv = 283,
+     par_ferm = 284,
+     virgule = 285,
+     barre = 286,
+     arobase = 287,
+     plus = 288,
+     minus = 289,
+     mul = 290,
+     divi = 291,
+     err = 292,
      mc_and = 293,
-     mc_endif = 294,
-     lt = 295,
-     gt = 296,
-     po = 297,
-     pf = 298,
-     verg = 299,
-     err = 300
+     mc_or = 294,
+     mc_g = 295,
+     mc_l = 296,
+     mc_ge = 297,
+     mc_le = 298,
+     mc_eq = 299,
+     mc_di = 300,
+     mc_true = 301,
+     mc_false = 302
    };
 #endif
 
@@ -179,11 +179,11 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 30 "syntaxique.y"
+#line 28 "syntaxique.y"
 
-         int     entier;
-         char*   str;
-         float reel;
+    int entier;
+    char* str;
+    float reel;
 
 
 
@@ -413,22 +413,22 @@ union yyalloc
 #endif
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  12
+#define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   176
+#define YYLAST   195
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  46
+#define YYNTOKENS  48
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  46
+#define YYNNTS  28
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  98
+#define YYNRULES  62
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  184
+#define YYNSTATES  138
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   300
+#define YYMAXUTOK   302
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -466,76 +466,60 @@ static const yytype_uint8 yytranslate[] =
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45
+      45,    46,    47
 };
 
 #if YYDEBUG
 /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
    YYRHS.  */
-static const yytype_uint16 yyprhs[] =
+static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     6,    12,    14,    16,    17,    20,    22,
-      27,    31,    39,    41,    43,    45,    47,    49,    51,    54,
-      56,    60,    66,    74,    77,    79,    84,    87,    91,    95,
-      97,   101,   105,   109,   113,   117,   121,   123,   127,   131,
-     133,   137,   141,   143,   147,   149,   151,   153,   155,   157,
-     162,   168,   173,   177,   179,   183,   185,   187,   189,   191,
-     193,   197,   199,   201,   203,   206,   208,   210,   212,   214,
-     216,   218,   220,   224,   226,   228,   234,   238,   242,   244,
-     246,   251,   255,   259,   264,   267,   269,   274,   276,   278,
-     284,   290,   294,   298,   300,   302,   306,   311,   313
+       0,     0,     3,    12,    14,    15,    18,    20,    22,    24,
+      29,    31,    35,    47,    54,    56,    58,    60,    62,    63,
+      66,    68,    70,    72,    74,    76,    81,    83,    88,    97,
+     105,   110,   116,   117,   118,   123,   127,   136,   138,   142,
+     146,   150,   154,   158,   162,   166,   170,   172,   176,   180,
+     182,   186,   190,   192,   196,   199,   201,   203,   205,   207,
+     209,   211,   213
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      47,     0,    -1,    49,    48,    -1,     5,     3,    55,    71,
-      22,    -1,    50,    -1,    51,    -1,    -1,    51,    52,    -1,
-      52,    -1,    53,    72,    83,     9,    -1,    53,    83,     9,
-      -1,    54,     6,     3,    42,    69,    43,    55,    -1,    20,
-      -1,    21,    -1,    13,    -1,    12,    -1,    50,    -1,    56,
-      -1,    56,    57,    -1,    57,    -1,    54,    59,    18,    -1,
-      54,     3,    36,     7,    18,    -1,    54,     3,    11,    42,
-      67,    43,    18,    -1,     4,    84,    -1,    50,    -1,    59,
-      44,     3,    58,    -1,     3,    58,    -1,    60,    29,    61,
-      -1,    60,    38,    61,    -1,    61,    -1,    61,    40,    62,
-      -1,    61,    41,    62,    -1,    61,    30,    62,    -1,    61,
-      31,    62,    -1,    61,    32,    62,    -1,    61,    33,    62,
-      -1,    62,    -1,    62,    34,    63,    -1,    62,    35,    63,
-      -1,    63,    -1,    63,    36,    64,    -1,    63,    37,    64,
-      -1,    64,    -1,    42,    60,    43,    -1,    65,    -1,     3,
-      -1,    68,    -1,     7,    -1,     8,    -1,     3,    42,    67,
-      43,    -1,    10,     3,    42,    66,    43,    -1,    10,     3,
-      42,    43,    -1,    66,    44,    84,    -1,    84,    -1,    67,
-      44,    84,    -1,    84,    -1,    14,    -1,    15,    -1,    70,
-      -1,    50,    -1,    70,    44,     3,    -1,     3,    -1,    50,
-      -1,    72,    -1,    72,    73,    -1,    73,    -1,    79,    -1,
-      85,    -1,    86,    -1,    88,    -1,    83,    -1,    74,    -1,
-      28,    75,    18,    -1,    76,    -1,    50,    -1,    76,    44,
-      42,    77,    43,    -1,    42,    77,    43,    -1,    77,    44,
-      78,    -1,    78,    -1,     3,    -1,     3,    42,    67,    43,
-      -1,    80,    82,    39,    -1,    81,    24,    72,    -1,    23,
-      42,    91,    43,    -1,    25,    72,    -1,    50,    -1,    78,
-       4,    84,    18,    -1,    19,    -1,    60,    -1,    16,    42,
-      78,    43,    18,    -1,    17,    42,    87,    43,    18,    -1,
-      87,    44,    19,    -1,    87,    44,    78,    -1,    19,    -1,
-      78,    -1,    89,    72,    27,    -1,    90,    42,    91,    43,
-      -1,    26,    -1,    60,    -1
+      49,     0,    -1,    50,     5,    51,     7,     6,    58,     7,
+       7,    -1,     3,    -1,    -1,    51,    52,    -1,    53,    -1,
+      55,    -1,    56,    -1,    57,    25,    54,    18,    -1,    61,
+      -1,    54,    31,    61,    -1,     8,    25,     3,    26,    71,
+      30,    71,    25,    57,    27,    18,    -1,    15,    25,     3,
+       4,    75,    18,    -1,    11,    -1,    12,    -1,    13,    -1,
+      14,    -1,    -1,    58,    59,    -1,    60,    -1,    62,    -1,
+      63,    -1,    64,    -1,    68,    -1,    61,     4,    71,    18,
+      -1,     3,    -1,     3,    26,    71,    27,    -1,    16,    28,
+      19,    25,    32,     3,    29,    18,    -1,    17,    28,    19,
+      25,    71,    29,    18,    -1,    65,    58,    66,     7,    -1,
+      21,    28,    70,    29,    25,    -1,    -1,    -1,    22,    25,
+      67,    58,    -1,    69,    58,     7,    -1,    23,    28,     3,
+      25,    71,    25,    70,    29,    -1,    71,    -1,    71,    39,
+      72,    -1,    71,    38,    72,    -1,    71,    40,    72,    -1,
+      71,    41,    72,    -1,    71,    42,    72,    -1,    71,    43,
+      72,    -1,    71,    44,    72,    -1,    71,    45,    72,    -1,
+      72,    -1,    72,    33,    73,    -1,    72,    34,    73,    -1,
+      73,    -1,    73,    35,    74,    -1,    73,    36,    74,    -1,
+      74,    -1,    28,    71,    29,    -1,    24,    74,    -1,    75,
+      -1,    61,    -1,     9,    -1,    10,    -1,    20,    -1,    19,
+      -1,    46,    -1,    47,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    61,    61,    63,    65,    65,    67,    69,    69,    72,
-      77,    85,   124,   124,   124,   124,   126,   126,   128,   128,
-     131,   131,   137,   157,   157,   160,   180,   206,   226,   246,
-     253,   269,   283,   298,   314,   329,   344,   351,   375,   396,
-     403,   424,   450,   458,   463,   473,   487,   492,   500,   507,
-     546,   601,   635,   641,   646,   660,   671,   672,   674,   674,
-     676,   676,   678,   678,   680,   680,   682,   682,   682,   682,
-     682,   682,   684,   686,   686,   688,   688,   691,   694,   699,
-     707,   748,   754,   762,   769,   769,   772,   795,   799,   805,
-     807,   809,   809,   809,   809,   811,   818,   824,   829
+       0,    54,    54,    58,    66,    67,    70,    71,    72,    75,
+      78,    79,    82,   112,   130,   131,   132,   133,   136,   137,
+     140,   141,   142,   143,   144,   147,   180,   191,   221,   251,
+     276,   283,   295,   300,   300,   311,   322,   351,   361,   382,
+     403,   420,   437,   454,   471,   488,   505,   512,   532,   552,
+     559,   579,   603,   610,   615,   633,   638,   645,   651,   657,
+     661,   665,   669
 };
 #endif
 
@@ -544,20 +528,19 @@ static const yytype_uint16 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "idf", "aff", "mc_prgrm", "mc_rtin",
-  "inti", "real", "mc_endr", "mc_call", "mc_dim", "mc_logi", "mc_char",
-  "mc_true", "mc_false", "mc_read", "mc_write", "pvg", "str", "mc_int",
-  "mc_real", "mc_end", "mc_if", "mc_then", "mc_else", "mc_dowhile",
-  "mc_enddo", "mc_equival", "mc_or", "ge", "eq", "ne", "le", "add", "sub",
-  "mul", "divi", "mc_and", "mc_endif", "lt", "gt", "po", "pf", "verg",
-  "err", "$accept", "s", "PRGM_PRIN", "FCTS", "VIDE", "ENSFCT", "FCT",
-  "debut_fct", "TYPE", "DECS", "ENSDEC", "DEC", "partie_gauch_affectation",
-  "ENSIDF_dec", "EXPRE", "CONDIT", "EXPREt", "TERM", "FACTOR", "OPERAND",
-  "ENSpara", "TAILLE", "LOGI", "IDFS", "ENSIDF", "INSTS", "ENSINST",
-  "INST", "eqival_statement", "ens_list_vars", "ens_list_var", "list_var",
-  "var", "if_statement", "B_if", "A_if", "else_clause", "assignment",
-  "valeur", "read_statement", "write_statement", "ENS_PARA_WRITE",
-  "dowhile_statement", "B_while", "A_while", "CONDI", 0
+  "$end", "error", "$undefined", "idf", "eq", "mc_data", "mc_code",
+  "mc_end", "mc_vector", "inti", "real", "mc_integer", "mc_float",
+  "mc_char", "mc_string", "mc_const", "mc_read", "mc_display", "pvg",
+  "str", "ch", "mc_if", "mc_else", "mc_for", "mc_not", "deux_points",
+  "crochet_ouv", "crochet_ferm", "par_ouv", "par_ferm", "virgule", "barre",
+  "arobase", "plus", "minus", "mul", "divi", "err", "mc_and", "mc_or",
+  "mc_g", "mc_l", "mc_ge", "mc_le", "mc_eq", "mc_di", "mc_true",
+  "mc_false", "$accept", "PROGRAM", "PROGRAM_NAME", "DECLARATIONS",
+  "DECLARATION", "VARIABLE_DECLARATION", "LIST_VARIABLES",
+  "VECTOR_DECLARATION", "CONSTANT_DECLARATION", "TYPE", "INSTRUCTIONS",
+  "INSTRUCTION", "AFFECTATION", "VAR", "INPUT", "OUTPUT", "IF_STATEMENT",
+  "IF_START", "ELSE_PART", "$@1", "FOR_STATEMENT", "FOR_START",
+  "CONDITION", "EXPRESSION", "TERM", "FACTOR", "PRIMARY", "VALUE", 0
 };
 #endif
 
@@ -570,38 +553,32 @@ static const yytype_uint16 yytoknum[] =
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
      285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
-     295,   296,   297,   298,   299,   300
+     295,   296,   297,   298,   299,   300,   301,   302
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    46,    47,    48,    49,    49,    50,    51,    51,    52,
-      52,    53,    54,    54,    54,    54,    55,    55,    56,    56,
-      57,    57,    57,    58,    58,    59,    59,    60,    60,    60,
-      61,    61,    61,    61,    61,    61,    61,    62,    62,    62,
-      63,    63,    63,    64,    64,    65,    65,    65,    65,    65,
-      65,    65,    66,    66,    67,    67,    68,    68,    69,    69,
-      70,    70,    71,    71,    72,    72,    73,    73,    73,    73,
-      73,    73,    74,    75,    75,    76,    76,    77,    77,    78,
-      78,    79,    80,    81,    82,    82,    83,    84,    84,    85,
-      86,    87,    87,    87,    87,    88,    89,    90,    91
+       0,    48,    49,    50,    51,    51,    52,    52,    52,    53,
+      54,    54,    55,    56,    57,    57,    57,    57,    58,    58,
+      59,    59,    59,    59,    59,    60,    61,    61,    62,    63,
+      64,    65,    66,    67,    66,    68,    69,    70,    71,    71,
+      71,    71,    71,    71,    71,    71,    71,    72,    72,    72,
+      73,    73,    73,    74,    74,    74,    74,    75,    75,    75,
+      75,    75,    75
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     5,     1,     1,     0,     2,     1,     4,
-       3,     7,     1,     1,     1,     1,     1,     1,     2,     1,
-       3,     5,     7,     2,     1,     4,     2,     3,     3,     1,
+       0,     2,     8,     1,     0,     2,     1,     1,     1,     4,
+       1,     3,    11,     6,     1,     1,     1,     1,     0,     2,
+       1,     1,     1,     1,     1,     4,     1,     4,     8,     7,
+       4,     5,     0,     0,     4,     3,     8,     1,     3,     3,
        3,     3,     3,     3,     3,     3,     1,     3,     3,     1,
-       3,     3,     1,     3,     1,     1,     1,     1,     1,     4,
-       5,     4,     3,     1,     3,     1,     1,     1,     1,     1,
-       3,     1,     1,     1,     2,     1,     1,     1,     1,     1,
-       1,     1,     3,     1,     1,     5,     3,     3,     1,     1,
-       4,     3,     3,     4,     2,     1,     4,     1,     1,     5,
-       5,     3,     3,     1,     1,     3,     4,     1,     1
+       3,     3,     1,     3,     2,     1,     1,     1,     1,     1,
+       1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -609,71 +586,57 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       6,    15,    14,    12,    13,     0,     0,     4,     5,     8,
-       0,     0,     1,     0,     2,     7,    79,     0,     0,     0,
-      97,     6,     0,    65,    71,     0,    66,     6,     0,    70,
-      67,    68,    69,     0,     0,     0,     6,     0,     0,     0,
-       0,     0,    74,     0,    73,    64,    70,     0,     0,    85,
-       0,     0,    10,     0,    70,     0,     0,    16,     0,     6,
-      17,    19,    45,    47,    48,     0,    56,    57,    87,     0,
-      88,    29,    36,    39,    42,    44,     0,    46,    55,     0,
-      93,    94,     0,    98,     0,     0,    78,    72,     0,     9,
-       0,    84,    81,    82,    95,     0,     6,     6,     0,    62,
-       0,    63,    18,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    80,     0,
-       0,     0,     0,    83,    76,     0,     0,    86,    96,    61,
-      59,     0,    58,     0,     0,     0,    24,    26,    20,     0,
-       3,     0,     0,    43,    27,    28,    32,    33,    34,    35,
-      30,    31,    37,    38,    40,    41,    54,    89,    90,    91,
-      92,    77,     0,     6,     0,    23,     0,     0,     6,    49,
-      51,     0,    53,    75,    11,    60,     0,    21,    25,    50,
-       0,     0,    52,    22
+       0,     3,     0,     0,     1,     4,     0,     0,     0,    14,
+      15,    16,    17,     0,     5,     6,     7,     8,     0,    18,
+       0,     0,     0,     0,     0,     0,    26,     0,    10,     0,
+       0,     0,     0,     0,    19,    20,     0,    21,    22,    23,
+      18,    24,    18,     0,     0,     0,     9,     0,     2,     0,
+       0,     0,     0,     0,    32,     0,    57,    58,    60,    59,
+       0,     0,    61,    62,    56,     0,    46,    49,    52,    55,
+       0,     0,    11,     0,     0,     0,    37,     0,     0,     0,
+       0,    35,    54,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,    13,    27,     0,
+       0,     0,     0,    25,    33,    30,    53,     0,    39,    38,
+      40,    41,    42,    43,    44,    45,    47,    48,    50,    51,
+       0,     0,    31,     0,    18,     0,     0,     0,     0,    34,
+       0,     0,    29,     0,     0,    28,    36,    12
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int16 yydefgoto[] =
+static const yytype_int8 yydefgoto[] =
 {
-      -1,     5,    14,     6,    57,     8,     9,    10,    58,    59,
-      60,    61,   137,    98,    70,    71,    72,    73,    74,    75,
-     171,    76,    77,   131,   132,   100,    22,    23,    24,    43,
-      44,    85,    25,    26,    27,    28,    50,    54,    78,    30,
-      31,    82,    32,    33,    34,    84
+      -1,     2,     3,     6,    14,    15,    27,    16,    17,    18,
+      23,    34,    35,    64,    37,    38,    39,    40,    80,   124,
+      41,    42,    75,    76,    66,    67,    68,    69
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -102
+#define YYPACT_NINF -72
 static const yytype_int16 yypact[] =
 {
-      90,  -102,  -102,  -102,  -102,     8,    42,  -102,    90,  -102,
-      96,    45,  -102,    59,  -102,  -102,    29,    48,    51,    58,
-    -102,    67,    96,  -102,  -102,    63,  -102,    93,    99,   126,
-    -102,  -102,  -102,    96,    95,   137,    90,    16,   138,     6,
-      26,   138,  -102,   124,   100,  -102,   134,    16,    96,  -102,
-     106,    96,  -102,    78,  -102,    26,   104,  -102,   144,    96,
-      90,  -102,   107,  -102,  -102,   145,  -102,  -102,  -102,    26,
-      25,    46,   -20,    13,  -102,  -102,    30,  -102,  -102,   108,
-    -102,  -102,    39,    25,   109,    41,  -102,  -102,   111,  -102,
-     132,    96,  -102,    96,  -102,   112,   151,    33,    -2,  -102,
-     135,    96,  -102,    16,   114,    23,    26,    26,    26,    26,
-      26,    26,    26,    26,    26,    26,    26,    26,  -102,    16,
-     140,   141,    36,  -102,  -102,   138,   138,  -102,  -102,  -102,
-    -102,   117,   118,    16,   119,   156,  -102,  -102,  -102,   161,
-    -102,    64,     3,  -102,    46,    46,   -20,   -20,   -20,   -20,
-     -20,   -20,    13,    13,  -102,  -102,  -102,  -102,  -102,  -102,
-    -102,  -102,    71,    90,   162,  -102,    16,   148,   163,  -102,
-    -102,    73,  -102,  -102,  -102,  -102,    77,  -102,  -102,  -102,
-      16,   152,  -102,  -102
+      21,   -72,    28,    24,   -72,   -72,    76,    30,     5,   -72,
+     -72,   -72,   -72,     9,   -72,   -72,   -72,   -72,    13,   -72,
+      36,    37,    44,    97,    22,    45,    26,   -11,   -72,    52,
+      53,    57,    73,    74,   -72,   -72,    78,   -72,   -72,   -72,
+     -72,   -72,   -72,     7,    -1,     7,   -72,    44,   -72,    42,
+      61,     7,   100,     7,    34,   105,   -72,   -72,   -72,   -72,
+       7,     7,   -72,   -72,   -72,   137,   -19,   -24,   -72,   -72,
+      87,    96,   -72,    81,    84,    86,   113,    85,    25,    91,
+     110,   -72,   -72,   104,     7,     7,     7,     7,     7,     7,
+       7,     7,     7,     7,     7,     7,     7,   -72,   -72,    95,
+       7,    94,     7,   -72,   -72,   -72,   -72,    33,   -19,   -19,
+     -19,   -19,   -19,   -19,   -19,   -19,   -24,   -24,   -72,   -72,
+     127,   121,   -72,    54,   -72,   157,   103,   154,     7,   108,
+     146,   156,   -72,   162,   174,   -72,   -72,   -72
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -102,  -102,  -102,  -102,     0,  -102,   164,  -102,    12,    10,
-    -102,   115,     1,  -102,   -12,    27,    17,    24,    15,  -102,
-    -102,  -101,  -102,  -102,  -102,  -102,     5,   -21,  -102,  -102,
-    -102,    50,   -34,  -102,  -102,  -102,  -102,    38,   -44,  -102,
-    -102,  -102,  -102,  -102,  -102,   116
+     -72,   -72,   -72,   -72,   -72,   -72,   -72,   -72,   -72,    68,
+     -38,   -72,   -72,   -22,   -72,   -72,   -72,   -72,   -72,   -72,
+     -72,   -72,    66,   -40,    98,   -71,   -54,   151
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -683,71 +646,70 @@ static const yytype_int16 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-       7,    45,   141,    90,    79,    81,    62,    86,    12,    16,
-      63,    64,    11,    65,   114,   115,   138,    66,    67,    62,
-      11,    42,    68,    63,    64,    80,    65,    49,    83,    62,
-      66,    67,    45,    63,    64,    68,    65,   133,    53,    16,
-      66,    67,   139,    83,   134,    69,   170,    13,    29,   116,
-     117,    35,   106,    91,   106,   159,    93,   105,    69,    99,
-      46,   107,    36,   107,   101,   176,   143,    47,    69,   135,
-      45,    37,    45,   118,   119,   156,   108,   109,   110,   111,
-      45,    16,   121,   122,   124,   125,   112,   113,   160,   165,
-      38,   161,    86,    39,    17,    18,   130,   136,   172,    16,
-      40,    19,     1,     2,    20,    94,    21,   169,   119,    41,
-       3,     4,    17,    18,   173,   125,   179,   180,    48,    19,
-     181,   119,    20,    51,    21,   146,   147,   148,   149,   150,
-     151,   154,   155,   144,   145,    52,   182,    55,   152,   153,
-      56,    16,    87,    89,    88,    92,    96,    97,   104,   103,
-     127,   120,   123,   126,   129,   128,   142,   140,   157,   158,
-     163,   166,   164,   167,   168,   175,   177,   133,   136,   178,
-     183,    95,    15,   174,     0,   102,   162
+      28,    36,    54,    65,    55,    71,    82,    46,    56,    57,
+      26,    95,    96,    78,    93,    94,    56,    57,    58,    59,
+      47,    83,   116,   117,     1,    72,    58,    59,     4,     5,
+      20,    60,    36,    36,    21,    61,    19,    26,    22,    24,
+      25,   118,   119,   103,   107,    62,    63,    26,    43,    44,
+      30,    31,    45,    62,    63,    32,    79,    33,   125,    48,
+     121,    73,   123,    85,    86,    87,    88,    89,    90,    91,
+      92,    85,    86,    87,    88,    89,    90,    91,    92,   128,
+      74,    49,    53,     7,     8,    50,   129,     9,    10,    11,
+      12,    13,    85,    86,    87,    88,    89,    90,    91,    92,
+      26,    51,    52,    77,    29,    97,    99,    36,    26,   100,
+     102,    26,    81,    30,    31,   101,   104,   105,    32,   122,
+      33,    30,    31,    98,    30,    31,    32,   120,    33,    32,
+     126,    33,   131,   106,    85,    86,    87,    88,    89,    90,
+      91,    92,    85,    86,    87,    88,    89,    90,    91,    92,
+     127,    85,    86,    87,    88,    89,    90,    91,    92,    85,
+      86,    87,    88,    89,    90,    91,    92,    84,     9,    10,
+      11,    12,   132,   134,   135,    85,    86,    87,    88,    89,
+      90,    91,    92,   108,   109,   110,   111,   112,   113,   114,
+     115,   136,   137,   130,   133,    70
 };
 
-static const yytype_int16 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       0,    22,   103,    47,    38,    39,     3,    41,     0,     3,
-       7,     8,     0,    10,    34,    35,    18,    14,    15,     3,
-       8,    21,    19,     7,     8,    19,    10,    27,    40,     3,
-      14,    15,    53,     7,     8,    19,    10,     4,    33,     3,
-      14,    15,    44,    55,    11,    42,    43,     5,    10,    36,
-      37,     6,    29,    48,    29,    19,    51,    69,    42,    59,
-      22,    38,     3,    38,    59,   166,    43,     4,    42,    36,
-      91,    42,    93,    43,    44,   119,    30,    31,    32,    33,
-     101,     3,    43,    44,    43,    44,    40,    41,   122,   133,
-      42,   125,   126,    42,    16,    17,    96,    97,   142,     3,
-      42,    23,    12,    13,    26,    27,    28,    43,    44,    42,
-      20,    21,    16,    17,    43,    44,    43,    44,    25,    23,
-      43,    44,    26,    24,    28,   108,   109,   110,   111,   112,
-     113,   116,   117,   106,   107,     9,   180,    42,   114,   115,
-       3,     3,    18,     9,    44,    39,    42,     3,     3,    42,
-      18,    43,    43,    42,     3,    43,    42,    22,    18,    18,
-      43,    42,    44,     7,     3,     3,    18,     4,   168,   168,
-      18,    55,     8,   163,    -1,    60,   126
+      22,    23,    40,    43,    42,    45,    60,    18,     9,    10,
+       3,    35,    36,    53,    33,    34,     9,    10,    19,    20,
+      31,    61,    93,    94,     3,    47,    19,    20,     0,     5,
+      25,    24,    54,    55,    25,    28,     6,     3,    25,     3,
+       3,    95,    96,    18,    84,    46,    47,     3,    26,     4,
+      16,    17,    26,    46,    47,    21,    22,    23,    25,     7,
+     100,    19,   102,    38,    39,    40,    41,    42,    43,    44,
+      45,    38,    39,    40,    41,    42,    43,    44,    45,    25,
+      19,    28,     4,     7,     8,    28,   124,    11,    12,    13,
+      14,    15,    38,    39,    40,    41,    42,    43,    44,    45,
+       3,    28,    28,     3,     7,    18,    25,   129,     3,    25,
+      25,     3,     7,    16,    17,    29,    25,     7,    21,    25,
+      23,    16,    17,    27,    16,    17,    21,    32,    23,    21,
+       3,    23,    29,    29,    38,    39,    40,    41,    42,    43,
+      44,    45,    38,    39,    40,    41,    42,    43,    44,    45,
+      29,    38,    39,    40,    41,    42,    43,    44,    45,    38,
+      39,    40,    41,    42,    43,    44,    45,    30,    11,    12,
+      13,    14,    18,    27,    18,    38,    39,    40,    41,    42,
+      43,    44,    45,    85,    86,    87,    88,    89,    90,    91,
+      92,    29,    18,   125,   128,    44
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    12,    13,    20,    21,    47,    49,    50,    51,    52,
-      53,    54,     0,     5,    48,    52,     3,    16,    17,    23,
-      26,    28,    72,    73,    74,    78,    79,    80,    81,    83,
-      85,    86,    88,    89,    90,     6,     3,    42,    42,    42,
-      42,    42,    50,    75,    76,    73,    83,     4,    25,    50,
-      82,    24,     9,    72,    83,    42,     3,    50,    54,    55,
-      56,    57,     3,     7,     8,    10,    14,    15,    19,    42,
-      60,    61,    62,    63,    64,    65,    67,    68,    84,    78,
-      19,    78,    87,    60,    91,    77,    78,    18,    44,     9,
-      84,    72,    39,    72,    27,    91,    42,     3,    59,    50,
-      71,    72,    57,    42,     3,    60,    29,    38,    30,    31,
-      32,    33,    40,    41,    34,    35,    36,    37,    43,    44,
-      43,    43,    44,    43,    43,    44,    42,    18,    43,     3,
-      50,    69,    70,     4,    11,    36,    50,    58,    18,    44,
-      22,    67,    42,    43,    61,    61,    62,    62,    62,    62,
-      62,    62,    63,    63,    64,    64,    84,    18,    18,    19,
-      78,    78,    77,    43,    44,    84,    42,     7,     3,    43,
-      43,    66,    84,    43,    55,     3,    67,    18,    58,    43,
-      44,    43,    84,    18
+       0,     3,    49,    50,     0,     5,    51,     7,     8,    11,
+      12,    13,    14,    15,    52,    53,    55,    56,    57,     6,
+      25,    25,    25,    58,     3,     3,     3,    54,    61,     7,
+      16,    17,    21,    23,    59,    60,    61,    62,    63,    64,
+      65,    68,    69,    26,     4,    26,    18,    31,     7,    28,
+      28,    28,    28,     4,    58,    58,     9,    10,    19,    20,
+      24,    28,    46,    47,    61,    71,    72,    73,    74,    75,
+      75,    71,    61,    19,    19,    70,    71,     3,    71,    22,
+      66,     7,    74,    71,    30,    38,    39,    40,    41,    42,
+      43,    44,    45,    33,    34,    35,    36,    18,    27,    25,
+      25,    29,    25,    18,    25,     7,    29,    71,    72,    72,
+      72,    72,    72,    72,    72,    72,    73,    73,    74,    74,
+      32,    71,    25,    71,    67,    25,     3,    29,    25,    58,
+      57,    29,    18,    70,    27,    18,    29,    18
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1561,151 +1523,141 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 61 "syntaxique.y"
-    {YYACCEPT;;}
+#line 55 "syntaxique.y"
+    { printf("Programme syntaxiquement correct!\n"); YYACCEPT; ;}
     break;
 
-  case 9:
+  case 3:
 
 /* Line 1455 of yacc.c  */
-#line 72 "syntaxique.y"
+#line 58 "syntaxique.y"
     {
-        if(strcmp((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str))!=0){
-            yyerror("Sementique error",(yyvsp[(3) - (4)].str),"est different du nom de la fonction.");
-        }
-    ;}
-    break;
-
-  case 10:
-
-/* Line 1455 of yacc.c  */
-#line 77 "syntaxique.y"
-    {
-        if(strcmp((yyvsp[(1) - (3)].str),(yyvsp[(2) - (3)].str))!=0){
-            yyerror("Sementique error",(yyvsp[(2) - (3)].str),"est different du nom de la fonction.");
-        }
-    ;}
-    break;
-
-  case 11:
-
-/* Line 1455 of yacc.c  */
-#line 85 "syntaxique.y"
-    {
-        //R1
-        // int p = lookup($3);
-        // printf("r1 look up p:%d\n",p);
-        
-        // if (p==-1){
-        //     p=inserer_fct($3,false,0);
-        //     printf("r1 inserer_fct p:%d\n",p);
-        //     show_table();
-        // }else{
-        //     yyerror("Sementique error",$3,"est deja declare.");
-        // }
-        //R3
-        // int p2 = lookup($3);
-        // printf("r3 look up p:%d\n",p2);
-        // int a,b;
-        // if (p2==-1){
-        //     yyerror("Sementique error",$3,"est non declare.1");
-        // }else{
-        //     if(table_fct[p2].util){
-        //         yyerror("Sementique error",$3,"est deja declare.");
-        //     }else{
-        //         a = table_fct[p2].address;
-        //         while(a!=0){
-        //             b= strtol(quad[a].op1, NULL, 10);
-        //             sprintf(tmp,"%d",qc);
-        //             ajour_quad(a,1,tmp);
-        //             a=b;
-        //         }
-        //         table_fct[p2].address=qc;
-        //     }
-        // }
-        //R3 fin
-        Declarer((yyvsp[(3) - (7)].str));
-        inserer_fonction((yyvsp[(3) - (7)].str),nb_argument);
-        nb_argument=0;
-        (yyval.str)=(yyvsp[(3) - (7)].str);
+    if(Declarer((yyvsp[(1) - (1)].str))){
+        yyerror("Semantic error", (yyvsp[(1) - (1)].str), "already declared");
+    }
+    rechercher((yyvsp[(1) - (1)].str), "PROGRAM", " ", " ", 0, " ", 0);
 ;}
     break;
 
-  case 21:
+  case 12:
+
+/* Line 1455 of yacc.c  */
+#line 82 "syntaxique.y"
+    {
+    if(Declarer((yyvsp[(3) - (11)].str))){
+        yyerror("Semantic error", (yyvsp[(3) - (11)].str), "already declared");
+    }
+    
+    // Verify array bounds
+    if(!isInteger((yyvsp[(5) - (11)].str)) || !isInteger((yyvsp[(7) - (11)].str))){
+        yyerror("Semantic error", "", "array bounds must be integers");
+    }
+    
+    // Create array size string for table
+    char arraySize[50];
+    sprintf(arraySize, "%s,%s", (yyvsp[(5) - (11)].str), (yyvsp[(7) - (11)].str));
+    
+    // Add to symbol table as TABLEAU
+    rechercher((yyvsp[(3) - (11)].str), "IDF", (yyvsp[(9) - (11)].str), "", 0, arraySize, 0);
+    
+    // Initialize array
+    initiali_tab((yyvsp[(3) - (11)].str), arraySize);
+    
+    // Generate quadruples for array bounds
+    StackNode* operande_high = pop(&Operandes_pile);
+    StackNode* operande_low = pop(&Operandes_pile);
+    
+    quadr("Bounds", "0", strdup(operande_low->operande_name), "vide");
+    quadr("Bounds", "0", strdup(operande_high->operande_name), "vide");
+    quadr("ADEC", (yyvsp[(3) - (11)].str), "vide", "vide");
+;}
+    break;
+
+  case 13:
+
+/* Line 1455 of yacc.c  */
+#line 112 "syntaxique.y"
+    {
+    if(Declarer((yyvsp[(3) - (6)].str))){
+        yyerror("Semantic error", (yyvsp[(3) - (6)].str), "already declared");
+    }
+    
+    // Mark as constant in symbol table
+    char constType[30];
+    sprintf(constType, "CONST_%s", GetTypeFromVal((yyvsp[(5) - (6)].str)));
+    
+    // Set value directly in symbol table
+    rechercher((yyvsp[(3) - (6)].str), "IDF", constType, (yyvsp[(5) - (6)].str), 0, "", 0);
+    
+    // Generate quadruple for constant initialization
+    StackNode* poppedElement = pop(&Operandes_pile);
+    quadr("=", poppedElement->operande_name, "vide", (yyvsp[(3) - (6)].str));
+;}
+    break;
+
+  case 14:
+
+/* Line 1455 of yacc.c  */
+#line 130 "syntaxique.y"
+    { (yyval.str) = strdup("INTEGER"); strcpy(type, "INTEGER"); ;}
+    break;
+
+  case 15:
 
 /* Line 1455 of yacc.c  */
 #line 131 "syntaxique.y"
-    {
-        // printf("the dcr idf is :%s\n",$2);
-        if(Declarer((yyvsp[(2) - (5)].str))){
-            yyerror("Sementique error",(yyvsp[(2) - (5)].str),"est deja declare.");
-        }
-    ;}
+    { (yyval.str) = strdup("FLOAT"); strcpy(type, "FLOAT"); ;}
     break;
 
-  case 22:
+  case 16:
 
 /* Line 1455 of yacc.c  */
-#line 137 "syntaxique.y"
-    {
-        if(Declarer((yyvsp[(2) - (7)].str))){
-            yyerror("Sementique error",(yyvsp[(2) - (7)].str),"est deja declare.");}
-            rechercher((yyvsp[(2) - (7)].str),"IDF","TABLEAU",0,0,(yyvsp[(5) - (7)].str),0);
-            initiali_tab((yyvsp[(2) - (7)].str),(yyvsp[(5) - (7)].str));
-
-            char *tab_taille =strdup((yyvsp[(5) - (7)].str));
-            char *tab_name=(yyvsp[(2) - (7)].str);
-
-
-            char *token = strtok(tab_taille, ",");
-            while (token != NULL) {
-                StackNode* operande_tmp = pop(&Operandes_pile);
-                quadr("Bounds", "0", strdup(operande_tmp->operande_name), "vide");
-                token = strtok(NULL, ",");
-            }
-            quadr("ADEC", tab_name, "vide", "vide");
-            // <==*   9ader n remplasiw taille b ENSpara_arith chhi lazem expr ma tmedlekch real tema lazem difinit expr spesial mafihach les real wela nkhalou lewla w f semantique ndirouh ma y acceptich les real ==>en fin dert deuxieme bah ndirha kima C resultat 3adi real chahi ida kan real l compilateur wa7dou yrodo int w maydirch erreur 
-            ;}
+#line 132 "syntaxique.y"
+    { (yyval.str) = strdup("CHAR"); strcpy(type, "CHAR"); ;}
     break;
 
-  case 23:
+  case 17:
 
 /* Line 1455 of yacc.c  */
-#line 157 "syntaxique.y"
-    {(yyval.str)=(yyvsp[(2) - (2)].str);;}
-    break;
-
-  case 24:
-
-/* Line 1455 of yacc.c  */
-#line 157 "syntaxique.y"
-    { (yyval.str)=" ";;}
+#line 133 "syntaxique.y"
+    { (yyval.str) = strdup("STRING"); strcpy(type, "STRING"); ;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 160 "syntaxique.y"
+#line 147 "syntaxique.y"
     {
-        if(Declarer((yyvsp[(3) - (4)].str))){
-            yyerror("Sementique error",(yyvsp[(3) - (4)].str),"est deja declare.");
+    // Check if variable is declared
+    if(!Declarer((yyvsp[(1) - (4)].str))){
+        yyerror("Semantic error", (yyvsp[(1) - (4)].str), "not declared");
+    }
+    
+    // Check if it's a constant - cannot reassign
+    if(strstr(GetTypeFromTS((yyvsp[(1) - (4)].str)), "CONST_") != NULL){
+        yyerror("Semantic error", (yyvsp[(1) - (4)].str), "is a constant and cannot be reassigned");
+    }
+    
+    // Check type compatibility
+    if(!areCompatible(GetTypeFromTS((yyvsp[(1) - (4)].str)), (yyvsp[(3) - (4)].str))){
+        yyerror("Semantic error", "", "incompatible types in assignment");
+    }
+    
+    // Handle array assignment or regular variable assignment
+    if(strstr(GetTypeFromTS((yyvsp[(1) - (4)].str)), "TABLEAU") != NULL){
+        A_M_tab((yyvsp[(1) - (4)].str), taille, (yyvsp[(3) - (4)].str));
+    } else {
+        if(!SetValInTS((yyvsp[(1) - (4)].str), (yyvsp[(3) - (4)].str))){
+            yyerror("Semantic error", (yyvsp[(1) - (4)].str), "assignment not accepted");
         }
-        if(strcmp((yyvsp[(4) - (4)].str)," ")!=0){
-            if (!areCompatible(GetTypeFromTS((yyvsp[(3) - (4)].str)), (yyvsp[(4) - (4)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }
-        // printf("\n\n------------yes they are compatible for the assignment\n\n");
-
-            if (strstr(GetTypeFromTS((yyvsp[(3) - (4)].str)),"TABLEAU")==NULL && !SetValInTS((yyvsp[(3) - (4)].str),(yyvsp[(4) - (4)].str))){
-                yyerror("Sementique error",(yyvsp[(3) - (4)].str),",affectation non accepte.");
-            }else{
-                StackNode* poppedElement = pop(&Operandes_pile);
-                quadr("=", poppedElement->operande_name,"vide", (yyvsp[(3) - (4)].str));
-            }
-        }
-
-        rechercher((yyvsp[(3) - (4)].str),"IDF"," ",(yyvsp[(4) - (4)].str),0," ",0);
-    ;}
+    }
+    
+    // Generate quadruple for assignment
+    StackNode* operande_expr = pop(&Operandes_pile);
+    StackNode* operande_var = pop(&Operandes_pile);
+    
+    quadr("=", operande_expr->operande_name, "vide", operande_var->operande_name);
+;}
     break;
 
   case 26:
@@ -1713,903 +1665,688 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 180 "syntaxique.y"
     {
+    if(!Declarer((yyvsp[(1) - (1)].str))){
+        yyerror("Semantic error", (yyvsp[(1) - (1)].str), "not declared");
+    }
     
-    if(Declarer((yyvsp[(1) - (2)].str))){
-        yyerror("Sementique error",(yyvsp[(1) - (2)].str),"est deja declare.");
-    }
-
-    if(strcmp((yyvsp[(2) - (2)].str)," ")!=0){
-        if (!areCompatible(GetTypeFromTS((yyvsp[(1) - (2)].str)), (yyvsp[(2) - (2)].str))) {
-        yyerror("Sementique error","","incompatible type.");
-    }
-    // printf("\n\n------------yes they are compatible for the assignment\n\n");
-
-        if (strstr(GetTypeFromTS((yyvsp[(1) - (2)].str)),"TABLEAU")==NULL && !SetValInTS((yyvsp[(1) - (2)].str),(yyvsp[(2) - (2)].str))){
-            yyerror("Sementique error",(yyvsp[(1) - (2)].str),",affectation non accepte.");
-        }else{
-            StackNode* poppedElement = pop(&Operandes_pile);
-            quadr("=", poppedElement->operande_name,"vide", (yyvsp[(1) - (2)].str));
-        }
-    }
-    rechercher((yyvsp[(1) - (2)].str),"IDF"," ",(yyvsp[(2) - (2)].str),0," ",0);   
+    // Push identifier to operand stack
+    char *type = strdup(GetTypeFromTS((yyvsp[(1) - (1)].str)));
+    push(&Operandes_pile, "VAR", strdup((yyvsp[(1) - (1)].str)), type);
+    
+    (yyval.str) = (yyvsp[(1) - (1)].str);
 ;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 206 "syntaxique.y"
+#line 191 "syntaxique.y"
     {
-        if (isBoolean((yyvsp[(1) - (3)].str)) && isBoolean((yyvsp[(3) - (3)].str))) {
-            bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
-            bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
-            bool res = val1 | val2;
-            // Conversion back to string is trivial here
-            char *backToStr = res ? "true" : "false";
-
-
-            StackNode* operande_tmp2 = pop(&Operandes_pile);
-            StackNode* operande_tmp1 = pop(&Operandes_pile);
-            char *res_tmp = strdup(Cree_temp_cond());
-            push(&Operandes_pile, "EXPRE", res_tmp, "LOGICAL");
-            createQuadLogic (2,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
-            (yyval.str)=backToStr;
-        }
-        else {
-            yyerror("Sementique error","","cannot use or with non boolean operands");
-        }
-    ;}
+    if(!Declarer((yyvsp[(1) - (4)].str))){
+        yyerror("Semantic error", (yyvsp[(1) - (4)].str), "not declared");
+    }
+    
+    // Check if it's an array
+    if(strstr(GetTypeFromTS((yyvsp[(1) - (4)].str)), "TABLEAU") == NULL){
+        yyerror("Semantic error", (yyvsp[(1) - (4)].str), "is not an array");
+    }
+    
+    // Check if index is an integer
+    if(!isInteger((yyvsp[(3) - (4)].str))){
+        yyerror("Semantic error", "", "array index must be an integer");
+    }
+    
+    // Create indexed var representation
+    char indexed_var[100];
+    StackNode* operande_index = pop(&Operandes_pile);
+    sprintf(indexed_var, "%s[%s]", (yyvsp[(1) - (4)].str), operande_index->operande_name);
+    
+    // Push to operand stack
+    push(&Operandes_pile, "VAR", indexed_var, GetTypeFromTS((yyvsp[(1) - (4)].str)));
+    
+    // Store array index for potential use in quadruple generation
+    strcpy(taille, (yyvsp[(3) - (4)].str));
+    
+    (yyval.str) = (yyvsp[(1) - (4)].str);
+;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 226 "syntaxique.y"
+#line 221 "syntaxique.y"
     {
-        if (isBoolean((yyvsp[(1) - (3)].str)) && isBoolean((yyvsp[(3) - (3)].str))) {
-            bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
-            bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
-            bool res = val1 & val2;
-            // Conversion back to string is trivial here
-            char *backToStr = res ? "true" : "false";
-            
-            
-            StackNode* operande_tmp2 = pop(&Operandes_pile);
-            StackNode* operande_tmp1 = pop(&Operandes_pile);
-            char *res_tmp = strdup(Cree_temp_cond());
-            push(&Operandes_pile, "EXPRE", res_tmp, "LOGICAL");
-            createQuadLogic (3,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
-            (yyval.str)=backToStr;
-        }
-        else {
-            yyerror("Sementique error","","cannot use and with non boolean operands");
-        }
-    ;}
+    if(!Declarer((yyvsp[(6) - (8)].str))){
+        yyerror("Semantic error", (yyvsp[(6) - (8)].str), "not declared");
+    }
+    
+    // Get type of variable for compatibility check with format string
+    char* varType = GetTypeFromTS((yyvsp[(6) - (8)].str));
+    char* formatType = NULL;
+    
+    // Extract format from string literal (remove quotes)
+    char* format = strdup((yyvsp[(3) - (8)].str));
+    format++; // Skip opening quote
+    format[strlen(format)-1] = '\0'; // Remove closing quote
+    
+    // Check format compatibility with variable type
+    if(strcmp(format, "$") == 0) formatType = "INTEGER";
+    else if(strcmp(format, "%") == 0) formatType = "FLOAT";
+    else if(strcmp(format, "#") == 0) formatType = "STRING";
+    else if(strcmp(format, "&") == 0) formatType = "CHAR";
+    else yyerror("Semantic error", format, "invalid format specifier");
+    
+    if(strstr(varType, formatType) == NULL){
+        yyerror("Semantic error", "", "format specifier doesn't match variable type");
+    }
+    
+    // Generate quadruple for input
+    quadr("READ", format, "vide", (yyvsp[(6) - (8)].str));
+;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 246 "syntaxique.y"
+#line 251 "syntaxique.y"
     {
-        StackNode* poppedElement = pop(&Operandes_pile);
-        push(&Operandes_pile, "EXPRE", poppedElement->operande_name, poppedElement->operande_type);
-        (yyval.str)=(yyvsp[(1) - (1)].str);
-    ;}
+    // Extract format from string literal (remove quotes)
+    char* format = strdup((yyvsp[(3) - (7)].str));
+    format++; // Skip opening quote
+    format[strlen(format)-1] = '\0'; // Remove closing quote
+    
+    // Determine expected type from format
+    char* formatType = NULL;
+    if(strstr(format, "$") != NULL) formatType = "INTEGER";
+    else if(strstr(format, "%") != NULL) formatType = "FLOAT";
+    else if(strstr(format, "#") != NULL) formatType = "STRING";
+    else if(strstr(format, "&") != NULL) formatType = "CHAR";
+    
+    // Generate quadruple for output
+    StackNode* operande_expr = pop(&Operandes_pile);
+    
+    // Check type compatibility with format
+    if(formatType != NULL && !areCompatible(formatType, operande_expr->operande_type)){
+        yyerror("Semantic error", "", "expression type doesn't match format specifier");
+    }
+    
+    quadr("DISPLAY", format, operande_expr->operande_name, "vide");
+;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 253 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }   
-
-
-        
-        StackNode* operande_tmp2 = pop(&Operandes_pile);
-        StackNode* operande_tmp1 = pop(&Operandes_pile);
-        char *res_tmp = strdup(Cree_temp_cond());
-        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
-        createQuadCompare (5,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
-
-        (yyval.str)=strdup(ltEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-
-    ;}
+#line 276 "syntaxique.y"
+    {
+    // Complete IF statement - set jump destination for the end of IF
+    sprintf(tmp, "%d", qc);
+    ajour_quad(pop_int(&Fin_if), 1, tmp);
+;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 269 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }   
-
-        StackNode* operande_tmp2 = pop(&Operandes_pile);
-        StackNode* operande_tmp1 = pop(&Operandes_pile);
-        char *res_tmp = strdup(Cree_temp_cond());
-        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
-        createQuadCompare (6,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
-
-        (yyval.str)=strdup(gtEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-
-    ;}
+#line 283 "syntaxique.y"
+    {
+    // Start of IF - create conditional jump
+    StackNode* operande_cond = pop(&Operandes_pile);
+    
+    // Save current quadruple position for the conditional jump
+    push_int(&deb_else, qc);
+    
+    // Generate BZ (branch if zero/false) quadruple
+    quadr("BZ", "", strdup(operande_cond->operande_name), "vide");
+;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 283 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }   
-
-
-        StackNode* operande_tmp2 = pop(&Operandes_pile);
-        StackNode* operande_tmp1 = pop(&Operandes_pile);
-        char *res_tmp = strdup(Cree_temp_cond());
-        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
-        createQuadCompare (3,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
-
-        (yyval.str)=strdup(geEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-
-    ;}
+#line 295 "syntaxique.y"
+    {
+    // No ELSE part - just set the branch target to current position
+    sprintf(tmp, "%d", qc);
+    ajour_quad(pop_int(&deb_else), 1, tmp);
+;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 298 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }   
-
-        
-        StackNode* operande_tmp2 = pop(&Operandes_pile);
-        StackNode* operande_tmp1 = pop(&Operandes_pile);
-        char *res_tmp = strdup(Cree_temp_cond());
-        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
-        createQuadCompare (1,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
-                (yyval.str)=strdup(eqEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-
-
-
-    ;}
-    break;
-
-  case 34:
-
-/* Line 1455 of yacc.c  */
-#line 314 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }   
-
-
-        StackNode* operande_tmp2 = pop(&Operandes_pile);
-        StackNode* operande_tmp1 = pop(&Operandes_pile);
-        char *res_tmp = strdup(Cree_temp_cond());
-        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
-        createQuadCompare (2,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
-
-        (yyval.str)=strdup(neEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-
-    ;}
+#line 300 "syntaxique.y"
+    {
+    // ELSE part exists - generate unconditional jump to skip ELSE when IF is taken
+    push_int(&Fin_if, qc);
+    quadr("BR", "", "vide", "vide");
+    
+    // Set the target for the conditional jump at the beginning of ELSE
+    sprintf(tmp, "%d", qc);
+    ajour_quad(pop_int(&deb_else), 1, tmp);
+;}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 329 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }   
-
-        
-        StackNode* operande_tmp2 = pop(&Operandes_pile);
-        StackNode* operande_tmp1 = pop(&Operandes_pile);
-        char *res_tmp = strdup(Cree_temp_cond());
-        push(&Operandes_pile, "CONDIT", res_tmp, "LOGICAL");
-        createQuadCompare (4,operande_tmp1->operande_name,operande_tmp2->operande_name,res_tmp);
-                
-        (yyval.str)=strdup(leEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-
-    ;}
+#line 311 "syntaxique.y"
+    {
+    // End of FOR loop - create back jump to condition check
+    sprintf(tmp, "%d", pop_int(&deb_for));
+    quadr("BR", tmp, "vide", "vide");
+    
+    // Set jump destination for loop exit
+    sprintf(tmp, "%d", qc);
+    ajour_quad(pop_int(&Fin_for), 1, tmp);
+;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 344 "syntaxique.y"
+#line 322 "syntaxique.y"
     {
-        StackNode* poppedElement = pop(&Operandes_pile);
-        push(&Operandes_pile, "CONDIT", poppedElement->operande_name, poppedElement->operande_type);
-        (yyval.str)=(yyvsp[(1) - (1)].str);
-        ;}
+    // Initialize loop counter
+    if(!Declarer((yyvsp[(3) - (8)].str))){
+        yyerror("Semantic error", (yyvsp[(3) - (8)].str), "not declared");
+    }
+    
+    if(!isInteger((yyvsp[(5) - (8)].str))){
+        yyerror("Semantic error", "", "loop step must be an integer");
+    }
+    
+    // Initialize loop counter with the initial value
+    StackNode* operande_step = pop(&Operandes_pile);
+    quadr("=", operande_step->operande_name, "vide", (yyvsp[(3) - (8)].str));
+    
+    // Save current position for loop condition check
+    push_int(&deb_for, qc);
+    
+    // Evaluate loop condition
+    StackNode* operande_cond = pop(&Operandes_pile);
+    
+    // Generate conditional jump to exit loop if condition is false
+    push_int(&Fin_for, qc);
+    quadr("BZ", "", strdup(operande_cond->operande_name), "vide");
+    
+    // Increment loop counter at the end of each iteration
+    // Will be done in quadruple generation at the end of the loop
+;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
 #line 351 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }
-
-
-        StackNode* poppedOpernade2 = pop(&Operandes_pile);
-        StackNode* poppedOpernade1 = pop(&Operandes_pile);
-
-        char *T=strdup(Cree_temp());
-
-        quadr("+",poppedOpernade1->operande_name,poppedOpernade2->operande_name,T);
-
-        char *type=strdup(Calculer_type(poppedOpernade1->operande_type,poppedOpernade2->operande_type));
-
-        push(&Operandes_pile, "EXPREt", T, type);
-
-
-
-        (yyval.str)=strdup(addEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));// 3lah strdup: parce que add entite 3andha var pack to str hatet fiha l resulta w daret return doka $$ rah y pointi 3la hadi l var koun trouh wela tetbedel tani $$ tro7 wela tetbedel 3labiha str dup khir strdup cha dir treservi l $$ l espase li tehtajou fel mem dir strcpy lel back to str hadik w tdiir $$ t pointi 3la hada espase ejdiid bah $$ yweli 3andha l espase ta3ha ejdiid wahedha /koun fi union derna char str[20] mechi char* str koun diract derna strcpy parceque lespase rah reservi li houwa tab de 20 mais hna derna char * str tema lazem strdup 
-        // printf("\n\n------------res= %s\n\n",addEntities($1,$3));
-        
-        
-    ;}
+    {
+    // Check if expression is boolean or can be converted to boolean
+    if(!isBoolean((yyvsp[(1) - (1)].str)) && !canBeBoolean((yyvsp[(1) - (1)].str))){
+        yyerror("Semantic error", (yyvsp[(1) - (1)].str), "not a boolean expression");
+    }
+    
+    (yyval.str) = (yyvsp[(1) - (1)].str);
+;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 375 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }
-
-
-        StackNode* poppedOpernade2 = pop(&Operandes_pile);
-        StackNode* poppedOpernade1 = pop(&Operandes_pile);
-
-        char *T=strdup(Cree_temp());
-
-        quadr("-",poppedOpernade1->operande_name,poppedOpernade2->operande_name,T);
-
-        char *type=strdup(Calculer_type(poppedOpernade1->operande_type,poppedOpernade2->operande_type));
-
-        push(&Operandes_pile, "EXPREt", T, type);
-
-
-
-        (yyval.str)=strdup(subEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-    ;}
+#line 361 "syntaxique.y"
+    {
+    if(!isBoolean((yyvsp[(1) - (3)].str)) || !isBoolean((yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "OR operator requires boolean operands");
+    }
+    
+    // Generate quadruples for logical OR
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    push(&Operandes_pile, "EXPRESSION", res_tmp, "LOGICAL");
+    
+    createQuadLogic(2, operande_left->operande_name, operande_right->operande_name, res_tmp);
+    
+    // Compute result for semantic analysis
+    bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
+    bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
+    bool result = val1 || val2;
+    
+    (yyval.str) = result ? strdup("true") : strdup("false");
+;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 396 "syntaxique.y"
+#line 382 "syntaxique.y"
     {
-        StackNode* poppedElement = pop(&Operandes_pile);
-        push(&Operandes_pile, "EXPREt", poppedElement->operande_name, poppedElement->operande_type);
-        (yyval.str)=(yyvsp[(1) - (1)].str);
-    ;}
+    if(!isBoolean((yyvsp[(1) - (3)].str)) || !isBoolean((yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "AND operator requires boolean operands");
+    }
+    
+    // Generate quadruples for logical AND
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    push(&Operandes_pile, "EXPRESSION", res_tmp, "LOGICAL");
+    
+    createQuadLogic(3, operande_left->operande_name, operande_right->operande_name, res_tmp);
+    
+    // Compute result for semantic analysis
+    bool val1 = strcmp((yyvsp[(1) - (3)].str), "true") == 0;
+    bool val2 = strcmp((yyvsp[(3) - (3)].str), "true") == 0;
+    bool result = val1 && val2;
+    
+    (yyval.str) = result ? strdup("true") : strdup("false");
+;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
 #line 403 "syntaxique.y"
-    {   
-        if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }   
-
-
-        StackNode* poppedOpernade2 = pop(&Operandes_pile);
-        StackNode* poppedOpernade1 = pop(&Operandes_pile);
-
-        char *T=strdup(Cree_temp());
-
-        quadr("*",poppedOpernade1->operande_name,poppedOpernade2->operande_name,T);
-
-        char *type=strdup(Calculer_type(poppedOpernade1->operande_type,poppedOpernade2->operande_type));
-
-        push(&Operandes_pile, "TERM", T, type);
-
-
-        (yyval.str)=strdup(mulEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-
-    ;}
+    {
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for comparison");
+    }
+    
+    // Generate quadruples for greater than comparison
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    push(&Operandes_pile, "EXPRESSION", res_tmp, "LOGICAL");
+    
+    createQuadCompare(6, operande_left->operande_name, operande_right->operande_name, res_tmp);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(gtEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 424 "syntaxique.y"
+#line 420 "syntaxique.y"
     {
-        if(isEntityZero((yyvsp[(3) - (3)].str))){
-            yyerror("Sementique error","","division sur zero.");
-        }else {
-            if (!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))) {
-                yyerror("Sementique error","","incompatible type.");
-            }  
-
-
-
-            StackNode* poppedOpernade2 = pop(&Operandes_pile);
-            StackNode* poppedOpernade1 = pop(&Operandes_pile);
-
-            char *T=strdup(Cree_temp());
-
-            quadr("/",poppedOpernade1->operande_name,poppedOpernade2->operande_name,T);
-
-            char *type=strdup(Calculer_type(poppedOpernade1->operande_type,poppedOpernade2->operande_type));
-
-            push(&Operandes_pile, "TERM", T, type);
-
-
-
-            (yyval.str)=strdup(divEntities((yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str)));
-        } 
-    ;}
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for comparison");
+    }
+    
+    // Generate quadruples for less than comparison
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    push(&Operandes_pile, "EXPRESSION", res_tmp, "LOGICAL");
+    
+    createQuadCompare(5, operande_left->operande_name, operande_right->operande_name, res_tmp);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(ltEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 450 "syntaxique.y"
+#line 437 "syntaxique.y"
     {
-        StackNode* poppedElement = pop(&Operandes_pile);
-        push(&Operandes_pile, "TERM", poppedElement->operande_name, poppedElement->operande_type);
-        (yyval.str)=(yyvsp[(1) - (1)].str);
-    ;}
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for comparison");
+    }
+    
+    // Generate quadruples for greater than or equal comparison
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    push(&Operandes_pile, "EXPRESSION", res_tmp, "LOGICAL");
+    
+    createQuadCompare(3, operande_left->operande_name, operande_right->operande_name, res_tmp);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(geEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 458 "syntaxique.y"
-    { 
-        StackNode* poppedElement = pop(&Operandes_pile);
-        push(&Operandes_pile, "FACTOR", poppedElement->operande_name, poppedElement->operande_type);
-        (yyval.str)=(yyvsp[(2) - (3)].str);
-        ;}
+#line 454 "syntaxique.y"
+    {
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for comparison");
+    }
+    
+    // Generate quadruples for less than or equal comparison
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    push(&Operandes_pile, "EXPRESSION", res_tmp, "LOGICAL");
+    
+    createQuadCompare(4, operande_left->operande_name, operande_right->operande_name, res_tmp);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(leEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 463 "syntaxique.y"
-    { 
-        StackNode* poppedElement = pop(&Operandes_pile);
-        push(&Operandes_pile, "FACTOR", poppedElement->operande_name, poppedElement->operande_type);
-        (yyval.str)=(yyvsp[(1) - (1)].str);
+#line 471 "syntaxique.y"
+    {
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for comparison");
+    }
     
-    ;}
+    // Generate quadruples for equality comparison
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    push(&Operandes_pile, "EXPRESSION", res_tmp, "LOGICAL");
+    
+    createQuadCompare(1, operande_left->operande_name, operande_right->operande_name, res_tmp);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(eqEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 473 "syntaxique.y"
+#line 488 "syntaxique.y"
     {
-        if(!Declarer((yyvsp[(1) - (1)].str))){
-            yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");
-        }
-        char *res=strdup(GetValFromTS((yyvsp[(1) - (1)].str)));
-        char *type=strdup(GetTypeFromTS((yyvsp[(1) - (1)].str)));// wela 9ader tejbed e type mel val b GetTypeFromVal mais ana seyiit nkhali koulech kima derna fel cour
-        // printf("\n\n------------val ta3 idf= %s\n\n",res);
-        if ((res==NULL || strcmp(res," ")==0) && (strstr(type, "ARGUMENT") == NULL)){
-            yyerror("Sementique error",(yyvsp[(1) - (1)].str),"n'a pas d'une valeur");
-        } else{
-            push(&Operandes_pile, "OPERAND", strdup((yyvsp[(1) - (1)].str)), type);
-            (yyval.str)=strdup(res);
-        }
-    ;}
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for comparison");
+    }
+    
+    // Generate quadruples for inequality comparison
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    push(&Operandes_pile, "EXPRESSION", res_tmp, "LOGICAL");
+    
+    createQuadCompare(2, operande_left->operande_name, operande_right->operande_name, res_tmp);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(neEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 487 "syntaxique.y"
+#line 505 "syntaxique.y"
     {
-        push(&Operandes_pile, "OPERAND", (yyvsp[(1) - (1)].str), "LOGICAL");
-        (yyval.str)=(yyvsp[(1) - (1)].str);
-    ;}
+    StackNode* poppedElement = pop(&Operandes_pile);
+    push(&Operandes_pile, "EXPRESSION", poppedElement->operande_name, poppedElement->operande_type);
+    (yyval.str) = (yyvsp[(1) - (1)].str);
+;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 492 "syntaxique.y"
+#line 512 "syntaxique.y"
     {
-        char backToStr[20];
-        sprintf(backToStr, "%d", (yyvsp[(1) - (1)].entier));
-        // printf("\npushed inti: %s \n", backToStr);
-        push(&Operandes_pile, "OPERAND", strdup(backToStr), "INTEGER");
-        (yyval.str)=strdup(backToStr);
-    ;}
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for addition");
+    }
+    
+    // Generate quadruples for addition
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* T = strdup(Cree_temp());
+    
+    quadr("+", operande_left->operande_name, operande_right->operande_name, T);
+    
+    char* type = strdup(Calculer_type(operande_left->operande_type, operande_right->operande_type));
+    
+    push(&Operandes_pile, "TERM", T, type);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(addEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 500 "syntaxique.y"
+#line 532 "syntaxique.y"
     {
-        char backToStr[20];
-        sprintf(backToStr, "%g", (yyvsp[(1) - (1)].reel));
-        push(&Operandes_pile, "OPERAND", backToStr, "REAL");
-        (yyval.str)=strdup(backToStr);
-    ;}
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for subtraction");
+    }
+    
+    // Generate quadruples for subtraction
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* T = strdup(Cree_temp());
+    
+    quadr("-", operande_left->operande_name, operande_right->operande_name, T);
+    
+    char* type = strdup(Calculer_type(operande_left->operande_type, operande_right->operande_type));
+    
+    push(&Operandes_pile, "TERM", T, type);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(subEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 507 "syntaxique.y"
+#line 552 "syntaxique.y"
     {
-        
-        if(!Declarer((yyvsp[(1) - (4)].str))){
-            yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare.");      
-        }
-        if(!verifier_in_out_table((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str)))
-            yyerror("Sementique error","","out of rang"); 
-        //strcpy(taille,$3);
-        char table[100];
-        char *tab_taille =strdup((yyvsp[(3) - (4)].str));
-        // printf("\n-----------------------------------------taille:%s\n",tab_taille);
-        
-
-
-        char final_str[1024] = "";
-        char temp[1024];
-        int firstElement = 1;
-
-        char *token = strtok(tab_taille, ",");
-        while (token != NULL) {
-
-            StackNode* operande_tmp = pop(&Operandes_pile);
-            if (firstElement) {
-                // For the first element, directly copy it to final_str
-                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
-                firstElement = 0; // Set the flag to 0 as the first element is added
-            } else {
-                // For subsequent elements, add a comma before the element
-                snprintf(temp, sizeof(temp), "%s,%s",operande_tmp->operande_name, final_str);
-                strcpy(final_str, temp); // Copy the temporary string back to final_str
-            }
-            token = strtok(NULL, ",");
-        }
-
-        sprintf(table, "%s(%s)", (yyvsp[(1) - (4)].str), final_str);
-        push(&Operandes_pile, "OPERAND", table, GetTypeFromTS((yyvsp[(1) - (4)].str)));
-        (yyval.str)=return_val_tab((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str));
-    ;}
+    StackNode* poppedElement = pop(&Operandes_pile);
+    push(&Operandes_pile, "TERM", poppedElement->operande_name, poppedElement->operande_type);
+    (yyval.str) = (yyvsp[(1) - (1)].str);
+;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 546 "syntaxique.y"
+#line 559 "syntaxique.y"
     {
-        //R2
-        // show_table();
-        // int p = lookup($2);
-        // printf("r2 look up p:%d\n",p);
-        // if (p==-1){
-        //     yyerror("Sementique error",$3,"est non declare.2");
-        // }else{
-        //     if(table_fct[p].util){
-        //         sprintf(tmp,"%d",table_fct[p].address);
-        //         quadr("BR---",tmp,"vide","vide");
-        //     }else{
-        //         sprintf(tmp,"%d",table_fct[p].address);
-        //         quadr("BR---",tmp,"vide","vide");
-        //         table_fct[p].address=qc;
-        //     }
-        //     push_int(&fin_routine, qc);
-        // }
-
-        //R2 fin 
-        if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)==1){
-            yyerror("Sementique error","","le nombre d'argument est uncorrect.");
-        }else if(verifier_nb_argument((yyvsp[(2) - (5)].str),nb_argument)==-1)
-            yyerror("Sementique error",(yyvsp[(2) - (5)].str),"est non declare.");
-        char *tab_taille =strdup((yyvsp[(4) - (5)].str));
-        // printf("\n-----------------------------------------taille:%s\n",tab_taille);
-        
-        
-        char final_str[1024] = "";
-        char temp[1024];
-        int firstElement = 1;
-
-        char *token = strtok(tab_taille, ",");
-        while (token != NULL) {
-
-            StackNode* operande_tmp = pop(&Operandes_pile);
-            if (firstElement) {
-                // For the first element, directly copy it to final_str
-                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
-                firstElement = 0; // Set the flag to 0 as the first element is added
-            } else {
-                // For subsequent elements, add a comma before the element
-                snprintf(temp, sizeof(temp), "%s,%s",operande_tmp->operande_name, final_str);
-                strcpy(final_str, temp); // Copy the temporary string back to final_str
-            }
-            token = strtok(NULL, ",");
-        }
-
-        char fonct[100];
-        sprintf(fonct, "%s(%s)", (yyvsp[(2) - (5)].str), final_str);
-        push(&Operandes_pile, "OPERAND", fonct, GetTypeFromTS((yyvsp[(2) - (5)].str)));
-
-        (yyval.str)=return_val_fonction((yyvsp[(2) - (5)].str));nb_argument=0;
-    ;}
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for multiplication");
+    }
+    
+    // Generate quadruples for multiplication
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* T = strdup(Cree_temp());
+    
+    quadr("*", operande_left->operande_name, operande_right->operande_name, T);
+    
+    char* type = strdup(Calculer_type(operande_left->operande_type, operande_right->operande_type));
+    
+    push(&Operandes_pile, "FACTOR", T, type);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(mulEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 601 "syntaxique.y"
+#line 579 "syntaxique.y"
     {
-        //R2
-        // show_table();
-        // int p = lookup($2);
-        // printf("r2 look up p:%d\n",p);
-        // if (p==-1){
-        //     yyerror("Sementique error",$3,"est non declare.2");
-        // }else{
-        //     if(table_fct[p].util){
-        //         sprintf(tmp,"%d",table_fct[p].address);
-        //         quadr("BR---",tmp,"vide","vide");
-        //     }else{
-        //         sprintf(tmp,"%d",table_fct[p].address);
-        //         quadr("BR---",tmp,"vide","vide");
-        //         table_fct[p].address=qc;
-        //     }
-        //     push_int(&fin_routine, qc);
-        // }
-
-        //R2 fin 
-        if(verifier_nb_argument((yyvsp[(2) - (4)].str),nb_argument)==1){
-            yyerror("Sementique error","","le nombre d'argument est uncorrect.");
-        }else if(verifier_nb_argument((yyvsp[(2) - (4)].str),nb_argument)==-1)
-            yyerror("Sementique error",(yyvsp[(2) - (4)].str),"est non declare.");
-
-        char fonct[100];
-        sprintf(fonct, "%s()", (yyvsp[(2) - (4)].str));
-        push(&Operandes_pile, "OPERAND", fonct, GetTypeFromTS((yyvsp[(2) - (4)].str)));
-
-        (yyval.str)=return_val_fonction((yyvsp[(2) - (4)].str));nb_argument=0;
-    ;}
+    if(isEntityZero((yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "division by zero");
+    }
+    
+    if(!canPerformArithmetic((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str))){
+        yyerror("Semantic error", "", "incompatible types for division");
+    }
+    
+    // Generate quadruples for division
+    StackNode* operande_right = pop(&Operandes_pile);
+    StackNode* operande_left = pop(&Operandes_pile);
+    
+    char* T = strdup(Cree_temp());
+    
+    quadr("/", operande_left->operande_name, operande_right->operande_name, T);
+    
+    char* type = strdup(Calculer_type(operande_left->operande_type, operande_right->operande_type));
+    
+    push(&Operandes_pile, "FACTOR", T, type);
+    
+    // Compute result for semantic analysis
+    (yyval.str) = strdup(divEntities((yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str)));
+;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 635 "syntaxique.y"
+#line 603 "syntaxique.y"
     {
-        char* final_str = malloc(strlen((yyvsp[(1) - (3)].str)) + strlen((yyvsp[(3) - (3)].str)) + 4 + 1);
-        sprintf(final_str, "%s,%s", (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str));
-        (yyval.str)=strdup(final_str);
-        nb_argument++;
-    ;}
+    StackNode* poppedElement = pop(&Operandes_pile);
+    push(&Operandes_pile, "FACTOR", poppedElement->operande_name, poppedElement->operande_type);
+    (yyval.str) = (yyvsp[(1) - (1)].str);
+;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 641 "syntaxique.y"
+#line 610 "syntaxique.y"
     {
-        (yyval.str)=strdup((yyvsp[(1) - (1)].str));
-        nb_argument++;;}
+    StackNode* poppedElement = pop(&Operandes_pile);
+    push(&Operandes_pile, "PRIMARY", poppedElement->operande_name, poppedElement->operande_type);
+    (yyval.str) = (yyvsp[(2) - (3)].str);
+;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 646 "syntaxique.y"
+#line 615 "syntaxique.y"
     {
-        if(!isInteger((yyvsp[(3) - (3)].str))){
-            yyerror("Sementique error",(yyvsp[(3) - (3)].str),"n'est pas un entier");
-        }
-        if(strtol((yyvsp[(3) - (3)].str), NULL, 10)<0){
-            yyerror("Sementique error",(yyvsp[(3) - (3)].str),"est negative");
-        }
-        
-        char* final_str = malloc(strlen((yyvsp[(1) - (3)].str)) + strlen((yyvsp[(3) - (3)].str)) + 4 + 1);
-        sprintf(final_str, "%s,%s", (yyvsp[(1) - (3)].str), (yyvsp[(3) - (3)].str));
-        // printf("\n-----------------------------------------final str ta3 TAILLE MOR SPRINTF:%s\n",final_str);
-        (yyval.str)=strdup(final_str);
-        // printf("\n-----------------------------------------str ta3 $$ TAILLE:%s\n",$$);
-    ;}
+    if(!isBoolean((yyvsp[(2) - (2)].str)) && !canBeBoolean((yyvsp[(2) - (2)].str))){
+        yyerror("Semantic error", "", "NOT operator requires boolean operand");
+    }
+    
+    // Generate quadruple for logical NOT
+    StackNode* operande = pop(&Operandes_pile);
+    
+    char* res_tmp = strdup(Cree_temp_cond());
+    
+    quadr("NOT", operande->operande_name, "vide", res_tmp);
+    
+    push(&Operandes_pile, "PRIMARY", res_tmp, "LOGICAL");
+    
+    // Compute result for semantic analysis
+    bool val = strcmp((yyvsp[(2) - (2)].str), "true") == 0;
+    (yyval.str) = !val ? strdup("true") : strdup("false");
+;}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 660 "syntaxique.y"
+#line 633 "syntaxique.y"
     {
-        if(!isInteger((yyvsp[(1) - (1)].str))){
-            yyerror("Sementique error",(yyvsp[(1) - (1)].str),"n'est pas un entier");
-        }
-        if(strtol((yyvsp[(1) - (1)].str), NULL, 10)<0){
-            yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est negative");
-        }
-        
-        (yyval.str)=strdup((yyvsp[(1) - (1)].str));
-    ;}
+    StackNode* poppedElement = pop(&Operandes_pile);
+    push(&Operandes_pile, "PRIMARY", poppedElement->operande_name, poppedElement->operande_type);
+    (yyval.str) = (yyvsp[(1) - (1)].str);
+;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 671 "syntaxique.y"
-    {(yyval.str)=strdup("true");;}
+#line 638 "syntaxique.y"
+    {
+    StackNode* poppedElement = pop(&Operandes_pile);
+    push(&Operandes_pile, "PRIMARY", poppedElement->operande_name, poppedElement->operande_type);
+    (yyval.str) = (yyvsp[(1) - (1)].str);
+;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 672 "syntaxique.y"
-    {(yyval.str)=strdup("false");;}
+#line 645 "syntaxique.y"
+    {
+    char backToStr[20];
+    sprintf(backToStr, "%d", (yyvsp[(1) - (1)].entier));
+    push(&Operandes_pile, "VALUE", strdup(backToStr), "INTEGER");
+    (yyval.str) = strdup(backToStr);
+;}
+    break;
+
+  case 58:
+
+/* Line 1455 of yacc.c  */
+#line 651 "syntaxique.y"
+    {
+    char backToStr[20];
+    sprintf(backToStr, "%g", (yyvsp[(1) - (1)].reel));
+    push(&Operandes_pile, "VALUE", strdup(backToStr), "FLOAT");
+    (yyval.str) = strdup(backToStr);
+;}
+    break;
+
+  case 59:
+
+/* Line 1455 of yacc.c  */
+#line 657 "syntaxique.y"
+    {
+    push(&Operandes_pile, "VALUE", (yyvsp[(1) - (1)].str), "CHAR");
+    (yyval.str) = (yyvsp[(1) - (1)].str);
+;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 676 "syntaxique.y"
-    {Declarer((yyvsp[(3) - (3)].str));nb_argument++;;}
+#line 661 "syntaxique.y"
+    {
+    push(&Operandes_pile, "VALUE", (yyvsp[(1) - (1)].str), "STRING");
+    (yyval.str) = (yyvsp[(1) - (1)].str);
+;}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 676 "syntaxique.y"
-    {Declarer((yyvsp[(1) - (1)].str));nb_argument++;;}
-    break;
-
-  case 77:
-
-/* Line 1455 of yacc.c  */
-#line 691 "syntaxique.y"
+#line 665 "syntaxique.y"
     {
-        StackNode* operande_tmp = pop(&Operandes_pile);
-    ;}
-    break;
-
-  case 78:
-
-/* Line 1455 of yacc.c  */
-#line 694 "syntaxique.y"
-    {
-        StackNode* operande_tmp = pop(&Operandes_pile);
-    ;}
-    break;
-
-  case 79:
-
-/* Line 1455 of yacc.c  */
-#line 699 "syntaxique.y"
-    {
-        if(!Declarer((yyvsp[(1) - (1)].str))){
-            yyerror("Sementique error",(yyvsp[(1) - (1)].str),"est non declare.");
-        }
-        char *type=strdup(GetTypeFromTS((yyvsp[(1) - (1)].str)));
-        push(&Operandes_pile, "OPERAND", strdup((yyvsp[(1) - (1)].str)), type);
-        (yyval.str)=strdup((yyvsp[(1) - (1)].str));
-    ;}
-    break;
-
-  case 80:
-
-/* Line 1455 of yacc.c  */
-#line 707 "syntaxique.y"
-    {
-        // printf("\n-----------------------------------------taille ta3 $3 1:%s\n",$3);
-        if(!Declarer((yyvsp[(1) - (4)].str))){
-            yyerror("Sementique error",(yyvsp[(1) - (4)].str),"est non declare."); 
-        }
-        if(!verifier_in_out_table((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str))){
-            yyerror("Sementique error","","out of rang"); 
-        }
-
-        char table[100];
-        char *tab_taille =strdup((yyvsp[(3) - (4)].str));
-        char final_str[1024] = "";
-        char temp[1024];
-        int firstElement = 1;
-
-        char *token = strtok(tab_taille, ",");
-        while (token != NULL) {
-
-            StackNode* operande_tmp = pop(&Operandes_pile);
-            if (firstElement) {
-                // For the first element, directly copy it to final_str
-                snprintf(final_str, sizeof(final_str), "%s", operande_tmp->operande_name);
-                firstElement = 0; // Set the flag to 0 as the first element is added
-            } else {
-                // For subsequent elements, add a comma before the element
-                snprintf(temp, sizeof(temp), "%s,%s",operande_tmp->operande_name, final_str);
-                strcpy(final_str, temp); // Copy the temporary string back to final_str
-            }
-            token = strtok(NULL, ",");
-        }
-
-        sprintf(table, "%s(%s)", (yyvsp[(1) - (4)].str), final_str);
-        push(&Operandes_pile, "OPERAND", table, GetTypeFromTS((yyvsp[(1) - (4)].str)));
-
-
-        (yyval.str)=(yyvsp[(1) - (4)].str);
-        
-        strcpy(taille,(yyvsp[(3) - (4)].str));
-        // printf("\n-----------------------------------------taille ta3 $3 2:%s\n",taille);
-    ;}
-    break;
-
-  case 81:
-
-/* Line 1455 of yacc.c  */
-#line 748 "syntaxique.y"
-    {
-    sprintf(tmp,"%d",qc);
-    ajour_quad(pop_int(&Fin_if),1,tmp);
-    printf("pgm juste");
+    push(&Operandes_pile, "VALUE", "true", "LOGICAL");
+    (yyval.str) = strdup("true");
 ;}
     break;
 
-  case 82:
+  case 62:
 
 /* Line 1455 of yacc.c  */
-#line 754 "syntaxique.y"
+#line 669 "syntaxique.y"
     {
-    // Fin_if=qc;
-    push_int(&Fin_if, qc);
-    quadr("BR", "","vide", "vide");
-    sprintf(tmp,"%d",qc); // transformer entier vers string
-    ajour_quad(pop_int(&deb_else),1,tmp);
+    push(&Operandes_pile, "VALUE", "false", "LOGICAL");
+    (yyval.str) = strdup("false");
 ;}
     break;
 
-  case 83:
-
-/* Line 1455 of yacc.c  */
-#line 762 "syntaxique.y"
-    {
-    // deb_else=qc; // J'ai laisser le champs 2 vide. Je dois le remplir apres
-    push_int(&deb_else, qc);
-    StackNode* operande_tmp = pop(&Operandes_pile);
-    quadr("BZ", "",strdup(operande_tmp->operande_name), "vide");
-;}
-    break;
-
-  case 86:
-
-/* Line 1455 of yacc.c  */
-#line 772 "syntaxique.y"
-    {   
-        if (!areCompatible(GetTypeFromTS((yyvsp[(1) - (4)].str)), (yyvsp[(3) - (4)].str))) {
-            yyerror("Sementique error","","incompatible type.");
-        }
-        // printf("\n\n------------yes they are compatible for the assignment\n\n");
-        if(strstr(GetTypeFromTS((yyvsp[(1) - (4)].str)),"TABLEAU")!=NULL){
-            A_M_tab((yyvsp[(1) - (4)].str), taille, (yyvsp[(3) - (4)].str));
-            char table[100];
-
-        }else {
-            if (!SetValInTS((yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str))){
-                yyerror("Sementique error",(yyvsp[(1) - (4)].str),",affectation non accepte.");
-            }
-        }
-
-        StackNode* operande_tmp = pop(&Operandes_pile);
-        StackNode* poppedElement_var = pop(&Operandes_pile);
-        
-        quadr("=", operande_tmp->operande_name,"vide", poppedElement_var->operande_name);
-        (yyval.str)=(yyvsp[(1) - (4)].str);
-    ;}
-    break;
-
-  case 87:
-
-/* Line 1455 of yacc.c  */
-#line 795 "syntaxique.y"
-    {
-        push(&Operandes_pile, "valeur", (yyvsp[(1) - (1)].str), "CHARACTER");
-        (yyval.str)=strdup((yyvsp[(1) - (1)].str));
-    ;}
-    break;
-
-  case 88:
-
-/* Line 1455 of yacc.c  */
-#line 799 "syntaxique.y"
-    {
-        StackNode* poppedElement = pop(&Operandes_pile);
-        push(&Operandes_pile, "valeur", poppedElement->operande_name, poppedElement->operande_type);
-        (yyval.str)=(yyvsp[(1) - (1)].str);
-    ;}
-    break;
-
-  case 89:
-
-/* Line 1455 of yacc.c  */
-#line 805 "syntaxique.y"
-    {StackNode* operande_tmp = pop(&Operandes_pile);;}
-    break;
-
-  case 92:
-
-/* Line 1455 of yacc.c  */
-#line 809 "syntaxique.y"
-    {StackNode* operande_tmp = pop(&Operandes_pile);;}
-    break;
-
-  case 94:
-
-/* Line 1455 of yacc.c  */
-#line 809 "syntaxique.y"
-    {StackNode* operande_tmp = pop(&Operandes_pile);;}
-    break;
-
-  case 95:
-
-/* Line 1455 of yacc.c  */
-#line 811 "syntaxique.y"
-    {
-    sprintf(tmp,"%d",pop_int(&deb_while));
-    quadr("BR", tmp,"vide", "vide");
-    sprintf(tmp,"%d",qc);
-    ajour_quad(pop_int(&Fin_while),1,tmp);
-;}
-    break;
-
-  case 96:
-
-/* Line 1455 of yacc.c  */
-#line 818 "syntaxique.y"
-    {
-    push_int(&Fin_while, qc);
-    StackNode* operande_tmp = pop(&Operandes_pile);
-    quadr("BZ", "",strdup(operande_tmp->operande_name), "vide");
-;}
-    break;
-
-  case 97:
-
-/* Line 1455 of yacc.c  */
-#line 824 "syntaxique.y"
-    {
-    push_int(&deb_while, qc);
-;}
-    break;
-
-  case 98:
-
-/* Line 1455 of yacc.c  */
-#line 829 "syntaxique.y"
-    {
-        if (isBoolean((yyvsp[(1) - (1)].str))) {
-            (yyval.str)=(yyvsp[(1) - (1)].str);
-        } else {
-            yyerror("Sementique error",(yyvsp[(1) - (1)].str),"is not boolean");
-        }
-    ;}
-    break;
-
 
 
 /* Line 1455 of yacc.c  */
-#line 2613 "syntaxique.tab.c"
+#line 2350 "syntaxique.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2821,7 +2558,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 838 "syntaxique.y"
+#line 675 "syntaxique.y"
 
 
 int main(int argc, char** argv)
@@ -2830,35 +2567,47 @@ int main(int argc, char** argv)
         file_name = argv[1];
         FILE* file = fopen(argv[1], "r");
         if (!file) {
-            // Handle error
-            perror("Cannot open input_file.txt");
+            perror("Cannot open input file");
             return EXIT_FAILURE;
         }
         yyin = file;
     }
-    yyparse();
-    yylex();
+    
+    yyparse(); // Launch syntactic analyzer
+    yylex();   // Launch lexical analyzer
+    
+    printf("Analyse lexicale et syntaxique terminee avec succes.\n");
+    printf("Affichage de la table des symboles.\n");
     afficher();
+    printf("Affichage des quadruplets.\n");
     afficher_qdr();
     
     if (yyin != stdin) {
         fclose(yyin);
     }
+    printf("Affichage de la pile.\n");
     afficher_pile(Operandes_pile);
     
-   return 0;
- }
- yywrap ()
- {}
+    return 0;
+}
 
-// int yyerror ( char*  msg )
-//  {
-//     printf("File \"%s\", line %d, character %d: %s\n",file_name, nb_ligne, Col,msg);
-//     exit(EXIT_FAILURE);
-//   }
-int yyerror ( char*  msg, char* entite, char* description)
- {
+yywrap()
+{}
+
+int yyerror(char* msg, char* entite, char* description)
+{
     printf("File \"%s\", line %d, character %d: %s, %s %s\n", file_name, nb_ligne, Col, msg, entite, description);
+    
+    printf("Affichage de la table des symboles.\n");
+    afficher();
+    printf("Affichage des quadruplets.\n");
+    afficher_qdr();
+    
+    if (yyin != stdin) {
+        fclose(yyin);
+    }
+    printf("Affichage de la pile.\n");
+    afficher_pile(Operandes_pile);
+    
     exit(EXIT_FAILURE);
-  }
-
+} 

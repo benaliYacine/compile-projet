@@ -1,0 +1,25 @@
+Program
+DATA
+    INTEGER: Counter;  
+    FLOAT: Value1 | Value2;  
+    STRING: Message;  
+    VECTOR: Scores[0, 5: INTEGER];  
+    CONST: PI = 3.14;
+    CONST: MAX = "100";  
+END
+CODE
+    Total = 0;
+    PI = 3.0;  
+    DISPLAY("Value is #": Value1);  
+    scores[6] = 10;  
+    Value1 = 10 / (MAX - 100);  
+    IF(((counter.G.0))):  
+        Value1 = 5;
+    END
+    Value1 = Value1 + Message;  
+    IF((counter.G.0) AND (Value1.L.10)):  
+        counter = counter + 1;
+    END
+    Value1 = (Value1 + 5 * (2 + 3));  
+END
+END 
