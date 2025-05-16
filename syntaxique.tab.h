@@ -40,50 +40,54 @@
       know about them.  */
    enum yytokentype {
      idf = 258,
-     eq = 259,
-     mc_data = 260,
-     mc_code = 261,
-     mc_end = 262,
-     mc_vector = 263,
-     inti = 264,
-     real = 265,
-     mc_integer = 266,
-     mc_float = 267,
-     mc_char = 268,
-     mc_string = 269,
-     mc_const = 270,
-     mc_read = 271,
-     mc_display = 272,
-     pvg = 273,
-     str = 274,
-     ch = 275,
+     str = 259,
+     character = 260,
+     inti = 261,
+     real = 262,
+     mc_logi = 263,
+     mc_data = 264,
+     mc_end = 265,
+     mc_code = 266,
+     mc_integer = 267,
+     verg = 268,
+     mc_float = 269,
+     mc_char = 270,
+     mc_string = 271,
+     mc_const = 272,
+     mc_vector = 273,
+     mc_read = 274,
+     mc_display = 275,
      mc_if = 276,
      mc_else = 277,
      mc_for = 278,
      mc_not = 279,
-     deux_points = 280,
-     crochet_ouv = 281,
-     crochet_ferm = 282,
-     par_ouv = 283,
-     par_ferm = 284,
-     virgule = 285,
-     barre = 286,
-     arobase = 287,
-     plus = 288,
-     minus = 289,
-     mul = 290,
-     divi = 291,
-     err = 292,
-     mc_and = 293,
-     mc_or = 294,
-     mc_g = 295,
-     mc_l = 296,
-     mc_ge = 297,
-     mc_le = 298,
-     mc_eq = 299,
-     mc_di = 300,
-     mc_true = 301,
-     mc_false = 302
+     mc_true = 280,
+     mc_false = 281,
+     mc_and = 282,
+     mc_or = 283,
+     mc_g = 284,
+     mc_l = 285,
+     mc_ge = 286,
+     mc_le = 287,
+     mc_eq = 288,
+     mc_di = 289,
+     add = 290,
+     sub = 291,
+     mul = 292,
+     divi = 293,
+     aff = 294,
+     mc_dowhile = 295,
+     mc_enddo = 296,
+     pvg = 297,
+     deux_points = 298,
+     crochet_ouv = 299,
+     crochet_ferm = 300,
+     po = 301,
+     pf = 302,
+     virg = 303,
+     barre = 304,
+     arobase = 305,
+     err = 306
    };
 #endif
 
@@ -94,16 +98,16 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 28 "syntaxique.y"
+#line 30 "syntaxique.y"
 
-    int entier;
-    char* str;
-    float reel;
+         int     entier;
+         char*   str;
+         float reel;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 107 "syntaxique.tab.h"
+#line 111 "syntaxique.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -79,7 +79,7 @@ char *return_val_tab(char name[], char taille1[]);
 
 void A_M_tab(char name[], char taille1[], char val[]);
 
-int initiali_tab(char name[], char taille1[]);
+void initiali_tab(char name[], char taille1[]);
 
 void initialisation();
 
@@ -133,6 +133,7 @@ bool isBoolean(const char *str);
 
 bool isString(const char *str);
 
+bool isCharacter(const char *str);
 char *GetTypeFromTS(char entite[]);
 
 char *GetValFromTS(char entite[]);

@@ -39,6 +39,7 @@ LOGICAL D=TRUE;
 % Déclarations;
 INTEGER A=5;
 INTEGER B=5;
+INTEGER i=1;
 CHARACTER E="this is a string";
 LOGICAL C;
 REAL Y;
@@ -51,6 +52,13 @@ ENDIF
 DOWHILE(2.LT.6.AND.A.EQ.9) 
     WRITE("ASFD","AFSD",B);
 ENDDO
+
+% Testing FOR loop
+FOR (i ,2 ,i.LT.10)
+    Y=Y+1;
+    i=i+1;
+    WRITE("Current value of i:", i);
+END
 
 Y=tab2(0);
 Y=CALL FARID(A,B);

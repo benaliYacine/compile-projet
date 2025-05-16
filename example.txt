@@ -1,0 +1,127 @@
+TestProg § My main test program for PHYLOG compiler
+
+DATA § Start of data declaration block
+    § Simple variable declarations
+    INTEGER: VarInt1 | VarInt2 | ResultInt =1 ;
+    FLOAT: VarFloat1 | VarFloat2 = 2.0 | ResultFloat;
+    CHAR: VarChar1 | AnotherChar;
+    STRING: VarString1 | GreetingStr;
+
+    § Array (VECTOR) declarations
+    § VECTOR: IntArray [5: INTEGER];
+    § Constant declarations
+    CONST: PiVal = 3.14159;
+    CONST: MaxCount = 100;
+    CONST: MinVal = (-50);
+    CONST: SmallFloat = (0.001);
+    CONST: SignChar = '!';
+    CONST: WelcomeMsg = "Welcome to PHYLOG";
+    CONST: NegativeFloat = (-2.5);
+
+    § Loop counter
+    INTEGER: LoopVar;
+    INTEGER: AnotherCounter;
+
+    § Boolean-like variables (using integers 0 or 1)
+    INTEGER: IsValid | HasError;
+END § End of DATA block
+
+CODE § Start of code block
+    § Comments can be here too
+    § Initialize some variables
+    VarInt1 = 10;
+    VarInt2 = MaxCount + MinVal; § 100 + (-50) = 50
+    VarFloat1 = PiVal * (2.0);
+    VarChar1 = 'S';
+    VarString1 = "Initial String";
+    IsValid = 1; § True
+    HasError = 0; § False
+
+    § Input operations
+    DISPLAY("Enter an integer for VarInt2: $": VarInt2); 
+    READ("$": @VarInt2);
+    DISPLAY("Enter a float for VarFloat2: %": VarFloat2);
+    READ("%": @VarFloat2);
+    DISPLAY("Enter a string for GreetingStr: #": GreetingStr);
+    READ("#": @GreetingStr);
+    DISPLAY("Enter a char for AnotherChar: &": AnotherChar);
+    READ("&": @AnotherChar);
+
+    § Arithmetic operations
+    ResultInt = (VarInt1 * VarInt2 + 100) / (2);
+    ResultInt = ResultInt - MinVal; § Arithmetic with a negative constant
+    ResultFloat = (VarFloat1 + VarFloat2 - SmallFloat) * NegativeFloat;
+
+
+    § § DISPLAY results
+    DISPLAY("VarInt1 value is $": VarInt1);
+    DISPLAY("VarInt2 (after read) is $": VarInt2);
+    DISPLAY("ResultInt is $": ResultInt);
+    DISPLAY("VarFloat1 value is %": VarFloat1);
+    DISPLAY("VarFloat2 (after read) is %": VarFloat2);
+    DISPLAY("ResultFloat is %": ResultFloat);
+    DISPLAY("VarChar1 value is &": VarChar1);
+    DISPLAY("AnotherChar (after read) is &": AnotherChar);
+    DISPLAY("VarString1 value is #": VarString1);
+    DISPLAY("GreetingStr (after read) is #": GreetingStr);
+    DISPLAY("Constant WelcomeMsg is #": WelcomeMsg);
+    DISPLAY("Constant SignChar is &": SignChar);
+
+    § IF Condition with logical operators
+    IF ((VarInt2 .GE. 0) .AND. (NOT (VarInt2 .EQ. MaxCount))):
+        DISPLAY("VarInt2 is positive AND not equal to MaxCount. Value $": VarInt2);
+        VarInt1 = VarInt1 + 1;
+    ELSE:
+        DISPLAY("VarInt2 is negative OR equal to MaxCount. Value $": VarInt2);
+        VarInt1 = VarInt1 - 1;
+    END
+
+    § Nested IF and other comparison operators
+    IF (ResultFloat .L. (0.0)):
+        DISPLAY("ResultFloat is negative: %": ResultFloat); 
+    ELSE:
+        IF (ResultFloat .EQ. (0.0)):
+            DISPLAY("ResultFloat is zero. %": ResultFloat);
+        ELSE:
+            DISPLAY("ResultFloat is positive: %": ResultFloat);
+        END
+    END
+
+    § Another IF using OR and .LE.
+    IF ((IsValid .EQ. 1) .OR. (HasError .EQ. 0)):
+        DISPLAY("IsValid is true OR HasError is false (expected).$": IsValid);
+       
+        IF (VarInt1 .LE. MaxCount + 10):
+             DISPLAY("Sum of first two array elements is LE MaxCount+10. Sum: $": VarInt1);
+        END
+    END
+
+
+    § FOR Loop
+    DISPLAY("Starting FOR loop to populate IntArray further and DISPLAY:$": LoopVar);
+    FOR (LoopVar: VarInt1: VarInt1.LE.4)
+        § DISPLAY("IntArray[LoopVar] (index $) is now $": LoopVar, IntArray[LoopVar]); 
+    END
+
+    § DISPLAY array elements after loop
+    § DISPLAY("IntArray[0] after loop: $": IntArray[0]);
+    § DISPLAY("IntArray[1] after loop: $": IntArray[1]);
+    § DISPLAY("IntArray[2] after loop: $": IntArray[2]);
+    § DISPLAY("IntArray[3] after loop: $": IntArray[3]);
+    § DISPLAY("IntArray[4] after loop: $": IntArray[4]);
+
+    § DISPLAY("FloatArr[1] value is %": FloatArr[1]);
+    § DISPLAY("FloatArr[2] value is %": FloatArr[2]);
+    § DISPLAY("FloatArr[3] value is %": FloatArr[3]);
+
+    § Test expressions with signed constants in parentheses
+    ResultInt = VarInt1 + (-10);
+    DISPLAY("ResultInt after adding (-10) is $": ResultInt);
+    ResultFloat = VarFloat1 / (-2.0);
+    DISPLAY("ResultFloat after dividing by (-2.0) is %": ResultFloat);
+
+    § Final simple assignment example
+    DISPLAY("Final message: #": VarString1);
+
+END § End of CODE block
+END § End of Program

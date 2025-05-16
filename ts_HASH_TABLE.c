@@ -160,6 +160,7 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
     }
     if (tab_idf_pointer == NULL)
     {
+      
 
       // printf("---jddiiid\n");
       inserer(entite, code, type, val, 0, hash_index, taille, P_OU_F);
@@ -381,7 +382,7 @@ void A_M_tab(char name[], char taille1[], char val[])
     strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[j].dim2[tab[0]][tab[1]].entite, val);
   }
 }
-int initiali_tab(char name[], char taille1[])
+void initiali_tab(char name[], char taille1[])
 {
 
   int tab1[2], i = 0, j = 0, k = 0, l = 0;
@@ -429,6 +430,7 @@ int initiali_tab(char name[], char taille1[])
       for (k = 0; k < tab1[1]; k++)
         strcpy(F_P_TABLE[POSITION_F_P_tables].Table_LES_TABLEAUX[i].dim2[j][k].entite, "");
   }
+
 }
 int Declarer(char entite[])
 {
@@ -519,7 +521,7 @@ char *GetTypeFromVal(char entite[])
   }
   else if (isFloat(entite))
   {
-    return "REAL";
+    return "FLOAT";
   }
   else if (isBoolean(entite))
   {
@@ -527,7 +529,11 @@ char *GetTypeFromVal(char entite[])
   }
   else if (isString(entite))
   {
-    return "CHARACTER";
+    return "STRING";
+  }
+  else if (isCharacter(entite))
+  {
+    return "CHAR";
   }
   else
   {
@@ -540,10 +546,12 @@ bool isTypeString(char *entity)
 {
   // printf("type entite: %s\n", entity);
   if (strstr(entity, "INTEGER") != NULL ||
-      strstr(entity, "REAL") != NULL ||
-      strstr(entity, "CHARACTER") != NULL ||
+      strstr(entity, "FLOAT") != NULL ||
+      strstr(entity, "STRING") != NULL ||
+      strstr(entity, "CHAR") != NULL ||
       strstr(entity, "ARGUMENT") != NULL ||
-      strstr(entity, "LOGICAL") != NULL)
+      strstr(entity, "LOGICAL") != NULL ||
+      strstr(entity, "CONST") != NULL)
   {
     return true;
   }
@@ -565,7 +573,15 @@ bool areCompatible(char entite1[], char entite2[])
   }
   else
   {
-    type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
+    char *ts_type = GetTypeFromTS(entite1);
+    if (ts_type != NULL)
+    {
+      type1 = strdup(ts_type); // Get type from symbol table
+    }
+    else
+    {
+      type1 = strdup(GetTypeFromVal(entite1)); // Determine type using GetTypeFromVal
+    }
   }
 
   if (isTypeString(entite2))
@@ -574,15 +590,24 @@ bool areCompatible(char entite1[], char entite2[])
   }
   else
   {
-    type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
+    char *ts_type = GetTypeFromTS(entite2);
+    if (ts_type != NULL)
+    {
+      type2 = strdup(ts_type); // Get type from symbol table
+    }
+    else
+    {
+      type2 = strdup(GetTypeFromVal(entite2)); // Determine type using GetTypeFromVal
+    }
   }
 
   // printf("\n\n------------now we want to compare %s with %s\n\n", type1, type2);
+  
   if (strstr(type1, type2) != NULL || strstr(type1, "ARGUMENT") != NULL || strstr(type2, "ARGUMENT") != NULL)
   { // Same type
     return true;
   }
-  if (strstr(type1, "REAL") != NULL && strstr(type2, "INTEGER") != NULL)
+  if (strstr(type1, "FLOAT") != NULL && strstr(type2, "INTEGER") != NULL)
     return true;
   else
   {
@@ -606,8 +631,8 @@ bool canPerformArithmetic(char entite1[], char entite2[])
   // printf("\n\n------------entities are= %s,%s\n\n", entite1, entite2);
   // printf("\n\n------------types are= %s,%s\n\n", type1, type2);
   // Check if both types are either INTEGER or FLOAT
-  bool isType1Numeric = (strstr(type1, "INTEGER") != NULL || strstr(type1, "REAL") != NULL || strstr(type1, "ARGUMENT") != NULL);
-  bool isType2Numeric = (strstr(type2, "INTEGER") != NULL || strstr(type2, "REAL") != NULL || strstr(type2, "ARGUMENT") != NULL);
+  bool isType1Numeric = (strstr(type1, "INTEGER") != NULL || strstr(type1, "FLOAT") != NULL || strstr(type1, "ARGUMENT") != NULL);
+  bool isType2Numeric = (strstr(type2, "INTEGER") != NULL || strstr(type2, "FLOAT") != NULL || strstr(type2, "ARGUMENT") != NULL);
   // strstr pour INTEGER FOCTION ...
   return isType1Numeric && isType2Numeric;
 }
@@ -817,6 +842,18 @@ char *leEntities(char entite1[], char entite2[])
     return (val1 <= val2) ? "true" : "false";
   }
 }
+char *notEntities(char entite1[])
+{
+  char *type = GetTypeFromVal(entite1);
+  if (strcmp(type, "LOGICAL") == 0)
+  {
+    return (strcmp(entite1, "true") == 0) ? "false" : "true";
+  }
+  else
+  {
+    return "false";
+  }
+}
 
 float convertStrToFloat(char *entite)
 {
@@ -868,7 +905,7 @@ int Operation(char op1[], char op2[])
     return 1;
   }
 
-  else if (strcmp(tab_idf_pointer_1->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_2->type, "REAL") == 0 || strcmp(tab_idf_pointer_2->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_1->type, "REAL") == 0)
+  else if (strcmp(tab_idf_pointer_1->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_2->type, "FLOAT") == 0 || strcmp(tab_idf_pointer_2->type, "INTEGER") == 0 && strcmp(tab_idf_pointer_1->type, "FLOAT") == 0)
   {
 
     return 1;
@@ -919,6 +956,20 @@ bool isString(const char *str)
     return false;
 
   return true;
+}
+
+bool isCharacter(const char *str)
+{
+  // Check if the first character is a single quote
+  if (str[0] != '\'')
+    return false;
+
+  // Check if the last character is a single quote and it's not the same as the first character
+  if (str[strlen(str) - 1] != '\'' || strlen(str) == 1)
+    return false;
+
+  // A character should have exactly one character between the quotes (length = 3)
+  return strlen(str) == 3;
 }
 
 char *GetTypeFromTS(char entite[])
@@ -1050,9 +1101,9 @@ char *Cree_temp_cond()
 
 char *Calculer_type(char type1[], char type2[])
 {
-  if (strstr(type1, "REAL") != NULL || strstr(type2, "REAL") != NULL)
+  if (strstr(type1, "FLOAT") != NULL || strstr(type2, "FLOAT") != NULL)
   {
-    return "REAL";
+    return "FLOAT";
   }
   else
   {

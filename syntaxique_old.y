@@ -24,6 +24,8 @@
     int nb_argument=0;
     extern char *type;
     char taille[20];
+    StackNode_int *deb_for = NULL;
+    StackNode_int *Fin_for = NULL;
 
 %}
 
@@ -33,7 +35,7 @@
          float reel;
 }
 //kamel wech treturner f lexical hna 
-%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err 
+%token <str>idf aff mc_prgrm mc_rtin <entier>inti <reel>real mc_endr mc_call mc_dim mc_logi mc_char mc_true mc_false mc_read mc_write pvg <str>str mc_int mc_real mc_end mc_if mc_then mc_else mc_dowhile mc_enddo mc_equival mc_or ge eq ne le add sub mul divi mc_and mc_endif lt gt po pf verg err mc_for
 //hna dir asociativite et la priorite lekher howa le plus prioritere
 //9ader ir = right
 %left lt gt ge eq ne le
@@ -58,6 +60,7 @@
 %type <str> ENSpara
 %type <str> assignment
 %type <str> debut_fct
+%type <str> for_statement
 
 
 %% // soit dir start s beli l axiom howa s soit ma dirt howa par defaut ydi lewel kima hna s
@@ -682,9 +685,9 @@ INSTS: VIDE | ENSINST
 ;
 ENSINST: ENSINST INST | INST
 ;
-INST: if_statement | read_statement | write_statement | dowhile_statement | assignment | eqival_statement
+INST: if_statement | read_statement | write_statement | dowhile_statement | assignment | eqival_statement | for_statement
 ;
-eqival_statement : mc_equival ens_list_vars pvg
+eqival_statement : mc_equival ens_list_var pvg
 ;
 ens_list_vars: ens_list_var | VIDE
 ;
@@ -836,6 +839,45 @@ CONDI
             yyerror("Sementique error",$1,"is not boolean");
         }
     }
+;
+
+for_statement: A_for ENSINST mc_end {
+    // Go back to loop condition
+    sprintf(tmp, "%d", pop_int(&deb_for));
+    quadr("BR", tmp, "vide", "vide");
+    
+    // Update the exit jumps
+    sprintf(tmp, "%d", qc);
+    ajour_quad(pop_int(&Fin_for), 1, tmp);
+}
+;
+
+A_for: mc_for po idf verg valeur verg CONDI pf {
+    // Check if the counter variable is declared
+    if(!Declarer($3)){
+        yyerror("Sementique error", $3, "est non declare.");
+    }
+    
+    // Check if the step is valid (integer)
+    if(!isInteger($5)){
+        yyerror("Sementique error", $5, "n'est pas un entier valide pour le pas.");
+    }
+    
+    // Initialize counter variable with the step value
+    char *T = strdup(Cree_temp());
+    quadr("=", $5, "vide", T);
+    quadr("+", $3, T, $3);
+    
+    // Store position for loop condition
+    push_int(&deb_for, qc);
+    
+    // Evaluate condition
+    StackNode* operande_tmp = pop(&Operandes_pile);
+    
+    // Create conditional jump to exit loop if condition is false
+    push_int(&Fin_for, qc);
+    quadr("BZ", "", operande_tmp->operande_name, "vide");
+}
 ;
 
 %%

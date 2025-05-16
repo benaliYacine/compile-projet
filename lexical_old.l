@@ -48,6 +48,7 @@ real (-{chiffre}+|{chiffre}+)\.{chiffre}+
 "DOWHILE" {rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_dowhile;}
 "ENDDO" {rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_enddo;}
 "EQUIVALENCE" {rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_equival;}
+"FOR" {rechercher(yytext,"Mot cle"," "," ", 1," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_for;}
 
 
 ".OR." {rechercher(yytext,"separateur"," "," ", 2," ",P_OU_F); Col= Col + strlen(yytext); printf (" L entite lexicale reconnue est %s \n", yytext);return mc_or;}

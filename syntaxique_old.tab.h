@@ -81,7 +81,8 @@
      po = 297,
      pf = 298,
      verg = 299,
-     err = 300
+     err = 300,
+     mc_for = 301
    };
 #endif
 
@@ -92,7 +93,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 30 "syntaxique_old.y"
+#line 32 "syntaxique_old.y"
 
          int     entier;
          char*   str;
@@ -101,7 +102,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 105 "syntaxique_old.tab.h"
+#line 106 "syntaxique_old.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
