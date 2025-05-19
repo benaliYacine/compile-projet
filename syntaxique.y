@@ -5,7 +5,7 @@
     #include "ts_HASH_TABLE.c"
     #include "int_pile.c"
     #include "expre_pile.c"
-    #include "pgm.c"
+    #include "pgm_optimized.c"
     #include <stdlib.h>
     #include <string.h>
     extern FILE *yyin;
@@ -853,7 +853,10 @@ int main(int argc, char** argv)
     // yylex(); // lance lexical
     afficher();
     afficher_qdr();
-    
+
+    apply_all_optimizations();
+    generate_assembly("output.asm");
+
     if (yyin != stdin) {
         fclose(yyin);
     }
