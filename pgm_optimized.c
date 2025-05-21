@@ -407,39 +407,51 @@ void apply_dead_code_elimination()
 	}
 
 	// Dynamically allocate the 'used' array, initialized to zeros.
+	// calloc initializes memory to zero, so used[i] will be 0 initially.
 	int *used = (int *)calloc(qc, sizeof(int));
 	if (used == NULL)
 	{
-		perror("apply_dead_code_elimination: calloc for used failed");
+		// Optional: Error handling for memory allocation failure
+		// fprintf(stderr, "Error: Memory allocation failed in apply_dead_code_elimination.\n");
+		perror("apply_dead_code_elimination: calloc failed");
 		return;
 	}
 
 	int i, j;
 
 	// Pass 1: Initial Marking of Essential Code.
+	// Mark quadruples as "used" if they are branch instructions or have side effects (like I/O).
 	for (i = 0; i < qc; i++)
 	{
-		if (strncmp(quad[i].oper, "B", 1) == 0 ||
-			strcmp(quad[i].oper, "WRITE") == 0 ||
+		if (strncmp(quad[i].oper, "B", 1) == 0 ||	// All branch instructions (e.g., BZ, BNE, BR, BL, BG, etc.)
+			strcmp(quad[i].oper, "DISPLAY") == 0 || // Output operations are essential
 			strcmp(quad[i].oper, "READ") == 0)
-		{
+		{ // Input operations are essential
 			used[i] = 1;
 		}
+		// Other operations with potential side effects (e.g., function calls not returning a value
+		// but modifying global state) could also be added here if relevant to the intermediate language.
 	}
 
 	// Pass 2: Backward Propagation of Liveness.
-	int changes;
+	// Iteratively mark quadruples as "used" if their results are used by already "live" quadruples.
+	// This process continues until no more quadruples can be marked as "used".
+	int changes; // Flag to track if any new quads were marked in a pass
 	do
 	{
 		changes = 0;
+		// Iterate backwards because a quadruple's operands must be defined before it.
 		for (i = qc - 1; i >= 0; i--)
 		{
 			if (used[i])
-			{
+			{ // If quad[i] is live/used
+				// Then, any quads that define its operands (op1 or op2) must also be live.
+				// We search in preceding quads (j < i).
 				for (j = i - 1; j >= 0; j--)
 				{
 					if (!used[j])
-					{
+					{ // If quad[j] is not already marked as used
+						// Check if quad[j]'s result is used as op1 in quad[i] or as op2 in quad[i]
 						if (strcmp(quad[j].res, quad[i].op1) == 0 ||
 							strcmp(quad[j].res, quad[i].op2) == 0)
 						{
@@ -452,96 +464,23 @@ void apply_dead_code_elimination()
 		}
 	} while (changes);
 
-	// NEW: Create mapping from old to new indices
-	int *old_to_new_mapping = (int *)calloc(qc, sizeof(int));
-	if (old_to_new_mapping == NULL)
-	{
-		perror("apply_dead_code_elimination: calloc for old_to_new_mapping failed");
-		free(used); // free previously allocated memory
-		return;
-	}
-	for (int k = 0; k < qc; ++k)
-		old_to_new_mapping[k] = -1; // Initialize with -1 (dead)
-
-	int current_new_idx = 0;
-	for (int k = 0; k < qc; k++)
-	{
-		if (used[k])
-		{
-			old_to_new_mapping[k] = current_new_idx++;
-		}
-	}
-
-	// NEW: Create a temporary array for the new list of quads
-	qdr *new_quad_list = (qdr *)malloc(qc * sizeof(qdr)); // Max possible size
-	if (new_quad_list == NULL)
-	{
-		perror("apply_dead_code_elimination: malloc for new_quad_list failed");
-		free(used);
-		free(old_to_new_mapping);
-		return;
-	}
-
-	int live_quad_count = 0; // This will be the new qc
+	// Pass 3: Compact the quad array.
+	// Remove "dead" (unused) quadruples by shifting "live" (used) quadruples to the front.
+	int new_qc = 0; // New count of live quadruples
 	for (i = 0; i < qc; i++)
 	{
 		if (used[i])
 		{
-			new_quad_list[live_quad_count] = quad[i]; // Copy the live quad
-
-			// Check if it's a branch instruction and update its target
-			char *oper = new_quad_list[live_quad_count].oper;
-			char *op1_str = new_quad_list[live_quad_count].op1;
-
-			// Covers BR, BZ, BNZ, BE, BNE, BG, BL, BGE, BLE
-			if (strcmp(oper, "BR") == 0 || strcmp(oper, "BZ") == 0 || strcmp(oper, "BNZ") == 0 ||
-				strcmp(oper, "BE") == 0 || strcmp(oper, "BNE") == 0 || strcmp(oper, "BG") == 0 ||
-				strcmp(oper, "BL") == 0 || strcmp(oper, "BGE") == 0 || strcmp(oper, "BLE") == 0)
-			{
-				if (isNumeric(op1_str))
-				{
-					int old_target_idx = atoi(op1_str);
-					// Ensure old_target_idx is within the bounds of the original quad array
-					if (old_target_idx >= 0 && old_target_idx < qc)
-					{
-						int new_target_idx_val = old_to_new_mapping[old_target_idx];
-						if (new_target_idx_val != -1)
-						{							 // If the target quad is live and has a new index
-							char new_target_buf[10]; // quad.op1 is char[10]
-							sprintf(new_target_buf, "%d", new_target_idx_val);
-							strcpy(new_quad_list[live_quad_count].op1, new_target_buf);
-						}
-						else
-						{
-							// Target quad was eliminated. Mark this branch's target as invalid.
-							strcpy(new_quad_list[live_quad_count].op1, "X_TGT");
-						}
-					}
-					else
-					{
-						// The original target index was out of bounds or invalid.
-						// Mark as error or leave as is, depending on desired strictness.
-						// For now, if it was out of bounds, we can mark it too.
-						// strcpy(new_quad_list[live_quad_count].op1, "BAD_REF");
-					}
-				}
-				// If op1_str is not numeric (e.g., already "X_TGT" or some other non-index string), do nothing to it.
+			if (i != new_qc)
+			{ // If the live quad is not already in its new position
+				quad[new_qc] = quad[i];
 			}
-			live_quad_count++;
+			new_qc++;
 		}
 	}
+	qc = new_qc; // Update the global quadruple count
 
-	// Copy the compacted and updated quads back to the original array
-	for (i = 0; i < live_quad_count; i++)
-	{
-		quad[i] = new_quad_list[i];
-	}
-	qc = live_quad_count; // Update the global quadruple count
-
-	// Free allocated memory
-	free(used);
-	free(old_to_new_mapping);
-	free(new_quad_list);
+	free(used); // Release the dynamically allocated 'used' array
 }
 
 void apply_all_optimizations()

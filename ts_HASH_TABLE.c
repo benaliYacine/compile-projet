@@ -261,23 +261,6 @@ void afficher()
 
 //  semantique fcts
 
-char *return_val_fonction(char name[])
-{
-  int i = 0;
-  int hash_index = fonction_de_hachage(name);
-  while (LES_TABLES_IDF[i].state == 1 && strcmp(LES_TABLES_IDF[i].name, name) != 0)
-    i++;
-  pointer_element1 P_hash = NULL;
-  P_hash = LES_TABLES_IDF[i].tab_hachage_idf[hash_index];
-  while (strcmp(P_hash->name, name) != 0)
-    P_hash = P_hash->svt;
-  pointer_element1 P_table_idf = LES_TABLES_IDF[POSITION_Tables_IDF].tab_hachage_idf[hash_index];
-  while (strcmp(P_table_idf->name, name) != 0)
-    P_table_idf = P_table_idf->svt;
-  strcpy(P_table_idf->type, P_hash->type);
-  strcpy(P_table_idf->val, P_hash->val);
-  return P_hash->val;
-}
 char *return_val_tab(char name[], char taille1[])
 {
   int j = 0, i = 0;

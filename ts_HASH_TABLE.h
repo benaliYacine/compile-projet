@@ -73,8 +73,6 @@ int rechercher(char entite[], char code[], char type[], char val[], int y, char 
 
 void afficher();
 
-char *return_val_fonction(char name[]);
-
 char *return_val_tab(char name[], char taille1[]);
 
 void A_M_tab(char name[], char taille1[], char val[]);
