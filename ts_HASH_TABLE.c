@@ -7,25 +7,6 @@
 
 // TS fcts
 
-void initialisation()
-{
-  int i, j;
-  for (i = 0; i < 300; i++)
-  {
-    tab_hachage_sepa[i] = NULL;
-    tab_hachage_mot_cle[i] = NULL;
-  }
-  for (i = 0; i < 100; i++)
-  {
-    TABLE_DES_FONCTION_NB_ARG[i].state = 0;
-    LES_TABLES_IDF[i].state = 0;
-  }
-  for (j = 0; j < 300; j++)
-  {
-    LES_TABLES_IDF[i].tab_hachage_idf[j] = NULL;
-  }
-}
-
 int fonction_de_hachage(char name[20])
 {
   int i;

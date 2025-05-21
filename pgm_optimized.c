@@ -307,7 +307,7 @@ int apply_algebraic_simplification()
 	int changed = 0;
 	for (i = 0; i < qc; i++)
 	{
-		// X + 0 or 0 + X
+		// === existing cases ===
 		if (strcmp(quad[i].oper, "+") == 0)
 		{
 			if (strcmp(quad[i].op1, "0") == 0)
@@ -335,7 +335,6 @@ int apply_algebraic_simplification()
 				strcpy(quad[i].op2, "vide");
 				changed = 1;
 			}
-			// X * 1
 			else if (strcmp(quad[i].op1, "1") == 0)
 			{
 				strcpy(quad[i].oper, "=");
@@ -350,6 +349,51 @@ int apply_algebraic_simplification()
 				strcpy(quad[i].op2, "vide");
 				changed = 1;
 			}
+			// X * 2 → X + X
+			else if (strcmp(quad[i].op1, "2") == 0 || strcmp(quad[i].op2, "2") == 0)
+			{
+				// pick the non-"2" operand
+				char *v = (strcmp(quad[i].op1, "2") == 0)
+							  ? quad[i].op2
+							  : quad[i].op1;
+				strcpy(quad[i].oper, "+");
+				strcpy(quad[i].op1, v);
+				strcpy(quad[i].op2, v);
+				changed = 1;
+			}
+		}
+
+		// Cancellation of "+1 then –1" in two consecutive quads:
+		// look for:   t1 = VAR + 1
+		//              t2 = t1 - 1    ⇒  t2 = VAR
+		if (strcmp(quad[i].oper, "-") == 0 &&
+			strcmp(quad[i].op2, "1") == 0)
+		{
+			int j;
+			// find the producer of quad[i].op1
+			for (j = i - 1; j >= 0; j--)
+			{
+				if (strcmp(quad[j].res, quad[i].op1) == 0 &&
+					strcmp(quad[j].oper, "+") == 0)
+				{
+					// one of its operands must be "1"
+					char *v = NULL;
+					if (strcmp(quad[j].op1, "1") == 0)
+						v = quad[j].op2;
+					else if (strcmp(quad[j].op2, "1") == 0)
+						v = quad[j].op1;
+
+					if (v)
+					{
+						// replace current quad with an assignment
+						strcpy(quad[i].oper, "=");
+						strcpy(quad[i].op1, v);
+						strcpy(quad[i].op2, "vide");
+						changed = 1;
+					}
+					break;
+				}
+			}
 		}
 	}
 	return changed;
@@ -363,51 +407,39 @@ void apply_dead_code_elimination()
 	}
 
 	// Dynamically allocate the 'used' array, initialized to zeros.
-	// calloc initializes memory to zero, so used[i] will be 0 initially.
 	int *used = (int *)calloc(qc, sizeof(int));
 	if (used == NULL)
 	{
-		// Optional: Error handling for memory allocation failure
-		// fprintf(stderr, "Error: Memory allocation failed in apply_dead_code_elimination.\n");
-		perror("apply_dead_code_elimination: calloc failed");
+		perror("apply_dead_code_elimination: calloc for used failed");
 		return;
 	}
 
 	int i, j;
 
 	// Pass 1: Initial Marking of Essential Code.
-	// Mark quadruples as "used" if they are branch instructions or have side effects (like I/O).
 	for (i = 0; i < qc; i++)
 	{
-		if (strncmp(quad[i].oper, "B", 1) == 0 || // All branch instructions (e.g., BZ, BNE, BR, BL, BG, etc.)
-			strcmp(quad[i].oper, "WRITE") == 0 || // Output operations are essential
+		if (strncmp(quad[i].oper, "B", 1) == 0 ||
+			strcmp(quad[i].oper, "WRITE") == 0 ||
 			strcmp(quad[i].oper, "READ") == 0)
-		{ // Input operations are essential
+		{
 			used[i] = 1;
 		}
-		// Other operations with potential side effects (e.g., function calls not returning a value
-		// but modifying global state) could also be added here if relevant to the intermediate language.
 	}
 
 	// Pass 2: Backward Propagation of Liveness.
-	// Iteratively mark quadruples as "used" if their results are used by already "live" quadruples.
-	// This process continues until no more quadruples can be marked as "used".
-	int changes; // Flag to track if any new quads were marked in a pass
+	int changes;
 	do
 	{
 		changes = 0;
-		// Iterate backwards because a quadruple's operands must be defined before it.
 		for (i = qc - 1; i >= 0; i--)
 		{
 			if (used[i])
-			{ // If quad[i] is live/used
-				// Then, any quads that define its operands (op1 or op2) must also be live.
-				// We search in preceding quads (j < i).
+			{
 				for (j = i - 1; j >= 0; j--)
 				{
 					if (!used[j])
-					{ // If quad[j] is not already marked as used
-						// Check if quad[j]'s result is used as op1 in quad[i] or as op2 in quad[i]
+					{
 						if (strcmp(quad[j].res, quad[i].op1) == 0 ||
 							strcmp(quad[j].res, quad[i].op2) == 0)
 						{
@@ -420,23 +452,96 @@ void apply_dead_code_elimination()
 		}
 	} while (changes);
 
-	// Pass 3: Compact the quad array.
-	// Remove "dead" (unused) quadruples by shifting "live" (used) quadruples to the front.
-	int new_qc = 0; // New count of live quadruples
+	// NEW: Create mapping from old to new indices
+	int *old_to_new_mapping = (int *)calloc(qc, sizeof(int));
+	if (old_to_new_mapping == NULL)
+	{
+		perror("apply_dead_code_elimination: calloc for old_to_new_mapping failed");
+		free(used); // free previously allocated memory
+		return;
+	}
+	for (int k = 0; k < qc; ++k)
+		old_to_new_mapping[k] = -1; // Initialize with -1 (dead)
+
+	int current_new_idx = 0;
+	for (int k = 0; k < qc; k++)
+	{
+		if (used[k])
+		{
+			old_to_new_mapping[k] = current_new_idx++;
+		}
+	}
+
+	// NEW: Create a temporary array for the new list of quads
+	qdr *new_quad_list = (qdr *)malloc(qc * sizeof(qdr)); // Max possible size
+	if (new_quad_list == NULL)
+	{
+		perror("apply_dead_code_elimination: malloc for new_quad_list failed");
+		free(used);
+		free(old_to_new_mapping);
+		return;
+	}
+
+	int live_quad_count = 0; // This will be the new qc
 	for (i = 0; i < qc; i++)
 	{
 		if (used[i])
 		{
-			if (i != new_qc)
-			{ // If the live quad is not already in its new position
-				quad[new_qc] = quad[i];
+			new_quad_list[live_quad_count] = quad[i]; // Copy the live quad
+
+			// Check if it's a branch instruction and update its target
+			char *oper = new_quad_list[live_quad_count].oper;
+			char *op1_str = new_quad_list[live_quad_count].op1;
+
+			// Covers BR, BZ, BNZ, BE, BNE, BG, BL, BGE, BLE
+			if (strcmp(oper, "BR") == 0 || strcmp(oper, "BZ") == 0 || strcmp(oper, "BNZ") == 0 ||
+				strcmp(oper, "BE") == 0 || strcmp(oper, "BNE") == 0 || strcmp(oper, "BG") == 0 ||
+				strcmp(oper, "BL") == 0 || strcmp(oper, "BGE") == 0 || strcmp(oper, "BLE") == 0)
+			{
+				if (isNumeric(op1_str))
+				{
+					int old_target_idx = atoi(op1_str);
+					// Ensure old_target_idx is within the bounds of the original quad array
+					if (old_target_idx >= 0 && old_target_idx < qc)
+					{
+						int new_target_idx_val = old_to_new_mapping[old_target_idx];
+						if (new_target_idx_val != -1)
+						{							 // If the target quad is live and has a new index
+							char new_target_buf[10]; // quad.op1 is char[10]
+							sprintf(new_target_buf, "%d", new_target_idx_val);
+							strcpy(new_quad_list[live_quad_count].op1, new_target_buf);
+						}
+						else
+						{
+							// Target quad was eliminated. Mark this branch's target as invalid.
+							strcpy(new_quad_list[live_quad_count].op1, "X_TGT");
+						}
+					}
+					else
+					{
+						// The original target index was out of bounds or invalid.
+						// Mark as error or leave as is, depending on desired strictness.
+						// For now, if it was out of bounds, we can mark it too.
+						// strcpy(new_quad_list[live_quad_count].op1, "BAD_REF");
+					}
+				}
+				// If op1_str is not numeric (e.g., already "X_TGT" or some other non-index string), do nothing to it.
 			}
-			new_qc++;
+			live_quad_count++;
 		}
 	}
-	qc = new_qc; // Update the global quadruple count
 
-	free(used); // Release the dynamically allocated 'used' array
+	// Copy the compacted and updated quads back to the original array
+	for (i = 0; i < live_quad_count; i++)
+	{
+		quad[i] = new_quad_list[i];
+	}
+	qc = live_quad_count; // Update the global quadruple count
+
+	// Free allocated memory
+	free(used);
+	free(old_to_new_mapping);
+	free(new_quad_list);
 }
 
 void apply_all_optimizations()
@@ -593,6 +698,31 @@ void test_optimizations()
 	printf("\nAfter Algebraic Simplification:\n");
 	afficher_qdr();
 
+	// ------------------------------------------------------------
+	// New test: Multiplication by two
+	// ------------------------------------------------------------
+	printf("\n\n=== TESTING X*2 ⇒ X+X ===\n");
+	qc = 0;
+	quadr("*", "x", "2", "t1");
+	printf("Before Algebraic Simplification:\n");
+	afficher_qdr();
+	apply_algebraic_simplification();
+	printf("After Algebraic Simplification:\n");
+	afficher_qdr();
+
+	// ------------------------------------------------------------
+	// New test: Cancellation +1 then -1
+	// ------------------------------------------------------------
+	printf("\n\n=== TESTING Y+1-1 ⇒ Y ===\n");
+	qc = 0;
+	quadr("+", "y", "1", "t1");
+	quadr("-", "t1", "1", "t2");
+	printf("Before Algebraic Simplification:\n");
+	afficher_qdr();
+	apply_algebraic_simplification();
+	printf("After Algebraic Simplification:\n");
+	afficher_qdr();
+
 	// Test dead code elimination
 	printf("\n\n=== TESTING DEAD CODE ELIMINATION ===\n");
 	qc = 0; // Reset quadruple counter
@@ -725,9 +855,14 @@ void generate_assembly(const char *filename)
 	}
 
 	fprintf(f, "TITLE GeneratedProgram\n");
-	fprintf(f, ".model small\n");
-	fprintf(f, ".stack 100h\n\n");
-	fprintf(f, ".data\n");
+
+	// Stack segment
+	fprintf(f, "PILE SEGMENT STACK\n");
+	fprintf(f, "    DW 100 DUP(?)\n");
+	fprintf(f, "PILE ENDS\n\n");
+
+	// Data segment
+	fprintf(f, "DONNEE SEGMENT\n");
 
 	// Data collection
 	char vars[200][100]; // Increased size
@@ -737,17 +872,17 @@ void generate_assembly(const char *filename)
 	int msg_count = 0;
 	int i, j, k;
 
-	// Fixed constant for division/multiplication by immediate
-	fprintf(f, "    ten dw 10\n");
-	fprintf(f, "    minus_one dw -1\n"); // For negating
-	fprintf(f, "    newline db 0Dh, 0Ah, '$'\n");
-	fprintf(f, "    prompt_char db '?' , '$' ; Default prompt for single char read\n");
-	fprintf(f, "    temp_char db ?, '$'\n"); // For printing single char that is in a variable
-	fprintf(f, "    input_buffer_dos label byte\n");
-	fprintf(f, "      max_chars  db 81      ; Max chars to read (80 + CR)\n");
-	fprintf(f, "      actual_len db ?       ; Actual number of chars read (excluding CR)\n");
-	fprintf(f, "      buffer_data db 81 dup('$') ; Buffer for data, init with $ for safety\n");
-	fprintf(f, "    make_minus db 0 ; For scan_integer\n\n");
+	// Fixed constants
+	fprintf(f, "    DIX DW 10\n");
+	fprintf(f, "    MOINS_UN DW -1\n");
+	fprintf(f, "    RETOUR_LIGNE DB 0Dh, 0Ah, '$'\n");
+	fprintf(f, "    PROMPT_CHAR DB '?' , '$'\n");
+	fprintf(f, "    TEMP_CHAR DB ?, '$'\n");
+	fprintf(f, "    BUFFER_ENTREE LABEL BYTE\n");
+	fprintf(f, "      MAX_CHARS  DB 81\n");
+	fprintf(f, "      CHARS_LUS DB ?\n");
+	fprintf(f, "      DONNEES_BUFFER DB 81 DUP('$')\n");
+	fprintf(f, "    EST_NEGATIF DB 0\n\n");
 
 	// Collect unique variables and messages
 	for (i = 0; i < qc; ++i)
@@ -772,7 +907,7 @@ void generate_assembly(const char *filename)
 				if (!found && strlen(stripped_msg) > 0)
 				{
 					strcpy(msgs[msg_count], stripped_msg);
-					sprintf(msg_labels[msg_count], "msg%d", msg_count);
+					sprintf(msg_labels[msg_count], "MSG%d", msg_count);
 					msg_count++;
 				}
 			}
@@ -804,32 +939,36 @@ void generate_assembly(const char *filename)
 	// Declare collected messages
 	for (i = 0; i < msg_count; ++i)
 	{
-		fprintf(f, "%s db \"%s$\"\n", msg_labels[i], msgs[i]);
+		fprintf(f, "    %s DB \"%s$\"\n", msg_labels[i], msgs[i]);
 	}
 	fprintf(f, "\n");
 
 	// Declare collected variables
 	for (i = 0; i < var_count; ++i)
 	{
-		// Basic type inference for known char/string vars from example
+		// Basic type inference for known char/string vars
 		if (strcmp(vars[i], "AnotherChar") == 0)
 		{
-			fprintf(f, "%s db ?\n", vars[i]);
+			fprintf(f, "    %s DB ?\n", vars[i]);
 		}
 		else if (strcmp(vars[i], "GreetingStr") == 0)
 		{
-			fprintf(f, "%s db 81 dup('$') ; Buffer for string, $ terminated\n", vars[i]);
+			fprintf(f, "    %s DB 81 DUP('$')\n", vars[i]);
 		}
 		else
 		{
-			fprintf(f, "%s dw ?\n", vars[i]); // Default to word
+			fprintf(f, "    %s DW ?\n", vars[i]); // Default to word (16-bit)
 		}
 	}
-	fprintf(f, "\n.code\n");
-	fprintf(f, "start:\n");
-	fprintf(f, "    mov ax, @data\n");
-	fprintf(f, "    mov ds, ax\n");
-	fprintf(f, "    mov es, ax ; For string operations if needed by scan/print\n\n");
+	fprintf(f, "DONNEE ENDS\n\n");
+
+	// Code segment
+	fprintf(f, "LECODE SEGMENT\n");
+	fprintf(f, "Debut:\n");
+	fprintf(f, "    ASSUME CS:LECODE, DS:DONNEE, SS:PILE\n");
+	fprintf(f, "    MOV AX, DONNEE\n");
+	fprintf(f, "    MOV DS, AX\n");
+	fprintf(f, "    MOV ES, AX\n\n");
 
 	// Generate code for each quad
 	for (i = 0; i < qc; ++i)
@@ -1117,18 +1256,18 @@ void generate_assembly(const char *filename)
 			}
 			else if (strcmp(op2_str, "GreetingStr") == 0)
 			{ // Read string
-				fprintf(f, "    lea dx, input_buffer_dos\n");
+				fprintf(f, "    lea dx, BUFFER_ENTREE\n");
 				fprintf(f, "    call scan_string_proc\n");
-				fprintf(f, "    ; Copy input_buffer_dos to %s and ensure $-termination\n", op2_str);
-				fprintf(f, "    lea si, input_buffer_dos.buffer_data\n");
+				fprintf(f, "    ; Copy BUFFER_ENTREE to %s and ensure $-termination\n", op2_str);
+				fprintf(f, "    lea si, DONNEES_BUFFER\n");
 				fprintf(f, "    lea di, %s\n", op2_str);
-				fprintf(f, "    mov cl, [input_buffer_dos.actual_len]\n");
+				fprintf(f, "    mov cl, CHARS_LUS\n");
 				fprintf(f, "    xor ch, ch ; CX = actual_len\n");
 				fprintf(f, "    cmp cl, 0\n");
 				fprintf(f, "    je read_str_done_%d\n", i);
 				fprintf(f, "    rep movsb ; Copy string\n");
 				fprintf(f, "read_str_done_%d:\n", i);
-				fprintf(f, "    mov byte ptr [di], '$' ; Terminate with $\n", op2_str);
+				fprintf(f, "    mov byte ptr [di], '$' ; Terminate with $\n");
 			}
 			else
 			{										   // Default: Read integer
@@ -1140,9 +1279,9 @@ void generate_assembly(const char *filename)
 	}
 
 	// Exit program
-	fprintf(f, "\nexit_program:\n");
-	fprintf(f, "    mov ah, 4Ch\n");
-	fprintf(f, "    int 21h\n\n");
+	fprintf(f, "\nFin_Programme:\n");
+	fprintf(f, "    MOV AH, 4Ch\n");
+	fprintf(f, "    INT 21h\n\n");
 
 	// Runtime procedures
 	fprintf(f, "; procédure to display string at DS:DX (must be $-terminated)\n");
@@ -1157,7 +1296,7 @@ void generate_assembly(const char *filename)
 	fprintf(f, "print_newline proc near\n");
 	fprintf(f, "    push ax\n");
 	fprintf(f, "    push dx\n");
-	fprintf(f, "    lea dx, newline\n");
+	fprintf(f, "    lea dx, RETOUR_LIGNE\n");
 	fprintf(f, "    call display_message\n");
 	fprintf(f, "    pop dx\n");
 	fprintf(f, "    pop ax\n");
@@ -1208,7 +1347,7 @@ void generate_assembly(const char *filename)
 	fprintf(f, "    push dx\n");
 	fprintf(f, "    push si\n\n");
 	fprintf(f, "    mov cx, 0             ; CX will hold the number\n");
-	fprintf(f, "    mov make_minus, 0     ; Flag for negative number\n");
+	fprintf(f, "    mov EST_NEGATIF, 0     ; Flag for negative number\n");
 	fprintf(f, "    mov si, 0             ; Digit counter\n\n");
 	fprintf(f, "scan_read_char_loop_%d:\n", qc);
 	fprintf(f, "    mov ah, 01h           ; Read char with echo\n");
@@ -1231,7 +1370,7 @@ void generate_assembly(const char *filename)
 	fprintf(f, "    mov ah, 0\n");
 	fprintf(f, "    push ax               ; Save digit\n\n");
 	fprintf(f, "    mov ax, cx            ; AX = current number\n");
-	fprintf(f, "    mov bx, ten\n");
+	fprintf(f, "    mov bx, DIX\n");
 	fprintf(f, "    mul bx                ; AX = current number * 10\n");
 	fprintf(f, "    jc scan_overflow_%d   ; Check for overflow from mul\n");
 	fprintf(f, "    mov cx, ax\n\n");
@@ -1242,9 +1381,9 @@ void generate_assembly(const char *filename)
 	fprintf(f, "scan_handle_minus_%d:\n", qc);
 	fprintf(f, "    cmp si, 0             ; Minus only allowed as first char\n");
 	fprintf(f, "    jne scan_ignore_char_%d\n");
-	fprintf(f, "    cmp make_minus, 1     ; Only one minus allowed\n");
+	fprintf(f, "    cmp EST_NEGATIF, 1     ; Only one minus allowed\n");
 	fprintf(f, "    je scan_ignore_char_%d\n");
-	fprintf(f, "    mov make_minus, 1\n");
+	fprintf(f, "    mov EST_NEGATIF, 1\n");
 	fprintf(f, "    jmp scan_read_char_loop_%d\n\n", qc);
 	fprintf(f, "scan_handle_backspace_%d:\n", qc);
 	fprintf(f, "    cmp si, 0             ; Anything to backspace?\n");
@@ -1262,19 +1401,19 @@ void generate_assembly(const char *filename)
 	fprintf(f, "    int 21h\n\n");
 	fprintf(f, "    mov ax, cx\n");
 	fprintf(f, "    xor dx, dx\n");
-	fprintf(f, "    mov bx, ten\n");
+	fprintf(f, "    mov bx, DIX\n");
 	fprintf(f, "    div bx                ; AX = CX / 10\n");
 	fprintf(f, "    mov cx, ax\n");
 	fprintf(f, "    cmp si, 0             ; If all digits removed and was negative\n");
 	fprintf(f, "    jne scan_read_char_loop_%d\n");
-	fprintf(f, "    mov make_minus, 0     ; Reset minus flag if no digits left\n");
+	fprintf(f, "    mov EST_NEGATIF, 0     ; Reset minus flag if no digits left\n");
 	fprintf(f, "    jmp scan_read_char_loop_%d\n\n", qc);
 	fprintf(f, "scan_overflow_%d:\n", qc);
 	fprintf(f, "    ; Handle overflow - maybe clear CX and restart, or error\n");
 	fprintf(f, "    ; For now, just ignore and continue (bad number will result)\n");
 	fprintf(f, "    mov cx, 0 ; Clear to avoid partial large number\n");
 	fprintf(f, "    mov si, 0\n");
-	fprintf(f, "    mov make_minus, 0\n");
+	fprintf(f, "    mov EST_NEGATIF, 0\n");
 	fprintf(f, "    ; Could print an error message here\n");
 	fprintf(f, "    jmp scan_read_char_loop_%d\n\n", qc);
 	fprintf(f, "scan_ignore_char_%d:\n", qc);
@@ -1293,7 +1432,7 @@ void generate_assembly(const char *filename)
 	fprintf(f, "    int 21h\n");
 	fprintf(f, "    jmp scan_read_char_loop_%d\n\n", qc);
 	fprintf(f, "scan_end_input_%d:\n", qc);
-	fprintf(f, "    cmp make_minus, 1\n");
+	fprintf(f, "    cmp EST_NEGATIF, 1\n");
 	fprintf(f, "    jne scan_positive_res_%d\n", qc);
 	fprintf(f, "    cmp cx, 0 ; if cx is 0, -0 is 0\n");
 	fprintf(f, "    je scan_positive_res_%d\n", qc);
@@ -1317,8 +1456,10 @@ void generate_assembly(const char *filename)
 	fprintf(f, "    ret\n");
 	fprintf(f, "scan_string_proc endp\n\n");
 
-	// End of code
-	fprintf(f, "end start\n");
+	// End of code segment and program
+	fprintf(f, "LECODE ENDS\n");
+	fprintf(f, "END Debut\n");
+
 	fclose(f);
 	printf("Assembly code generated in %s\n", filename);
 }

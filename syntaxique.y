@@ -759,7 +759,7 @@ write_statement: mc_display po str deux_points var pf pvg
     displayMessage[len - 2] = '"';
     displayMessage[len - 1] = '\0';
 
-    quadr("WRITE", displayMessage, operande_tmp->operande_name, "vide");
+    quadr("x", displayMessage, operande_tmp->operande_name, "vide");
     free(displayMessage);
 }
 | mc_display po str pf pvg
@@ -844,7 +844,7 @@ int main(int argc, char** argv)
         FILE* file = fopen(argv[1], "r");
         if (!file) {
             // Handle error
-            perror("Cannot open input_file.txt");
+            perror("Cannot open example.txt");
             return EXIT_FAILURE;
         }
         yyin = file;
