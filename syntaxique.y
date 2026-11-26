@@ -759,7 +759,7 @@ write_statement: mc_display po str deux_points var pf pvg
     displayMessage[len - 2] = '"';
     displayMessage[len - 1] = '\0';
 
-    quadr("x", displayMessage, operande_tmp->operande_name, "vide");
+    quadr("WRITE", displayMessage, operande_tmp->operande_name, "vide");
     free(displayMessage);
 }
 | mc_display po str pf pvg
@@ -795,7 +795,7 @@ CONDI
 ;
 
 for_statement: A_for INSTS mc_end {
-    // Go back to loop condition
+    // Go back to the increment part of the loop
     sprintf(tmp, "%d", pop_int(&deb_for));
     quadr("BR", tmp, "vide", "vide");
     
@@ -805,9 +805,7 @@ for_statement: A_for INSTS mc_end {
 }
 ;
 
-A_for: mc_for po idf deux_points valeur deux_points CONDI pf {
-    StackNode* operande_tmp = pop(&Operandes_pile);
-    
+A_for: mc_for po idf deux_points valeur deux_points valeur pf {
     // Check if the counter variable is declared
     if(!Declarer($3)){
         yyerror("Sementique error", $3, "est non declare.");
@@ -818,20 +816,29 @@ A_for: mc_for po idf deux_points valeur deux_points CONDI pf {
         yyerror("Sementique error", $5, "n'est pas un entier valide pour le pas.");
     }
     
-    // Initialize counter variable with the step value
-    char *T = strdup(Cree_temp());
-    quadr("=", $5, "vide", T);
-    quadr("+", $3, T, $3);
+    // Check if the limit is valid
+    StackNode* limit_operand = pop(&Operandes_pile);
+    push(&Operandes_pile, "OPERAND", limit_operand->operande_name, limit_operand->operande_type);
     
-    // Store position for loop condition
+    // Store current position - where we'll jump back for each iteration
     push_int(&deb_for, qc);
     
-    // Evaluate condition
-    operande_tmp = pop(&Operandes_pile);
+    // Check if counter reached or exceeded limit
+    char* temp_cond = strdup(Cree_temp_cond());
+    quadr("<=", $3, limit_operand->operande_name, temp_cond);
     
-    // Create conditional jump to exit loop if condition is false
+    // Jump to end of loop if condition is false
     push_int(&Fin_for, qc);
-    quadr("BZ", "", operande_tmp->operande_name, "vide");
+    quadr("BZ", "", temp_cond, "vide");
+    
+    // The body of the loop will be here
+    
+    // At the end, we increment the counter and loop back
+    quadr("+", $3, $5, $3);
+    StackNode* vide = pop(&Operandes_pile);
+    StackNode* vide2 = pop(&Operandes_pile);
+
+
 }
 ;
 

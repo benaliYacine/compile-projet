@@ -116,7 +116,7 @@ Grammar
 
    75 for_statement: A_for INSTS mc_end
 
-   76 A_for: mc_for po idf deux_points valeur deux_points CONDI pf
+   76 A_for: mc_for po idf deux_points valeur deux_points valeur pf
 
 
 Terminals, with rules where they appear
@@ -242,7 +242,7 @@ B_while (82)
 A_while (83)
     on left: 73, on right: 72
 CONDI (84)
-    on left: 74, on right: 61 72 76
+    on left: 74, on right: 61 72
 for_statement (85)
     on left: 75, on right: 56
 A_for (86)
@@ -622,7 +622,7 @@ state 37
 
 state 38
 
-   76 A_for: mc_for . po idf deux_points valeur deux_points CONDI pf
+   76 A_for: mc_for . po idf deux_points valeur deux_points valeur pf
 
     po  shift, and go to state 81
 
@@ -1094,7 +1094,7 @@ state 80
 
 state 81
 
-   76 A_for: mc_for po . idf deux_points valeur deux_points CONDI pf
+   76 A_for: mc_for po . idf deux_points valeur deux_points valeur pf
 
     idf  shift, and go to state 115
 
@@ -1582,7 +1582,7 @@ state 114
 
 state 115
 
-   76 A_for: mc_for po idf . deux_points valeur deux_points CONDI pf
+   76 A_for: mc_for po idf . deux_points valeur deux_points valeur pf
 
     deux_points  shift, and go to state 145
 
@@ -1886,7 +1886,7 @@ state 144
 
 state 145
 
-   76 A_for: mc_for po idf deux_points . valeur deux_points CONDI pf
+   76 A_for: mc_for po idf deux_points . valeur deux_points valeur pf
 
     idf        shift, and go to state 56
     str        shift, and go to state 57
@@ -1968,7 +1968,7 @@ state 153
 
 state 154
 
-   76 A_for: mc_for po idf deux_points valeur . deux_points CONDI pf
+   76 A_for: mc_for po idf deux_points valeur . deux_points valeur pf
 
     deux_points  shift, and go to state 158
 
@@ -1996,24 +1996,26 @@ state 157
 
 state 158
 
-   76 A_for: mc_for po idf deux_points valeur deux_points . CONDI pf
+   76 A_for: mc_for po idf deux_points valeur deux_points . valeur pf
 
-    idf       shift, and go to state 56
-    inti      shift, and go to state 59
-    real      shift, and go to state 60
-    mc_not    shift, and go to state 61
-    mc_true   shift, and go to state 62
-    mc_false  shift, and go to state 63
-    po        shift, and go to state 64
+    idf        shift, and go to state 56
+    str        shift, and go to state 57
+    character  shift, and go to state 58
+    inti       shift, and go to state 59
+    real       shift, and go to state 60
+    mc_not     shift, and go to state 61
+    mc_true    shift, and go to state 62
+    mc_false   shift, and go to state 63
+    po         shift, and go to state 64
 
-    EXPRE    go to state 113
+    EXPRE    go to state 65
     CONDIT   go to state 66
     EXPREt   go to state 67
     TERM     go to state 68
     FACTOR   go to state 69
     OPERAND  go to state 70
     LOGI     go to state 71
-    CONDI    go to state 161
+    valeur   go to state 161
 
 
 state 159
@@ -2032,7 +2034,7 @@ state 160
 
 state 161
 
-   76 A_for: mc_for po idf deux_points valeur deux_points CONDI . pf
+   76 A_for: mc_for po idf deux_points valeur deux_points valeur . pf
 
     pf  shift, and go to state 163
 
@@ -2046,6 +2048,6 @@ state 162
 
 state 163
 
-   76 A_for: mc_for po idf deux_points valeur deux_points CONDI pf .
+   76 A_for: mc_for po idf deux_points valeur deux_points valeur pf .
 
     $default  reduce using rule 76 (A_for)

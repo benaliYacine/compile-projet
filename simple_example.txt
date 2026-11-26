@@ -1,0 +1,42 @@
+SimpleTest § A minimal test program for PHYLOG compiler
+
+DATA § Start of data declaration block
+    § Simple variable declarations
+    INTEGER: Number1 | Number2 | Result;
+FLOAT: Value1 = 3.5;
+CONST: MaxValue = 100;
+§ Boolean-like variable (using integers 0 or 1)
+INTEGER: IsGreater | LoopVar=1 | VarInt1=5;
+END
+
+CODE
+§ Assign some values
+Number1 = 10;
+Number2 = 20;
+
+§ Simple calculation
+Result = Number1 + Number2;
+
+§ Display the result
+DISPLAY("The sum is $": Result);
+
+§ Simple IF test
+IF (Result .G. MaxValue / 2):
+    IsGreater = 1;
+ELSE:
+    IsGreater = 0;
+END
+
+§ Display final status
+DISPLAY("Is greater flag: $": IsGreater); 
+
+
+IsGreater = 0;
+§ FOR Loop
+FOR (LoopVar: 1: 4)
+    IsGreater = 0;
+END
+
+
+END § End of CODE block
+END § End of Program 
